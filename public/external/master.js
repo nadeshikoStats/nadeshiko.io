@@ -527,6 +527,7 @@ let badgeColors = {
   // Badge colours for the badge system, must be in 6-digit hex format
   DEVELOPER: "#85d8f9",
   PATREON: "#f6adc6",
+  FOUNDER: "#e9b600",
 };
 
 function checkBadge(badge) {
@@ -534,15 +535,17 @@ function checkBadge(badge) {
     let badgeLinks = {
       DEVELOPER: "https://github.com/nadeshikoStats",
       PATREON: "https://patreon.com/nadeshikoStats",
+      FOUNDER: "https://github.com/nadeshikoStats",
     };
 
     document.getElementById("badge").style.display = "unset";
     document.getElementById("badge").src = `/img/special/${badge}.png`;
-    document.getElementById("badge-link").href = badgeLinks[badge] || "#";
     if (badge.startsWith("PATREON")) {
       document.getElementById("badge-text").textContent = getTranslation(["player", "badges", "patreon"]);
+      document.getElementById("badge-link").href = badgeLinks["PATREON"];
     } else {
       document.getElementById("badge-text").textContent = getTranslation(["player", "badges", badge.toLowerCase()]);
+      document.getElementById("badge-link").href = badgeLinks[badge] || "#";
     }
   }
 }

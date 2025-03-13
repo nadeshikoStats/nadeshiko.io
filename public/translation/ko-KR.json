@@ -125,6 +125,7 @@
     },
     "badges": {
       "developer": "개발자",
+      "founder": "Founder",
       "patreon": "Patreon 후원자"
     },
     "generate_card": "카드 생성",

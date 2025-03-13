@@ -125,6 +125,7 @@
     },
     "badges": {
       "developer": "開發者",
+      "founder": "Founder",
       "patreon": "Patreon 贊助會員"
     },
     "generate_card": "產生名牌",
