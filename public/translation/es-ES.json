@@ -68,7 +68,8 @@
       },
       "settings": {
         "size": {
-          "full": "Completo"
+          "full": "Completo",
+          "tiny": "Pequeño"
         },
         "format": {
           "hypixel_forums": "Foros de Hypixel",

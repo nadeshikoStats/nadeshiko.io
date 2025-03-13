@@ -68,7 +68,8 @@
       },
       "settings": {
         "size": {
-          "full": "전체"
+          "full": "전체",
+          "tiny": "Tiny"
         },
         "format": {
           "hypixel_forums": "Hypixel 포럼",
