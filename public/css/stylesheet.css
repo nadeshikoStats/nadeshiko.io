@@ -3064,6 +3064,11 @@ html {
   .header1.searchbar-selected > * > .header-button > img {
     width: 0;
   }
+
+  .leaderboard-container {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
 }
 
 @media (max-height: 625px) {
