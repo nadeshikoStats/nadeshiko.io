@@ -62,8 +62,8 @@
       "tutorial": {
         "prompt": "¿Cómo puedo agregar la tarjeta a mi firma de los foros de Hypixel?",
         "step_0": "<b>①</b> Accede a los foros de Hypixel y visita <a href=\"https://hypixel.net/account/signature\" target=\"_blank\">https://hypixel.net/account/signature</a>.",
-        "step_1": "<b>②</b> Haz clic en los tres puntos (<img src=\"/img/svg/hypixel_forums/three_dots.svg\" class=\"tinyicon\"> More options) y luego en \"<img src=\"/img/svg/hypixel_forums/brackets.svg\" class=\"tinyicon\"> Toggle BB code\".",
-        "step_2": "<b>③</b> Pega el BBCode (que está debajo) en el cuadro de texto y haz clic en \"<img src=\"/img/svg/hypixel_forums/save.svg\" class=\"tinyicon\"> Save\".",
+        "step_1": "<b>②</b> Haz clic en los tres puntos (<img src=\"/img/svg/hypixel_forums/three_dots.svg\" class=\"tinyicon\" alt=\"\"> More options) y luego en \"<img src=\"/img/svg/hypixel_forums/brackets.svg\" class=\"tinyicon\" alt=\"\"> Toggle BB code\".",
+        "step_2": "<b>③</b> Pega el BBCode (que está debajo) en el cuadro de texto y haz clic en \"<img src=\"/img/svg/hypixel_forums/save.svg\" class=\"tinyicon\" alt=\"\"> Save\".",
         "additional": "¡También puedes incluir otro texto o imágenes en tu firma!"
       },
       "settings": {
@@ -151,6 +151,7 @@
     "tiered": "Progresivos",
     "one_time": "Desafiantes",
     "check": "✓",
+    "cross": "✗",
     "tiers": "Niveles",
     "game": "% de jugadores de %%game%% con este logro",
     "global": "% de todos los jugadores con este logro",

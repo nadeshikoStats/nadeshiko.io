@@ -29,6 +29,12 @@ function deformatName(text) {
 
 function updateTag(parentElement, dataI, value, useHTML = false) {
   let element = parentElement.querySelector(`[data-i=${dataI}]`);
+
+  if (element == null) {
+    console.warn(`Element with data-i ${dataI} not found!`);
+    return;
+  }
+
   element.innerText = value;
   if (useHTML) {
     element.innerHTML = value;

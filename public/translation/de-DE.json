@@ -9,7 +9,7 @@
       "title": "Home"
     },
     "about": {
-      "title": "About",
+      "title": "Über uns",
       "basic": "<span class=\"nadeshiko-bold\">nadeshiko</span> is a beautiful, open-source, and easy-to-use Hypixel player stats viewer.",
       "assistance": "Found a bug or need some assistance? Please let us know on the project's <a href=\"https://github.com/NadeshikoStats/nadeshiko.io/issues\" target=\"_blank\">GitHub page</a> or <a href=\"https://discord.gg/YC5Rz9wKRD\" target=\"_blank\">Discord server</a>!",
       "disclaimer": "nadeshiko.io is not affiliated with Hypixel Inc., Mojang AB, or Microsoft.",
@@ -56,14 +56,14 @@
       "format_tooltip": "Wo die Karte angezeigt wird.",
       "button_generate": "Vorschau generieren",
       "copy": "Fill out the items above and a link will appear here.",
-      "preview_showcase": "Click \"Generate Preview\" and a preview of the card will appear here.",
+      "preview_showcase": "Drücke \"Vorschau erstellen\", dann erscheint hier eine Vorschau der Karte.",
       "loading_preview": "Lade Vorschau...",
       "preview": "Vorschau",
       "tutorial": {
         "prompt": "How do I add the card to my Hypixel Forums signature?",
         "step_0": "<b>①</b> Log into the Hypixel Forums and visit <a href=\"https://hypixel.net/account/signature\" target=\"_blank\">https://hypixel.net/account/signature</a>.",
-        "step_1": "<b>②</b> Click the three dots (<img src=\"/img/svg/hypixel_forums/three_dots.svg\" class=\"tinyicon\"> More options) and then \"<img src=\"/img/svg/hypixel_forums/brackets.svg\" class=\"tinyicon\"> Toggle BB code\".",
-        "step_2": "<b>③</b> Paste the BBCode below into the text box and click \"<img src=\"/img/svg/hypixel_forums/save.svg\" class=\"tinyicon\"> Save\".",
+        "step_1": "<b>②</b> Click the three dots (<img src=\"/img/svg/hypixel_forums/three_dots.svg\" class=\"tinyicon\" alt=\"\"> More options) and then \"<img src=\"/img/svg/hypixel_forums/brackets.svg\" class=\"tinyicon\" alt=\"\"> Toggle BB code\".",
+        "step_2": "<b>③</b> Paste the BBCode below into the text box and click \"<img src=\"/img/svg/hypixel_forums/save.svg\" class=\"tinyicon\" alt=\"\"> Save\".",
         "additional": "You can include other text or images in your signature too!"
       },
       "settings": {
@@ -151,6 +151,7 @@
     "tiered": "Tiered",
     "one_time": "Herausforderung",
     "check": "✓",
+    "cross": "✗",
     "tiers": "Tiers",
     "game": "% of %%game%% players with this achievement",
     "global": "% alle Spieler mit dieser Errungenschaft",

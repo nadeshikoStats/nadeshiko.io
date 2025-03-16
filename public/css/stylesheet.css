@@ -1966,6 +1966,40 @@ a.general-button {
   grid-template-columns: 1.5fr 6fr 0.8fr 0fr 0fr;
 }
 
+/* Spoilers for achievements page */
+
+.spoiler {
+  cursor: pointer;
+}
+
+.spoiler input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.spoiler-text {
+  background-color: #474747;
+  color: #474747;
+  transition-duration: var(--transition-small);
+  user-select: none;
+  border-radius: 3px;
+  padding: 2px;
+}
+
+.spoiler input:checked ~ .spoiler-text {
+  background-color: transparent;
+  color: inherit;
+  cursor: default;
+}
+
+.spoiler:hover .spoiler-text {
+  background-color: #47474780;
+}
+
+
 
 .tiered-container .row-header {
   grid-template-columns: 2fr 3fr;
@@ -2011,6 +2045,12 @@ a.general-button {
 
 .achievement-check {
   color: var(--accent);
+  visibility: hidden;
+  margin-inline-end: 16px;
+  font-weight: bold;
+}
+
+.achievement-cross {
   visibility: hidden;
   margin-inline-end: 16px;
   font-weight: bold;

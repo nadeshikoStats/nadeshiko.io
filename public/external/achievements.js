@@ -926,7 +926,7 @@ function generateAchievementPage(game) {
     </div>
     </div>
     <div class="achievement column">
-      <span class="achievement-check" data-i="achievement-check">${getTranslation("achievements.check")}</span><span class="w700" data-i="achievement-name"></span> – <span data-i="achievement-description"></span></p>
+      <span data-i="achievement-check"></span><span class="w700" data-i="achievement-name"></span> – <span data-i="achievement-description"></span></p>
     </div>
     <p class="column tabular">
       <span data-i="achievement-points"></span>
@@ -969,12 +969,19 @@ function generateAchievementPage(game) {
     achievementElement.classList.add("row-header");
     achievementElement.innerHTML = oneTimeAchievementTemplate;
 
+    let achievementCheck = achievementElement.querySelector("[data-i='achievement-check']");
+
     if (achievementStats["unlocked"]) {
       row.classList.add("unlocked");
-      achievementElement.querySelector("[data-i='achievement-check']").style.visibility = "visible";
+      achievementCheck.textContent = getTranslation("achievements.check");
+      achievementCheck.classList.add("achievement-check");
     } else {
       row.classList.add("locked");
+      achievementCheck.textContent = getTranslation("achievements.cross");
+      achievementCheck.classList.add("achievement-cross");
     }
+
+    achievementCheck.style.visibility = "visible";
 
     if (game == "legacy" || game == "secret") {
       updateTag(achievementElement, "achievement-game", getTranslation(`games.${modernifyGameName(achievementStats["game"])}`));
@@ -990,7 +997,7 @@ function generateAchievementPage(game) {
       if (game == "secret") {
         achievementElement.querySelector("[data-i='achievement-description']").textContent = getSecretAchievement(`${achievement}`);
       } else {
-        let secretAchievementTemplate = `<span class="tooltip"><span>???</span><span class="tooltiptext" data-i="secret-achievement-text"></span></span>`;
+        let secretAchievementTemplate = `<label class="spoiler"><input type="checkbox"><span class="spoiler-text" data-i="secret-achievement-text"></span></label>`;
 
         achievementElement.querySelector("[data-i='achievement-description']").innerHTML = secretAchievementTemplate;
         achievementElement.querySelector("[data-i='secret-achievement-text']").textContent = getSecretAchievement(`${demodernifyGameName(game)}_${achievement}`);
