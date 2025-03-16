@@ -93,7 +93,7 @@
           <div data-t="header.cards.tutorial.step_0"><b>①</b> Log into the Hypixel Forums and visit <a href="https://hypixel.net/account/signature" target="_blank">https://hypixel.net/account/signature</a>.</div>
           <div data-t="header.cards.tutorial.step_1"><b>②</b> Click the three dots (<img src="/img/svg/hypixel_forums/three_dots.svg" class="tinyicon" alt=""> More options) and then "<img src="/img/svg/hypixel_forums/brackets.svg" class="tinyicon" alt=""> Toggle BB code".</div>
           <div data-t="header.cards.tutorial.step_2"><b>③</b> Paste the BBCode below into the text box and click "<img src="/img/svg/hypixel_forums/save.svg" class="tinyicon" alt=""> Save".</div>
-          <img src="/img/cards/card_tutorial.gif" style="width: 100%; border-radius: 10px;" alt="Visiting the Hypixel Forums and following the listed instructions above">
+          <img src="/img/cards/card_tutorial.gif" style="width: 100%; border-radius: 10px; display: none" alt="Visiting the Hypixel Forums and following the listed instructions above" width="330" height="172.4" loading="lazy">
           <i data-t="header.cards.tutorial.additional">You can include other text or images in your signature too!</i>
         </div>
       </div>
@@ -694,6 +694,9 @@
         const isExpanded = expandable.classList.contains('expanded');
 
         if (!isExpanded) {
+          content.querySelectorAll('img').forEach(img => {
+            img.style.display = 'initial';
+          });
           content.style.height = (contentInner.offsetHeight + 10) + 'px';
         } else {
           content.style.height = '0';
@@ -703,7 +706,6 @@
       });
     });
 
-    // ウィンドウリサイズ時に展開されたコンテンツの高さを再計算する
     window.addEventListener('resize', () => {
       expandables.forEach(expandable => {
         if (expandable.classList.contains('expanded')) {
