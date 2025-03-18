@@ -1108,7 +1108,6 @@ function generateLeaderboardsViaLoop() {
     { id: "DEFENDER_KILLS", translation: "statistics.defender_kills", format: "number" },
     { id: "PLAYTIME", translation: "statistics.playtime", format: "duration_minutes" },
     { id: "WITHER_DAMAGE", translation: "statistics.wither_damage", format: "large_number" },
-    { id: "DAMAGE_DEALT", translation: "statistics.damage_dealt", format: "large_number" },
   ];
 
   let megaWallsClassesLeaderboards = {
