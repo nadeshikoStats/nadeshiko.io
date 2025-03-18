@@ -336,6 +336,7 @@ function getPaintballTitle(kills, prefixColor) {
     winsObject: paintballTitles,
     definedColor: prefixColor,
     useToGo: false,
+    useThousandsSeparator: true,
   })["title"];
 }
 
@@ -363,6 +364,7 @@ function getTKRTitle(golds, prefixColor) {
     definedColor: prefixColor,
     useToGo: false,
     suffix: "✪",
+    useThousandsSeparator: true,
   })["title"];
 }
 
@@ -411,7 +413,67 @@ function getQuakecraftTitle(wins, prefixColor) {
     winsObject: quakecraftTitles,
     definedColor: prefixColor,
     useToGo: false,
+    useThousandsSeparator: true,
   })["title"];
+}
+
+function getVampireZTitle(wins, mode) {
+  if (mode == "human") {
+    let vampireZWinPrefixes = [
+      { req: 0, color: "§8" },
+      { req: 20, color: "§7" },
+      { req: 50, color: "§f" },
+      { req: 100, color: "§6" },
+      { req: 150, color: "§e" },
+      { req: 200, color: "§2" },
+      { req: 250, color: "§a" },
+      { req: 300, color: "§5" },
+      { req: 500, color: "§d" },
+      { req: 750, color: "§1" },
+      { req: 1000, color: "§1§l" },
+      { req: 1500, color: "§9§l" },
+      { req: 2000, color: "§3§l" },
+      { req: 2500, color: "§b§l" },
+      { req: 3000, color: "§c§l" },
+      { req: 5000, color: "§4§l" },
+      { req: 10000, color: "§0§l" },
+      { req: 15000, color: "rainbow", colorArray: ["§0", "§4", "§6", "§e", "§a", "§3", "§0"], bold: true },
+    ];
+
+    return getGenericWinsPrefix({
+      wins: wins,
+      winsObject: vampireZWinPrefixes,
+      useToGo: false,
+    })["title"];
+  } else {
+    let vampireZWinPrefixes = [
+      { req: 0, color: "§8" },
+      { req: 50, color: "§f" },
+      { req: 100, color: "§e" },
+      { req: 250, color: "§a" },
+      { req: 500, color: "§d" },
+      { req: 750, color: "§b" },
+      { req: 1000, color: "§c" },
+      { req: 1500, color: "§6" },
+      { req: 2000, color: "§3" },
+      { req: 2500, color: "§a" },
+      { req: 3000, color: "§2" },
+      { req: 5000, color: "§9" },
+      { req: 7500, color: "§1" },
+      { req: 10000, color: "§1§l" },
+      { req: 20000, color: "§4" },
+      { req: 30000, color: "§4§l" },
+      { req: 40000, color: "§5§l" },
+      { req: 50000, color: "§0§l" },
+      { req: 100000, color: "rainbow", colorArray: ["§0", "§4", "§6", "§e", "§a", "§2", "§9", "§0"], bold: true },
+    ];
+
+    return getGenericWinsPrefix({
+      wins: wins,
+      winsObject: vampireZWinPrefixes,
+      useToGo: false,
+    })["title"];
+  }
 }
 
 function getUHCTitle(score, useToGo = true) {
@@ -462,5 +524,44 @@ function getSpeedUHCTitle(score, useToGo = true) {
     useToGo: useToGo,
     suffix: "❋",
     alternativeNaming: true,
+  })["title"];
+}
+
+function getTNTGamesTitle(wins, useHigh = false, prefixColor) {
+  const tntGamesLowPrefixes = [
+    { req: 0, internalId: "dark_gray", color: "§8" },
+    { req: 15, internalId: "gray", color: "§7" },
+    { req: 50, internalId: "white", color: "§f" },
+    { req: 100, internalId: "dark_green", color: "§2" },
+    { req: 250, internalId: "green", color: "§a" },
+    { req: 500, internalId: "blue", color: "§9" },
+    { req: 1000, internalId: "dark_purple", color: "§5" },
+    { req: 1500, internalId: "gold", color: "§6" },
+    { req: 2000, internalId: "red", color: "§c" },
+    { req: 5000, internalId: "black", color: "§0" },
+    { req: 10000, internalId: "rainbow", color: "rainbow" },
+  ];
+
+  const tntGamesHighPrefixes = [
+    { req: 0, internalId: "dark_gray", color: "§8" },
+    { req: 25, internalId: "gray", color: "§7" },
+    { req: 100, internalId: "white", color: "§f" },
+    { req: 250, internalId: "dark_green", color: "§2" },
+    { req: 500, internalId: "green", color: "§a" },
+    { req: 1000, internalId: "blue", color: "§9" },
+    { req: 2500, internalId: "dark_purple", color: "§5" },
+    { req: 5000, internalId: "gold", color: "§6" },
+    { req: 7500, internalId: "red", color: "§c" },
+    { req: 10000, internalId: "black", color: "§0" },
+    { req: 15000, internalId: "rainbow", color: "rainbow" },
+  ];
+
+  let prefix = useHigh ? tntGamesHighPrefixes : tntGamesLowPrefixes;
+
+  return getGenericWinsPrefix({
+    wins: wins,
+    winsObject: prefix,
+    useToGo: false,
+    definedColor: prefixColor,
   })["title"];
 }

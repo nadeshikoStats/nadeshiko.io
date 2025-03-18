@@ -804,7 +804,7 @@ let leaderboards = [
         translation: "games.modes.tntgames.tntrun.category",
         type: "b",
         leaderboards: [
-          { translation: "statistics.wins", id: "TNT_GAMES_TNTRUN_WINS", format: "number" },
+          { translation: "statistics.wins", id: "TNT_GAMES_TNTRUN_WINS", format: "tnt_high" },
           { translation: "statistics.best_time", id: "TNT_GAMES_TNTRUN_LONGEST", format: "duration_seconds" },
         ],
       },
@@ -812,7 +812,7 @@ let leaderboards = [
         translation: "games.modes.tntgames.pvprun.category",
         type: "b",
         leaderboards: [
-          { translation: "statistics.wins", id: "TNT_GAMES_PVPRUN_WINS", format: "number" },
+          { translation: "statistics.wins", id: "TNT_GAMES_PVPRUN_WINS", format: "tnt_high" },
           { translation: "statistics.kills", id: "TNT_GAMES_PVPRUN_KILLS", format: "number" },
           { translation: "statistics.best_time", id: "TNT_GAMES_PVPRUN_LONGEST", format: "duration_seconds" },
         ],
@@ -820,13 +820,13 @@ let leaderboards = [
       {
         translation: "games.modes.tntgames.bowspleef.category",
         type: "b",
-        leaderboards: [{ translation: "statistics.wins", id: "TNT_GAMES_BOWSPLEEF_WINS", format: "number" }],
+        leaderboards: [{ translation: "statistics.wins", id: "TNT_GAMES_BOWSPLEEF_WINS", format: "tnt_high" }],
       },
       {
         translation: "games.modes.tntgames.tntag.category",
         type: "b",
         leaderboards: [
-          { translation: "statistics.wins", id: "TNT_GAMES_TNTTAG_WINS", format: "number" },
+          { translation: "statistics.wins", id: "TNT_GAMES_TNTTAG_WINS", format: "tnt_low" },
           { translation: "statistics.kills", id: "TNT_GAMES_TNTTAG_KILLS", format: "number" },
         ],
       },
@@ -834,7 +834,7 @@ let leaderboards = [
         translation: "games.modes.tntgames.wizards.category",
         type: "b",
         leaderboards: [
-          { translation: "statistics.wins", id: "TNT_GAMES_WIZARDS_WINS", format: "number" },
+          { translation: "statistics.wins", id: "TNT_GAMES_WIZARDS_WINS", format: "tnt_low" },
           { translation: "statistics.kills", id: "TNT_GAMES_WIZARDS_KILLS", format: "number" },
           { translation: "statistics.overall_captures", id: "TNT_GAMES_WIZARDS_POINTS_CAPTURED", format: "number" },
         ],
@@ -905,7 +905,7 @@ let leaderboards = [
         translation: "games.modes.classic.vampirez.human",
         type: "b",
         leaderboards: [
-          { translation: "statistics.wins", id: "VAMPIREZ_HUMAN_WINS", format: "number" },
+          { translation: "statistics.wins", id: "VAMPIREZ_HUMAN_WINS", format: "vampirez_human" },
           { translation: "statistics.vampire_kills", id: "VAMPIREZ_VAMPIRE_KILLS", format: "number" },
           { translation: "statistics.kills", id: "VAMPIREZ_ZOMBIE_KILLS", format: "number" },
         ],
@@ -915,7 +915,7 @@ let leaderboards = [
         type: "b",
         leaderboards: [
           { translation: "statistics.wins", id: "VAMPIREZ_VAMPIRE_WINS", format: "number" },
-          { translation: "statistics.human_kills", id: "VAMPIREZ_HUMAN_KILLS", format: "number" },
+          { translation: "statistics.human_kills", id: "VAMPIREZ_HUMAN_KILLS", format: "vampirez_vampire" },
         ],
       },
     ],
@@ -1543,6 +1543,14 @@ function formatLeaderboardStatistic(leaderboard, value) {
       return `${getUHCTitle(value, false)} / ${checkAndFormat(Number(value))}`;
     case "speed_uhc_score":
       return `${getSpeedUHCTitle(value, false)} / ${checkAndFormat(Number(value))}`;
+    case "vampirez_human":
+      return getVampireZTitle(value, "human");
+    case "vampirez_vampire":
+      return getVampireZTitle(value, "vampire");
+    case "tnt_high":
+      return getTNTGamesTitle(value, true);
+    case "tnt_low":
+      return getTNTGamesTitle(value, false);
     case "large_number":
       return veryLargeNumber(Number(value));
     case "duration_minutes":

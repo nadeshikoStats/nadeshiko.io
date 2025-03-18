@@ -799,66 +799,19 @@ function getTKRStats(mode) {
 
 function getVampireZStats(mode) {
   if (mode == "human") {
-    let vampireZWinPrefixes = [
-      { req: 0, color: "§8" },
-      { req: 20, color: "§7" },
-      { req: 50, color: "§f" },
-      { req: 100, color: "§6" },
-      { req: 150, color: "§e" },
-      { req: 200, color: "§2" },
-      { req: 250, color: "§a" },
-      { req: 300, color: "§5" },
-      { req: 500, color: "§d" },
-      { req: 750, color: "§1" },
-      { req: 1000, color: "§1§l" },
-      { req: 1500, color: "§9§l" },
-      { req: 2000, color: "§3§l" },
-      { req: 2500, color: "§b§l" },
-      { req: 3000, color: "§c§l" },
-      { req: 5000, color: "§4§l" },
-      { req: 10000, color: "§0§l" },
-      { req: 15000, color: "rainbow" },
-    ];
-
     return [
       [false, [getTranslation("statistics.coins"), checkAndFormat(vampireZStats["coins"])]],
       [
         false,
         [
           getTranslation("statistics.wins"),
-          getGenericWinsPrefix({
-            wins: und(vampireZStats["human_wins"]),
-            winsObject: vampireZWinPrefixes,
-            useToGo: false,
-          })["title"],
+          getVampireZTitle(und(vampireZStats["human_wins"]), "human"),
         ],
       ],
       [false, [getTranslation("statistics.vampire_kills"), checkAndFormat(vampireZStats["vampire_kills"])], [getTranslation("statistics.deaths"), checkAndFormat(vampireZStats["human_deaths"])], [getTranslation("statistics.kdr"), calculateRatio(vampireZStats["vampire_kills"], vampireZStats["human_deaths"])]],
       [false, [getTranslation("statistics.zombie_kills"), checkAndFormat(vampireZStats["zombie_kills"])], [getTranslation("statistics.most_vampire_kills"), checkAndFormat(vampireZStats["most_vampire_kills_new"])]],
     ];
   } else {
-    let vampireZWinPrefixes = [
-      { req: 0, color: "§8" },
-      { req: 50, color: "§f" },
-      { req: 100, color: "§e" },
-      { req: 250, color: "§a" },
-      { req: 500, color: "§d" },
-      { req: 750, color: "§b" },
-      { req: 1000, color: "§c" },
-      { req: 1500, color: "§6" },
-      { req: 2000, color: "§3" },
-      { req: 2500, color: "§a" },
-      { req: 3000, color: "§2" },
-      { req: 5000, color: "§9" },
-      { req: 7500, color: "§1" },
-      { req: 10000, color: "§1§l" },
-      { req: 20000, color: "§4" },
-      { req: 30000, color: "§4§l" },
-      { req: 40000, color: "§5§l" },
-      { req: 50000, color: "§0§l" },
-      { req: 100000, color: "rainbow", bold: true },
-    ];
-
     return [
       [false, [getTranslation("statistics.coins"), checkAndFormat(vampireZStats["coins"])]],
       [false, [getTranslation("statistics.wins"), checkAndFormat(vampireZStats["vampire_wins"])]],
@@ -866,11 +819,7 @@ function getVampireZStats(mode) {
         false,
         [
           getTranslation("statistics.human_kills"),
-          getGenericWinsPrefix({
-            wins: und(vampireZStats["human_kills"]),
-            winsObject: vampireZWinPrefixes,
-            useToGo: false,
-          })["title"],
+          getVampireZTitle(und(vampireZStats["human_kills"]), "vampire"),
         ],
         [getTranslation("statistics.deaths"), checkAndFormat(vampireZStats["vampire_deaths"])],
         [getTranslation("statistics.kdr"), calculateRatio(vampireZStats["human_kills"], vampireZStats["vampire_deaths"])],
@@ -1612,34 +1561,6 @@ function generateTNTGames() {
     updateScopedElement("tntgames-overall-playtime", smallDuration(playerAchievements["tntgames_tnt_triathlon"] * 60));
   }
 
-  const tntGamesLowPrefixes = [
-    { req: 0, internalId: "dark_gray", color: "§8" },
-    { req: 15, internalId: "gray", color: "§7" },
-    { req: 50, internalId: "white", color: "§f" },
-    { req: 100, internalId: "dark_green", color: "§2" },
-    { req: 250, internalId: "green", color: "§a" },
-    { req: 500, internalId: "blue", color: "§9" },
-    { req: 1000, internalId: "dark_purple", color: "§5" },
-    { req: 1500, internalId: "gold", color: "§6" },
-    { req: 2000, internalId: "red", color: "§c" },
-    { req: 5000, internalId: "black", color: "§0" },
-    { req: 10000, internalId: "rainbow", color: "rainbow" },
-  ];
-
-  const tntGamesHighPrefixes = [
-    { req: 0, internalId: "dark_gray", color: "§8" },
-    { req: 25, internalId: "gray", color: "§7" },
-    { req: 100, internalId: "white", color: "§f" },
-    { req: 250, internalId: "dark_green", color: "§2" },
-    { req: 500, internalId: "green", color: "§a" },
-    { req: 1000, internalId: "blue", color: "§9" },
-    { req: 2500, internalId: "dark_purple", color: "§5" },
-    { req: 5000, internalId: "gold", color: "§6" },
-    { req: 7500, internalId: "red", color: "§c" },
-    { req: 10000, internalId: "black", color: "§0" },
-    { req: 15000, internalId: "rainbow", color: "rainbow" },
-  ];
-
   let tntRunCard = [
     "tntgames-stats-tntrun", // ID
     getTranslation("games.modes.tntgames.tntrun.category"), // Title
@@ -1650,12 +1571,7 @@ function generateTNTGames() {
         false,
         [
           getTranslation("statistics.wins"),
-          getGenericWinsPrefix({
-            wins: tntGamesStats["wins_tntrun"],
-            winsObject: tntGamesHighPrefixes,
-            definedColor: tntGamesStats["prefix_tntrun"],
-            useToGo: false,
-          })["title"],
+          getTNTGamesTitle(und(tntGamesStats["wins_tntrun"]), true, tntGamesStats["prefix_tntrun"]),
         ],
         [getTranslation("statistics.losses"), checkAndFormat(tntGamesStats["deaths_tntrun"])],
         [getTranslation("statistics.wlr"), calculateRatio(tntGamesStats["wins_tntrun"], tntGamesStats["deaths_tntrun"])],
@@ -1677,12 +1593,7 @@ function generateTNTGames() {
         false,
         [
           getTranslation("statistics.wins"),
-          getGenericWinsPrefix({
-            wins: tntGamesStats["wins_pvprun"],
-            winsObject: tntGamesHighPrefixes,
-            definedColor: tntGamesStats["prefix_pvprun"],
-            useToGo: false,
-          })["title"],
+          getTNTGamesTitle(und(tntGamesStats["wins_pvprun"]), true, tntGamesStats["prefix_pvprun"]),
         ],
         [getTranslation("statistics.losses"), checkAndFormat(tntGamesStats["deaths_pvprun"])],
         [getTranslation("statistics.wlr"), calculateRatio(tntGamesStats["wins_pvprun"], tntGamesStats["deaths_pvprun"])],
@@ -1705,12 +1616,7 @@ function generateTNTGames() {
         false,
         [
           getTranslation("statistics.wins"),
-          getGenericWinsPrefix({
-            wins: tntGamesStats["wins_tntag"],
-            winsObject: tntGamesLowPrefixes,
-            definedColor: tntGamesStats["prefix_tntag"],
-            useToGo: false,
-          })["title"],
+          getTNTGamesTitle(und(tntGamesStats["wins_tntag"]), false, tntGamesStats["prefix_tntag"]),
         ],
         [getTranslation("statistics.losses"), checkAndFormat(tntGamesStats["deaths_tntag"])],
         [getTranslation("statistics.wlr"), calculateRatio(tntGamesStats["wins_tntag"], tntGamesStats["deaths_tntag"])],
@@ -1733,12 +1639,7 @@ function generateTNTGames() {
         false,
         [
           getTranslation("statistics.wins"),
-          getGenericWinsPrefix({
-            wins: tntGamesStats["wins_bowspleef"],
-            winsObject: tntGamesHighPrefixes,
-            definedColor: tntGamesStats["prefix_bowspleef"],
-            useToGo: false,
-          })["title"],
+          getTNTGamesTitle(und(tntGamesStats["wins_bowspleef"]), true, tntGamesStats["prefix_bowspleef"]),
         ],
         [getTranslation("statistics.losses"), checkAndFormat(tntGamesStats["deaths_bowspleef"])],
         [getTranslation("statistics.wlr"), calculateRatio(tntGamesStats["wins_bowspleef"], tntGamesStats["deaths_bowspleef"])],
@@ -1781,12 +1682,7 @@ function generateTNTGames() {
       false,
       [
         getTranslation("statistics.overall_wins"),
-        getGenericWinsPrefix({
-          wins: tntGamesStats["wins_capture"],
-          winsObject: tntGamesHighPrefixes,
-          definedColor: tntGamesStats["prefix_capture"],
-          useToGo: false,
-        })["title"],
+        getTNTGamesTitle(und(tntGamesStats["wins_capture"]), false, tntGamesStats["prefix_capture"]),
       ],
       [getTranslation("statistics.overall_captures"), checkAndFormat(tntGamesStats["points_capture"])],
     ],
@@ -1802,12 +1698,7 @@ function generateTNTGames() {
         false,
         [
           getTranslation("statistics.overall_wins"),
-          getGenericWinsPrefix({
-            wins: tntGamesStats["wins_capture"],
-            winsObject: tntGamesHighPrefixes,
-            definedColor: tntGamesStats["prefix_capture"],
-            useToGo: false,
-          })["title"],
+          getTNTGamesTitle(und(tntGamesStats["wins_capture"]), false, tntGamesStats["prefix_capture"]),
         ],
         [getTranslation("statistics.overall_captures"), checkAndFormat(tntGamesStats["points_capture"])],
       ],
