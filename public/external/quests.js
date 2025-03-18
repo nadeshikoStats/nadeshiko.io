@@ -155,6 +155,8 @@ function generateQuestsTable(game, timestamp = Date.now()) {
       thisQuestRow.querySelector("[data-i='quest-objectives']").appendChild(thisQuestObjectiveFormatted);
     }
 
+    console.log(thisQuestDetails["rewards"]);
+
     for (let b in thisQuestDetails["rewards"]) {
       let thisQuestRewards = document.createElement("div");
       thisQuestRewards.classList.add("quest-reward");
@@ -171,7 +173,6 @@ function generateQuestsTable(game, timestamp = Date.now()) {
       thisQuestRewardAmount.innerText = checkAndFormat(thisQuestReward["amount"]);
 
       thisQuestRow.querySelector("[data-i='quest-rewards']").appendChild(thisQuestRewards);
-      console.log(thisQuestRow.querySelector("[data-i='quest-rewards']"));
     }
 
     updateTag(questGameContainer, "quest-game-progress", insertPlaceholders(getTranslation(["quests", "completions", "completed"]), { num: gameQuestCompletionStatus["completed"], total: gameQuestCompletionStatus["total"] }), false);
@@ -186,7 +187,6 @@ function generateQuestsTable(game, timestamp = Date.now()) {
 
 function getQuestDetails(questId, interval = "daily", thisQuestGlobalStats, game) {
   let thisQuestPlayerStats = playerQuests[questId] || {};
-  console.log(thisQuestGlobalStats);
 
   let thisQuestDetailsFormatted = {
     objectives: {},
@@ -256,7 +256,6 @@ function getQuestDetails(questId, interval = "daily", thisQuestGlobalStats, game
 
   thisQuestDetailsFormatted["completed"] = thisQuestCompleted;
 
-  console.warn(thisQuestDetailsFormatted);
   return thisQuestDetailsFormatted;
 }
 

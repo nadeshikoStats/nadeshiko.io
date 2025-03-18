@@ -1429,8 +1429,12 @@ async function getLeaderboardData(leaderboard, page = 1) {
       row.querySelector(`[data-i="head"]`).style.display = "none";
       row.querySelector("[data-i='rank-name']").href = `/guild/${a["name"]}`;
     } else {
-      row.querySelector(`[data-i="head"]`).style.display = "block";
-      row.querySelector(`[data-i="head"]`).src = `https://h.matdoes.dev/2d/${a["uuid"].replaceAll("-", "")}`;
+      head = row.querySelector(`[data-i="head"]`);
+
+      head.style.display = "block";
+      head.src = `https://h.matdoes.dev/2d/${a["uuid"].replaceAll("-", "")}`;
+      head.alt = "";
+
       row.querySelector("[data-i='rank-name']").href = `/player/${a["uuid"]}`;
     }
     updateTag(row, "quantity", formatLeaderboardStatistic(currentLeaderboardInformation["format"], a["value"]), true);

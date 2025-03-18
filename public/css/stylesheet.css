@@ -2100,14 +2100,22 @@ a.general-button {
   margin-inline-start: 5px;
 }
 
-.list .row:first-child .row-header,
+/*.list .row:first-child .row-header,
 .leaderboard-row:first-child {
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
 
-.list .row:last-child .row-header,
+.list .row:not(.display-none):not(:has(~ .row:not(.display-none))) .row-header,
 .leaderboard-row:last-child {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}*/
+
+.achievements-container .row:not(.display-none):not(:has(~ .row:not(.display-none))) .row-header,
+.leaderboard-row:last-child,
+.quest-list > .row:last-child,
+.quest-list > .row:last-child div:last-child {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
 }
