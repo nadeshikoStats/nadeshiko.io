@@ -914,8 +914,8 @@ let leaderboards = [
         translation: "games.modes.classic.vampirez.vampire",
         type: "b",
         leaderboards: [
-          { translation: "statistics.wins", id: "VAMPIREZ_VAMPIRE_WINS", format: "number" },
           { translation: "statistics.human_kills", id: "VAMPIREZ_HUMAN_KILLS", format: "vampirez_vampire" },
+          { translation: "statistics.wins", id: "VAMPIREZ_VAMPIRE_WINS", format: "number" },
         ],
       },
     ],

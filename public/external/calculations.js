@@ -437,7 +437,7 @@ function getVampireZTitle(wins, mode) {
       { req: 3000, color: "§c§l" },
       { req: 5000, color: "§4§l" },
       { req: 10000, color: "§0§l" },
-      { req: 15000, color: "rainbow", colorArray: ["§0", "§4", "§6", "§e", "§a", "§3", "§0"], bold: true },
+      { req: 15000, color: "rainbow", colorArray: ["§0§l", "§4§l", "§6§l", "§e§l", "§a§l", "§3§l", "§0§l"], bold: true },
     ];
 
     return getGenericWinsPrefix({
@@ -465,7 +465,7 @@ function getVampireZTitle(wins, mode) {
       { req: 30000, color: "§4§l" },
       { req: 40000, color: "§5§l" },
       { req: 50000, color: "§0§l" },
-      { req: 100000, color: "rainbow", colorArray: ["§0", "§4", "§6", "§e", "§a", "§2", "§9", "§0"], bold: true },
+      { req: 100000, color: "rainbow", colorArray: ["§0§l", "§r§4§l", "§6§l", "§e§l", "§a§l", "§2§l", "§9§l", "§0§l"], bold: true },
     ];
 
     return getGenericWinsPrefix({

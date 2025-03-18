@@ -1469,6 +1469,22 @@ a.general-button {
   border-radius: 99px;
 }
 
+.ml {
+  font-weight: 700;
+}
+
+.mm {
+  text-decoration: strikethrough;
+}
+
+.mn {
+  text-decoration: underline;
+}
+
+.mo {
+  font-style: italic;
+}
+
 .b-m0 {
   background-color: #000;
 }

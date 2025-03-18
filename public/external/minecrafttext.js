@@ -1,6 +1,5 @@
 function generateMinecraftText(minecraftText, blackShadow = false) {
   // Generates HTML from Minecraft text
-
   if (minecraftText === null || minecraftText === undefined) {
     return "";
   }
@@ -14,82 +13,82 @@ function generateMinecraftText(minecraftText, blackShadow = false) {
       .replace(/'/g, '&#39;');
   };
 
-  const regex = /[^§&]*[^§&]|[§&][0-9a-z#][^§&]*/g;
-  const brokenUpStrings = escapeHtml(minecraftText).match(regex) || [];
-  let returnString = "";
+  const formatMap = {
+    'l': 'ml', // bold
+    'm': 'mm', // strikethrough
+    'n': 'mn', // underline
+    'o': 'mo', // italic
+    'k': 'mk'  // obfuscated (not really)
+  };
 
-  brokenUpStrings.forEach((individual) => {
-    let ending = "";
-    const code = individual.split(/[&§][0-9a-z#]/);
-    const prefixMatch = individual.match(/[&§][0-9a-z#]/);
-    const prefix = prefixMatch ? prefixMatch[0] : null;
+  const validColors = [`0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `a`, `b`, `c`, `d`, `e`, `f`];
 
-    if (prefix) {
-      const actualCode = prefix[1];
-      const validColors = [`0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `a`, `b`, `c`, `d`, `e`, `f`];
+  const escapedText = escapeHtml(minecraftText);
 
-      if (validColors.includes(actualCode)) {
-        if (blackShadow && (actualCode == "0" || actualCode == "1")) {
-          // Adds a white shadow to dark text
-          returnString += `<span class="m${actualCode} shadowf">`;
-        } else {
-          returnString += `<span class="m${actualCode}">`;
-        }
-        ending += "</span>";
-      } else {
-        switch (actualCode) {
-          case "l":
-            if (individual.length > 2) {
-              returnString += '<span style="font-weight:bold;">';
-              ending = "</span>" + ending;
-            }
-            break;
-          case "m":
-            if (individual.length > 2) {
-              returnString += "<strike>";
-              ending = "</strike>" + ending;
-            }
-            break;
-          case "n":
-            if (individual.length > 2) {
-              returnString += '<span style="text-decoration: underline;">';
-              ending = "</span>" + ending;
-            }
-            break;
-          case "o":
-            if (individual.length > 2) {
-              returnString += "<i>";
-              ending = "</i>" + ending;
-            }
-            break;
-          case "k":
-            if (individual.length > 2) {
-              returnString += '<span class="mk">';
-              ending = "</span>" + ending;
-            }
-            break;
-          case "r":
-            returnString += ending;
-            ending = "";
-            break;
-          case "#":
-            // do nothing
-            returnString += prefixMatch;
-            break;
-        }
+  const regex = /[^§]*[^§]|§[0-9a-z#][^§]*/g;
+  const segments = escapedText.match(regex) || [];
+
+  let result = "";
+
+  // current state
+  let currentColor = null;
+  let activeClasses = new Set();
+  let buffer = "";
+
+  // outputs buffer with all active formatting
+  const flushBuffer = () => {
+    if (!buffer) return;
+
+    let classes = [];
+
+    if (currentColor) {
+      classes.push(`m${currentColor}`);
+
+      // adds shadow for dark colours
+      if (blackShadow && (currentColor === '0' || currentColor === '1')) {
+        classes.push('shadowf');
+      }
+    }
+
+    activeClasses.forEach(cls => classes.push(cls));
+
+    let attributes = classes.length > 0 ? ` class="${classes.join(' ')}"` : '';
+    result += `<span${attributes}>${buffer}</span>`;
+    buffer = "";
+  };
+
+  for (let i = 0; i < segments.length; i++) {
+    const segment = segments[i];
+    const formatCode = segment.match(/§([0-9a-z#])/);
+
+    if (formatCode) {
+      const code = formatCode[1];
+
+      flushBuffer();
+
+      if (validColors.includes(code)) {
+        currentColor = code;
+        activeClasses.clear();
+      } else if (code === 'r') {
+        currentColor = null;
+        activeClasses.clear();
+      } else if (formatMap[code]) {
+        activeClasses.add(formatMap[code]);
+      } else if (code === '#') {
+        // todo for whenever Hypixel updates to 1.21
       }
 
-      if (code[1]) {
-        returnString += code[1];
-        if (ending && individual.length > 2) {
-          returnString += ending;
-          ending = "";
-        }
+      const remainingText = segment.substring(formatCode[0].length);
+      if (remainingText) {
+        buffer += remainingText;
       }
     } else {
-      returnString += individual;
+      // regular text, treat accordingly
+      buffer += segment;
     }
-  });
+  }
 
-  return DOMPurify.sanitize(returnString);
+  flushBuffer();
+
+  return result;
 }
