@@ -1,7 +1,8 @@
 var bedWarsStats, totalDreamModeStats, duelsStats, arcadeStats, arenaStats, paintballStats, quakeStats, vampireZStats, wallsStats, tkrStats, copsAndCrimsStats, blitzStats, megaWallsStats, warlordsStats, warlordsFormattedWeapons, uhcStats, speedUHCStats, woolWarsNumericalStats, smashStats, fishingStats, fishingParticipatedSeasons;
 var allDuelsStats = {};
 var allTNTWizardStats = {};
-
+let rankingsShown = false;
+let rankingsShownCount = 0;
 function updateScopedElement(id, value, useInnerHTML = false) {
   updateElement(id, value, useInnerHTML, activeScope);
 }
@@ -314,10 +315,10 @@ function generateNetwork() {
     document.getElementById("real-stats").style.display = "none";
     document.getElementById("network-error").style.display = "unset";
 
-    document.getElementById("player-card").style.paddingInlineStart = "0px";
-    document.getElementById("player-card").style.paddingInlineEnd = "0px";
-    document.getElementById("player-card").style.paddingBottom = "0px";
-    document.getElementById("extended-card").style.marginBottom = "0px";
+    document.getElementById("player-chip").style.paddingInlineStart = "0px";
+    document.getElementById("player-chip").style.paddingInlineEnd = "0px";
+    document.getElementById("player-chip").style.paddingBottom = "0px";
+    document.getElementById("extended-chip").style.marginBottom = "0px";
     addRecentPlayer(playerData["name"]);
   }
 }
@@ -4986,4 +4987,153 @@ function addRecentPlayer(player, colorCode = 7) {
   }
 
   localStorage.setItem(`recent-searches`, JSON.stringify(recentPlayers));
+}
+
+function getRankings(start, end) {
+  const rankings = playerData["rankings"] || [];
+
+  const rankingTemplate = `<div class="info"><a data-i="link" target="_blank" class="no-text-decoration"><div class="multicolor-badge tabular position" data-i="badge">#<span data-i="rank"></span></div></a> <div class="flippable" style="display: flex; flex-wrap: wrap"><div class="game" data-i="game"></div><span class="mobile-excluded">&nbsp;–&nbsp;</span><div class="name" data-i="name"></div></div></div> <div class="score tabular" data-i="score"></div>`;
+
+  const badgeTiers = {
+    1: "gold",
+    2: "silver",
+    3: "bronze",
+    10: "7",
+    20: "6",
+    50: "5",
+    100: "4",
+    250: "3",
+    500: "2",
+    1000: "1",
+  };
+
+  const rankingsDiv = document.createElement("div");
+
+  if (end > rankings.length || end == -1) {
+    end = rankings.length;
+  }
+
+  for (let a = start; a < end; a++) {
+    const ranking = rankings[a];
+
+    const id = ranking["id"];
+    const gameAndName = getFullTranslationById(id);
+    const game = gameAndName["game"];
+    const name = gameAndName["name"];
+    const format = gameAndName["format"];
+
+    const rank = ranking["rank"];
+    const score = ranking["score"];
+
+    const rankingElement = document.createElement("div");
+    rankingElement.className = "ranking flex-two-item";
+    rankingElement.innerHTML = rankingTemplate;
+
+    let badgeTier = "default";
+    for (const tier in badgeTiers) {
+      if (rank <= tier) {
+        badgeTier = badgeTiers[tier];
+        break;
+      }
+    }
+
+    rankingElement.querySelector("[data-i=name]").textContent = name;
+    rankingElement.querySelector("[data-i=game]").textContent = game;
+    rankingElement.querySelector("[data-i=rank]").textContent = checkAndFormat(rank);
+    rankingElement.querySelector("[data-i=link]").href = `/leaderboards?leaderboard=${id}&page=${Math.floor(rank / 100) + 1}`;
+    rankingElement.querySelector("[data-i=badge]").classList.add("tier-" + badgeTier);
+    rankingElement.querySelector("[data-i=score]").innerHTML = formatLeaderboardStatistic(format, score);
+
+    rankingsDiv.appendChild(rankingElement);
+  }
+
+  return rankingsDiv;
+}
+
+function showRankings() {
+  const TRANSITION_DURATION = window.getComputedStyle(document.documentElement).getPropertyValue("--transition");
+
+  if (!rankingsShown) {
+    rankingsShown = true;
+    
+    // "show more" button logic
+    if (rankingsShownCount == 0) {
+      const rankingsList = document.getElementById("rankings-list");
+      rankingsList.appendChild(getRankings(0, 50));
+
+      const showMoreButtonContainer = document.createElement("div");
+      showMoreButtonContainer.className = "flex-two-item flex-justify-center";
+
+      const showMoreButton = document.createElement("span");
+      showMoreButton.className = "general-button margin10";
+      showMoreButton.textContent = getTranslation("player.show_more");
+      showMoreButton.addEventListener("click", function() {
+        rankingsList.appendChild(getRankings(50, -1));
+        this.remove();
+      });
+      showMoreButtonContainer.appendChild(showMoreButton);
+      rankingsList.appendChild(showMoreButtonContainer);
+    }
+
+    const el = document.getElementById("extended-chip");
+    el.style.height = el.getBoundingClientRect().height + "px";
+    void el.offsetHeight;
+    el.style.transitionDuration = TRANSITION_DURATION;
+    el.style.height = "0px";
+    el.style.pointerEvents = "none";
+    el.style.opacity = "0";
+    el.classList.add("no-vertical-margin");
+
+    const la = document.getElementById("rankings-chip");
+    void la.offsetHeight;
+    la.style.transitionDuration = TRANSITION_DURATION;
+    la.style.height = "50vh";
+    la.style.pointerEvents = "auto";
+    la.style.opacity = "1";
+    la.style.overflowY = "scroll";
+    la.classList.remove("no-vertical-margin");
+
+    document.getElementById("rankings-button").innerText = getTranslation("games.modes.all.stats");
+    rankingsShownCount++;
+
+    document.getElementById("rankings-chip").scrollTop = 0;
+  } else {
+    rankingsShown = false;
+
+    // undo height changes
+    const el = document.getElementById("extended-chip");
+    // logic to store the natural height first, it temporarily removes transition and sets height to auto. complicated? yes! know a better way (while still keeping the transition)? please tell me!
+    el.style.transitionDuration = "0s";
+    el.style.height = "auto";
+    el.classList.remove("no-vertical-margin");
+    const naturalHeight = el.getBoundingClientRect().height + "px";
+    el.classList.add("no-vertical-margin");
+    el.style.height = "0px";
+    void el.offsetHeight; // force reflow
+
+    el.classList.remove("no-vertical-margin");
+    el.style.transitionDuration = TRANSITION_DURATION;
+    el.style.height = naturalHeight;
+    el.style.pointerEvents = "auto";
+    el.style.opacity = "1";
+
+    // reset to auto to handle window resizing
+    const transitionEndHandler = function() {
+      el.style.height = "auto";
+      el.removeEventListener("transitionend", transitionEndHandler);
+    };
+    el.addEventListener("transitionend", transitionEndHandler);
+
+    const la = document.getElementById("rankings-chip");
+    la.style.height = la.getBoundingClientRect().height + "px";
+    void la.offsetHeight;
+    la.style.transitionDuration = TRANSITION_DURATION;
+    la.style.height = "0px";
+    la.style.pointerEvents = "none";
+    la.style.opacity = "0";
+    la.style.overflowY = "hidden";
+    la.classList.add("no-vertical-margin");
+
+    document.getElementById("rankings-button").innerText = getTranslation("player.rankings");
+  }
 }

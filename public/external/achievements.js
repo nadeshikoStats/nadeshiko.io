@@ -1162,7 +1162,7 @@ function updateOverall() {
 
   function formatMaxedGame(game) {
     let gameElement = document.createElement("span");
-    gameElement.classList.add("maxed-game");
+    gameElement.classList.add("multicolor-badge");
 
     let tier, gameName;
     if (game == "hypixel") {

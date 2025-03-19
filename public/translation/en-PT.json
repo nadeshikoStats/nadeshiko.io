@@ -135,6 +135,8 @@
     "currently_online": "Sailin'!",
     "birthday": "Ye be sailin' on Hypixel fer %%num%% years!",
     "coin_multiplier": "Doubloon Multiplier",
+    "rankings": "Rankings",
+    "show_more": "Show More",
     "errors": {
       "no_stats": "No Hypixel Stats",
       "no_stats_desc": "'Tis pirate be a lousy landlubber wit' no Hypixel stats!",

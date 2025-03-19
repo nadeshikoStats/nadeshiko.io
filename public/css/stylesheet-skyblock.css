@@ -161,7 +161,7 @@
 }
 
 @media (max-width: 800px) {
-  .skyblock-base-container, .skyblock-profile .player-card {
+  .skyblock-base-container, .skyblock-profile .player-chip {
     width: 92%;
   }
 }
@@ -186,7 +186,7 @@
   margin: 10px;
   border-radius: 30px;
 
-  overflow: hidden; 
+  overflow: hidden;
 
   transition: opacity var(--transition-small), transform var(--transition-small);
 

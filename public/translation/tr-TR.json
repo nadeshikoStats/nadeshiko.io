@@ -135,6 +135,8 @@
     "currently_online": "Currently Online!",
     "birthday": "Happy %%num%% years of Hypixel!",
     "coin_multiplier": "Altın Katlayıcı",
+    "rankings": "Rankings",
+    "show_more": "Show More",
     "errors": {
       "no_stats": "No Hypixel Stats",
       "no_stats_desc": "This player has no Hypixel stats.",

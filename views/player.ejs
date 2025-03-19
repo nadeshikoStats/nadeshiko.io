@@ -25,6 +25,7 @@
           document.documentElement.style.setProperty('--accent', getComputedStyle(document.documentElement).getPropertyValue('--accent-' + currentGamemode));
 
           updateTranslations();
+          generateLeaderboardsViaLoop();
           insertLoadedData();
           document.getElementById("flex-container-" + currentGamemode).classList.remove("unloaded");
           document.getElementById("header-name").classList.remove("unloaded");
@@ -44,6 +45,7 @@
   <script src="/external/min/games.js?v=<%= version || 0 %>"></script>
   <script src="/external/min/gamenames.js?v=<%= version || 0 %>"></script>
   <script src="/external/min/tooltips.js?v=<%= version || 0 %>"></script>
+  <script src="/external/min/leaderboardutil.js?v=<%= version || 0 %>"></script>
 
   <meta name="theme-color" content="#f6adc6">
   <meta property="og:site_name" content="nadeshiko.io">
@@ -100,9 +102,11 @@
     <div class="games" id="games">
       <div class="flex-container unloaded" id="flex-container-network"> <!-- network stats -->
         <canvas id="skin-container" class="avatar unloaded" style="background-color: transparent"></canvas>
-        <section class="player-card" id="player-card">
+        <section class="player-chip" id="player-chip">
           <div class="player-info">
             <div class="details">
+
+              <div class="name-online-container">
               <div class="flex-two-item unless-tiny">
                 <div class="flex-vertical">
                   <span class="player-name">
@@ -127,8 +131,9 @@
                   </span>
                 </span>
               </div>
+            </div>
 
-              <div class="extended-card" id="extended-card">
+              <div class="extended-chip" id="extended-chip">
                 <div id="real-stats">
                 <p id="level-container-container"><span id="level-container"><span data-t="statistics.level">Level</span> <span id="level" class="statistic"><span class="mc">Unknown</span></span></span> <span class="tooltip"><span class="m8">(<span id="multiplier">1</span>&times;)</span><span class="tooltiptext" data-t="player.coin_multiplier">Coin Multiplier</span></span></p>
                 <div class="progress-bar">
@@ -168,9 +173,17 @@
                   <p class="subtitle-text" id="error-subtitle" data-t="player.errors.no_stats_desc">This player has no Hypixel stats.</p>
                 </div>
               </div>
+
+              <div class="rankings-chip no-vertical-margin" id="rankings-chip">
+                <div class="rankings-list" id="rankings-list">
+                </div>
+              </div>
+
               <div class="flex-two-item socials-buttons" id="general-bottom-bar">
                 <div class="buttons">
                   <span class="general-button" onclick="showCardWizard('NETWORK')" data-t="player.generate_card">Generate Card</span>
+
+                  <span class="general-button" id="rankings-button" onclick="showRankings()" data-t="player.rankings">Rankings</span>
 
                   <div class="dropdown">
                     <span class="general-button dropdown-button" data-t="player.external_websites">External Websites</span>
@@ -195,6 +208,7 @@
                     <a target="_blank" id="social-twitch-alternative" aria-label="View linked Twitch"><span class="logo-container"><img src="/img/logo/twitch.svg" alt="" class="social-media-dropdown"></span> Twitch</a>
                     <a target="_blank" id="social-discord-alternative" onclick="copyText('social-discord-username', true)" aria-label="View linked Discord"><span class="logo-container"><img src="/img/logo/discord.svg" alt="" class="social-media-dropdown"></span> <span id="social-discord-username-alternative">Discord</span></a>
                 </div></div>
+
                 </div>
 
                 <div class="socials flex-two-item flex-separated" id="social-media">
@@ -221,7 +235,7 @@
 </div>
 
   <div class="quick-mode hidden pushdown" id="quick-mode">
-    <section class="player-card" style="align-content: center;">
+    <section class="player-chip" style="align-content: center;">
       <p class="title-text margin-top-bottom"><span data-t="player.quick_mode.title">Quick Mode</span> <kbd data-t="player.quick_mode.key">SHIFT</kbd></p>
       <p class="subtitle-text" id="quick-mode-text">Click an icon to instantly go to that game's page for <span id="quick-mode-username">%%player%%</span>.</p>
       <p class="flex-quick-mode margin-top-bottom" id="quick-mode-games">

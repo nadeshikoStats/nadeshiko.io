@@ -135,6 +135,8 @@
     "currently_online": "当前在线！",
     "birthday": "Hypixel %%num%% 周年啦！",
     "coin_multiplier": "硬币加成",
+    "rankings": "Rankings",
+    "show_more": "Show More",
     "errors": {
       "no_stats": "无 Hypixel 数据",
       "no_stats_desc": "该玩家没有 Hypixel 数据",

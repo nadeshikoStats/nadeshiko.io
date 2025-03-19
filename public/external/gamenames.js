@@ -68,6 +68,7 @@ let gameNames = {
       mining_2: "Deep Caverns",
       combat_1: "Spider\u0027s Den",
       mineshaft: "Glacite Mineshafts",
+      fishing_1: "Backwater Bayou",
     },
     databaseName: "SkyBlock",
     name: "SkyBlock",

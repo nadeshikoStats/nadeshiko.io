@@ -135,6 +135,8 @@
     "currently_online": "Actuellement en ligne !",
     "birthday": "Bonne année %%num%% de Hypixel!",
     "coin_multiplier": "Multiplicateur de pièces",
+    "rankings": "Rankings",
+    "show_more": "Show More",
     "errors": {
       "no_stats": "Pas de statistiques Hypixel",
       "no_stats_desc": "Ce joueur n'a pas de statistiques Hypixel.",

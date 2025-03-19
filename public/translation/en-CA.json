@@ -171,6 +171,8 @@
     "currently_online": "Currently Online!",
     "birthday": "Happy %%num%% years of Hypixel!",
     "coin_multiplier": "Coin Multiplier",
+    "rankings": "Rankings",
+    "show_more": "Show More",
 
     "errors": {
       "no_stats": "No Hypixel Stats",
