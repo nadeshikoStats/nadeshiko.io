@@ -4989,9 +4989,7 @@ function addRecentPlayer(player, colorCode = 7) {
   localStorage.setItem(`recent-searches`, JSON.stringify(recentPlayers));
 }
 
-function getRankings(start, end) {
-  const rankings = playerData["rankings"] || [];
-
+function getRankings(start, end, rankings) {
   const rankingTemplate = `<div class="info"><a data-i="link" target="_blank" class="no-text-decoration"><div class="multicolor-badge tabular position" data-i="badge">#<span data-i="rank"></span></div></a> <div class="flippable" style="display: flex; flex-wrap: wrap"><div class="game" data-i="game"></div><span class="mobile-excluded">&nbsp;–&nbsp;</span><div class="name" data-i="name"></div></div></div> <div class="score tabular" data-i="score"></div>`;
 
   const badgeTiers = {
@@ -5059,20 +5057,25 @@ function showRankings() {
     // "show more" button logic
     if (rankingsShownCount == 0) {
       const rankingsList = document.getElementById("rankings-list");
-      rankingsList.appendChild(getRankings(0, 50));
 
-      const showMoreButtonContainer = document.createElement("div");
-      showMoreButtonContainer.className = "flex-two-item flex-justify-center";
+      const rankings = playerData["rankings"] || [];
+      rankingsList.appendChild(getRankings(0, 50, rankings));
 
-      const showMoreButton = document.createElement("span");
-      showMoreButton.className = "general-button margin10";
-      showMoreButton.textContent = getTranslation("player.show_more");
-      showMoreButton.addEventListener("click", function() {
-        rankingsList.appendChild(getRankings(50, -1));
-        this.remove();
-      });
-      showMoreButtonContainer.appendChild(showMoreButton);
-      rankingsList.appendChild(showMoreButtonContainer);
+      if (rankings.length > 50) {
+        const showMoreButtonContainer = document.createElement("div");
+        showMoreButtonContainer.className = "flex-two-item flex-justify-center";
+
+        const showMoreButton = document.createElement("span");
+        showMoreButton.className = "general-button margin10";
+        showMoreButton.textContent = getTranslation("player.show_more");
+        showMoreButton.addEventListener("click", function() {
+          rankingsList.appendChild(getRankings(50, -1, rankings));
+          this.remove();
+        });
+        showMoreButtonContainer.appendChild(showMoreButton);
+        rankingsList.appendChild(showMoreButtonContainer);
+      }
+      
     }
 
     const el = document.getElementById("extended-chip");
