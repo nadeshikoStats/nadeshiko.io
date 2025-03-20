@@ -38,7 +38,7 @@
             getRankPriorities();
 
             for (let a = 0; a < guildStats["members"].length; a++) {
-              let guildRow = guildPlayerObjectToRow(guildStats["members"][a]);
+              let guildRow = guildPlayerObjectToRow(guildStats["members"][a], a);
               guildPlayers.appendChild(guildRow);
             }
 
@@ -51,6 +51,7 @@
               });
             });
 
+            sortData("name");
             sortData("priority");
             generateCharts();
 

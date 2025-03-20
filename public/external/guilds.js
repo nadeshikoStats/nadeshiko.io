@@ -34,7 +34,7 @@ function generateGeneralGuildStats() {
   updateElement("guild-level", checkAndFormat(Math.floor(guildStats["level"])));
 }
 
-function guildPlayerObjectToRow(guildObj) {
+function guildPlayerObjectToRow(guildObj, index) {
   let guildRowTemplate = `
   <div class="row-header">
 
@@ -119,7 +119,7 @@ function guildPlayerObjectToRow(guildObj) {
   guildUUIDs.push(guildObj["uuid"]);
 
   const myChartCanvas = newRow.querySelector(".chart");
-  myChartCanvas.id = "chart-" + guildObj["uuid"];
+  myChartCanvas.id = "chart-" + index;
 
   if (playerProfile["tagged_name"] == undefined || playerProfile["tagged_name"] == null) {
     updateTag(newRow, "name", `<i class="m4">${guildObj["uuid"]}</i>`, true);
@@ -156,7 +156,7 @@ function guildPlayerObjectToRow(guildObj) {
 
   newRow.setAttribute("data-joined", joined);
 
-  newRow.setAttribute("data-name", deformatName(playerProfile["tagged_name"]));
+  newRow.setAttribute("data-name", deformatName(playerProfile["tagged_name"]) || guildObj["uuid"]);
 
   if (guildRanks[guildObj["rank"].toLowerCase()] == undefined) {
     console.log("Rank not found: " + guildObj["rank"]);
@@ -310,7 +310,7 @@ function sortData(attribute = "priority", reverse = false) {
 
 Chart.defaults.font.family = "Inter, sans-serif";
 
-function generateChart(uuid) {
+function generateChart(uuid, index) {
   let memberExpHistory = guildStats["members"].find((member) => member["uuid"] == uuid)["expHistory"];
 
   let memberExpDates = Object.keys(memberExpHistory);
@@ -324,7 +324,7 @@ function generateChart(uuid) {
 
   memberExpValues = memberExpValues.reverse();
 
-  new Chart("chart-" + uuid, {
+  new Chart("chart-" + index, {
     type: "bar",
     data: {
       labels: memberExpDates,
@@ -346,7 +346,7 @@ function generateChart(uuid) {
 }
 
 function generateCharts() {
-  guildUUIDs.forEach((uuid) => {
-    generateChart(uuid);
+  guildUUIDs.forEach((uuid, index) => {
+    generateChart(uuid, index);
   });
 }
