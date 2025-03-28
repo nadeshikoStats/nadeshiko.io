@@ -907,8 +907,12 @@ footer > a:hover {
   transition-duration: var(--transition);
 }
 
-.login-information {
-  margin-bottom: 20px;
+#real-stats .progress-bar {
+  margin-bottom: 0px;
+}
+
+.login-info p {
+  margin: 20px 10px 20px 10px;
 }
 
 .details {

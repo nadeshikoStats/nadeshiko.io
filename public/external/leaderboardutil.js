@@ -638,6 +638,8 @@ let leaderboards = [
             { translation: "statistics.kdr", id: "SKYWARS_KDR", format: "decimal_2" },
             { translation: "statistics.coins", id: "SKYWARS_COINS", format: "number" },
             { translation: "statistics.tokens", id: "SKYWARS_TOKENS", format: "number" },
+            //{ translation: "quests.rewards.souls", id: "SKYWARS_SOULS", format: "number" },
+            //{ translation: "statistics.opals", id: "SKYWARS_OPALS", format: "number" },
           ],
         },
         {
@@ -1242,12 +1244,12 @@ function getFullTranslationById(id) {
 
         filteredLeaderboard = filteredLeaderboard["leaderboards"];
       } else {
-        console.warn("No leaderboards found (how?)");
+        console.warn(`No leaderboards found for ${id} (how?)`);
         break;
       }
     }
   } else {
-    console.warn("No path found (how?)");
+    console.warn(`No path found for ${id} (how?)`);
   }
 
   return leaderboardInfo;

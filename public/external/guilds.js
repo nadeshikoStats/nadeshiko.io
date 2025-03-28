@@ -80,7 +80,7 @@ function guildPlayerObjectToRow(guildObj, index) {
         <span data-i="first-login-ago"></span> <span class="tooltip"><img data-i="birthday" class="icon tinyicon birthday" src="/img/special/cake.png" /><span class="tooltiptext" data-i="birthday-text"></span></span>
       </p>
 
-      <p data-i="last-login-container" class="flex-item login-duo">
+      <p data-i="last-login-container" class="flex-item">
         <span>${getTranslation("statistics.last_login")}</span> <span class="tooltip"><span class="statistic" data-i="last-login"></span><span class="tooltiptext" data-i="last-login-ago-full"></span></span>
         <span data-i="last-login-ago"></span>
       </p>
