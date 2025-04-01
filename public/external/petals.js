@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const petals2Container = document.getElementById("petals2");
   petalsContainer.style.perspective = "600px";
 
-  const petalCount = 25;
-  const petalCount2 = 10;
+  const petalCount = 50;
+  const petalCount2 = 20;
   const w = window.innerWidth, h = window.innerHeight;
   const petals = [];
   
@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const petal = document.createElement("div");
       petal.className = "petal";
       petal.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
+      petal.style.filter = `hue-rotate(${R(0, 360)}deg)`;
       petal.style.transformStyle = "preserve-3d";
       
       fragment.appendChild(petal);
