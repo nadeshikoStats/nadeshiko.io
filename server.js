@@ -1176,66 +1176,7 @@ ${achievementGamesString}`;
       const host = req.headers.host || '';
       const subdomain = host.split(".")[0];
 
-      if (subdomain === "skyblock") {
-        // Middleware handling for /skyblock subdomain. I'm not using express-subdomain because I couldn't get it to work (is she stupid??)
-        let paths = req.path.split("/").filter((pathSegment) => pathSegment !== "");
-        console.log(paths);
-        let name = paths[0] || "";
-        handleSkyBlockRoute(name, req, res);
-      } else {
-        next();
-      }
-    });
-
-    const handleSkyBlockRoute = async (name, req, res) => {
-      computationError = {
-        message: ``,
-        player: ``,
-        category: ``,
-        page: ``,
-      };
-      res.render("index", { computationError, version }); // no more skyblock
-
-      try {
-        const response = await axios.get(`http://localhost:2000/skyblock?name=${name}`);
-        let skyblockData = response.data;
-
-        let metaDescription;
-        if (skyblockData && skyblockData["profile"]) {
-          // If the player data is available
-          metaDescription = getMetaDescription("skyblock");
-        } else {
-          // If the player data is not available, don't show a card and show a default description
-          metaImageURL = ``;
-          metaDescription = `🌸 View Hypixel stats and generate real-time stat cards – perfect for forum signatures or to show off to friends!`;
-        }
-
-        res.render("skyblock", { name, skyblockData, metaDescription, version });
-      } catch (error) {
-        if (error.response && error.response.status == 404) {
-          computationError = {
-            message: `No player by the name of ${name} was found :(`,
-            player: name,
-            category: "404",
-            page: "skyblock",
-          };
-        } else {
-          computationError = {
-            message: `Could not find SkyBlock stats of player ${name} (${error})`,
-            player: name,
-            error: error["message"],
-            category: "computation",
-            page: "skyblock",
-          };
-          console.error("Fetching player data failed! → ", error);
-        }
-        res.render("index", { computationError, version });
-      }
-    };
-
-    app.get("/skyblock/:name?", async (req, res) => {
-      const name = req.params.name;
-      handleSkyBlockRoute(name, req, res);
+      next();
     });
 
     app.get("/isnadeshikodown", (req, res) => {
@@ -1493,6 +1434,18 @@ ${achievementGamesString}`;
         } else {
           res.status(500).json({ success: false, cause: "Internal server error" });
         }
+      }
+    });
+
+    app.get("/skyblock/profiles", async (req, res) => {
+      try {
+        const uuid = req.query.uuid;
+
+        const response = await axios.get(`http://localhost:2000/skyblock/profiles?uuid=${uuid}`);
+        res.json(response.data);
+      } catch (error) {
+        console.error("Error fetching data from backend:", error);
+        res.status(500).json({ success: false, cause: "Internal server error" });
       }
     });
 
