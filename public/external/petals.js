@@ -1,74 +1,188 @@
 document.addEventListener("DOMContentLoaded", function () {
-  TweenLite.set("#petals", { perspective: 600 });
+  const petalsContainer = document.getElementById("petals");
+  const petals2Container = document.getElementById("petals2");
+  petalsContainer.style.perspective = "600px";
 
-  var petalCount = 20;
-  var petalCount2 = 10;
-  (w = window.innerWidth), (h = window.innerHeight);
-
-  for (i = 0; i < petalCount; i++) {
-    var petal = document.createElement("div");
-    TweenLite.set(petal, {
-      attr: {
-        class: "petal",
-      },
-      x: R(0, w),
-      y: R(-200, -150),
-      z: R(-200, 200),
-    });
-    document.getElementById("petals").appendChild(petal);
-    movePetal(petal);
-  }
-
-  for (i = 0; i < petalCount2; i++) {
-    var petal = document.createElement("div");
-    TweenLite.set(petal, {
-      attr: {
-        class: "petal",
-      },
-      x: R(0, w),
-      y: R(-200, -150),
-      z: R(-200, 200),
-    });
-    document.getElementById("petals2").appendChild(petal);
-    movePetal(petal);
-  }
-
-  function movePetal(elm) {
-    TweenMax.to(elm, R(7, 15), {
-      y: h + 200,
-      ease: Linear.easeNone,
-      repeat: -1,
-      delay: -15,
-    });
-    TweenMax.to(elm, R(4, 8), {
-      x: "+=100",
-      rotationZ: R(0, 180),
-      repeat: -1,
-      yoyo: true,
-      ease: Sine.easeInOut,
-    });
-    TweenMax.to(elm, R(2, 8), {
-      rotationX: R(0, 360),
-      rotationY: R(0, 360),
-      repeat: -1,
-      yoyo: true,
-      ease: Sine.easeInOut,
-      delay: -5,
-    });
-  }
+  const petalCount = 25;
+  const petalCount2 = 10;
+  const w = window.innerWidth, h = window.innerHeight;
+  const petals = [];
+  
+  let animationFrameId = null;
 
   function R(min, max) {
     return min + Math.random() * (max - min);
   }
+
+  const Easing = {
+    linear: t => t,
+    sineInOut: t => -(Math.cos(Math.PI * t) - 1) / 2
+  };
+
+  function createPetals(container, count) {
+    const fragment = document.createDocumentFragment();
+    
+    for (let i = 0; i < count; i++) {
+      const x = R(0, w);
+      const y = R(-200, -150);
+      const z = R(-200, 200);
+      
+      const petal = document.createElement("div");
+      petal.className = "petal";
+      petal.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
+      petal.style.transformStyle = "preserve-3d";
+      
+      fragment.appendChild(petal);
+      
+      const fallDuration = R(7000, 15000);
+      const xMoveDuration = R(4000, 8000);
+      const rotateDuration = R(2000, 8000);
+      const endRotZ = R(0, 180);
+      const endRotX = R(0, 360);
+      const endRotY = R(0, 360);
+      
+      const now = performance.now();
+      
+      petals.push({
+        element: petal,
+        initialX: x,
+        initialY: y,
+        initialZ: z,
+        animations: {
+          fall: {
+            startTime: now - (15000 * Math.random()),
+            duration: fallDuration,
+            startY: y,
+            endY: h + 200,
+            easing: Easing.linear
+          },
+          xMove: {
+            startTime: now,
+            duration: xMoveDuration,
+            startX: x,
+            endX: x + 100,
+            startRotZ: 0,
+            endRotZ: endRotZ,
+            direction: 1,
+            easing: Easing.sineInOut
+          },
+          rotate3D: {
+            startTime: now - (5000 * Math.random()),
+            duration: rotateDuration,
+            startRotX: 0,
+            endRotX: endRotX,
+            startRotY: 0,
+            endRotY: endRotY,
+            direction: 1,
+            easing: Easing.sineInOut
+          }
+        }
+      });
+    }
+    
+    container.appendChild(fragment);
+  }
+
+  createPetals(petalsContainer, petalCount);
+  createPetals(petals2Container, petalCount2);
+
+  function animate(timestamp) {
+    // petal position and rotation
+    for (let i = 0; i < petals.length; i++) {
+      const petal = petals[i];
+      const animations = petal.animations;
+      
+      // falling anim
+      const fallAnim = animations.fall;
+      let elapsed = (timestamp - fallAnim.startTime) % fallAnim.duration;
+      let progress = elapsed / fallAnim.duration;
+      let y = fallAnim.startY + (fallAnim.endY - fallAnim.startY) * fallAnim.easing(progress);
+      
+      // horizontal movement
+      const xMoveAnim = animations.xMove;
+      elapsed = timestamp - xMoveAnim.startTime;
+      if (elapsed >= xMoveAnim.duration) {
+        xMoveAnim.direction *= -1;
+        xMoveAnim.startTime = timestamp;
+        elapsed = 0;
+      }
+      
+      progress = elapsed / xMoveAnim.duration;
+      const easeValue = xMoveAnim.easing(progress);
+      
+      let x, rotZ;
+      if (xMoveAnim.direction === 1) {
+        x = xMoveAnim.startX + (xMoveAnim.endX - xMoveAnim.startX) * easeValue;
+        rotZ = xMoveAnim.startRotZ + (xMoveAnim.endRotZ - xMoveAnim.startRotZ) * easeValue;
+      } else {
+        x = xMoveAnim.endX - (xMoveAnim.endX - xMoveAnim.startX) * easeValue;
+        rotZ = xMoveAnim.endRotZ - (xMoveAnim.endRotZ - xMoveAnim.startRotZ) * easeValue;
+      }
+      
+      // 3d rotation
+      const rotateAnim = animations.rotate3D;
+      elapsed = timestamp - rotateAnim.startTime;
+      if (elapsed >= rotateAnim.duration) {
+        rotateAnim.direction *= -1;
+        rotateAnim.startTime = timestamp;
+        elapsed = 0;
+      }
+      
+      progress = elapsed / rotateAnim.duration;
+      const rotEaseValue = rotateAnim.easing(progress);
+      
+      let rotX, rotY;
+      if (rotateAnim.direction === 1) {
+        rotX = rotateAnim.startRotX + (rotateAnim.endRotX - rotateAnim.startRotX) * rotEaseValue;
+        rotY = rotateAnim.startRotY + (rotateAnim.endRotY - rotateAnim.startRotY) * rotEaseValue;
+      } else {
+        rotX = rotateAnim.endRotX - (rotateAnim.endRotX - rotateAnim.startRotX) * rotEaseValue;
+        rotY = rotateAnim.endRotY - (rotateAnim.endRotY - rotateAnim.startRotY) * rotEaseValue;
+      }
+      
+      petal.element.style.transform = 
+        'translate3d(' + x + 'px,' + y + 'px,' + petal.initialZ + 'px)' +
+        'rotateX(' + rotX + 'deg)' +
+        'rotateY(' + rotY + 'deg)' +
+        'rotateZ(' + rotZ + 'deg)';
+    }
+    
+    animationFrameId = requestAnimationFrame(animate);
+  }
+  
+  // start animation loop
+  animationFrameId = requestAnimationFrame(animate);
+  
+  // handle visibility change
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    } else {
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    }
+  });
+  
+  // window resizing
+  let resizeTimeout;
+  window.addEventListener('resize', function() {
+    // debounce event
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      const newW = window.innerWidth;
+      const newH = window.innerHeight;
+      
+      // update if dimensions changed
+      if (w !== newW || h !== newH) {
+        // end points for falling
+        for (let i = 0; i < petals.length; i++) {
+          petals[i].animations.fall.endY = newH + 200;
+        }
+      }
+    }, 200);
+  });
 });
-
-/*
-    Modified version of "Autumn falling leaves ( GSAP )" by Diaco M Lotfolahi.
-    Copyright (c) 2024 by Diaco M Lotfolahi (https://codepen.io/MAW/pen/KdmwMb)
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
