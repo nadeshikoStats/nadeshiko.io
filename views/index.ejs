@@ -97,7 +97,7 @@
 
   <body>
     <div class="background" id="background1" style="background-image: url('/img/games/home.png')"></div>
-    <div class="background-filter" id="background-filter">
+    <div class="background-filter">
       <header><%- include('partials/header') %></header>
       <div class="everythingcenter">
         <div class="home-page-container">
@@ -153,17 +153,6 @@
 
     <script>
       let indexSearchbarSelected = true;
-      
-      let hueRotation = 0;
-      function rotateBackgroundHue() {
-        hueRotation = (hueRotation + 0.3) % 360;
-        document.getElementById('background-filter').style.filter = `hue-rotate(${hueRotation}deg)`;
-        requestAnimationFrame(rotateBackgroundHue);
-      }
-      
-      window.addEventListener('load', function() {
-        rotateBackgroundHue();
-      });
 
       document.getElementById("searchbar2").addEventListener("keypress", function (event) {
         // Check if the user's typing in the search box
