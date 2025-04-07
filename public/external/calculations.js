@@ -82,59 +82,76 @@ function cycleArrayBeforeChars(arr, str, addBefore = "", addAfter = "") {
 
 function formatSkyWarsLevel(level) {
   let skyWarsPrestiges = [
-    { colors: ["7"], icon: "⋆" },
-    { colors: ["f"], icon: "✙" },
-    { colors: ["6"], icon: "❤" },
-    { colors: ["b"], icon: "☠" },
-    { colors: ["2"], icon: "✦" },
-    { colors: ["5"], icon: "✌" },
-    { colors: ["c"], icon: "❦" },
-    { colors: ["d"], icon: "✵" },
-    { colors: ["9"], icon: "❣" },
-    { colors: ["5"], icon: "☯" },
-    { colors: ["c", "6", "e", "a", "b", "d", "5"], icon: "✺" },
-    { colors: ["7", "f", "f", "f", "7"], icon: "✈" },
-    { colors: ["4", "c", "c", "c", "4"], icon: "⚰" },
-    { colors: ["c", "f", "f", "f", "c"], icon: "✠" },
-    { colors: ["e", "6", "6", "6", "e"], icon: "♕" },
-    { colors: ["f", "9", "9", "9", "f"], icon: "⚡︎" },
-    { colors: ["f", "b", "b", "b", "f"], icon: "⁂" },
-    { colors: ["f", "3", "3", "3", "f"], icon: "✰" },
-    { colors: ["a", "3", "3", "3", "a"], icon: "⁑" },
-    { colors: ["c", "e", "e", "e", "c"], icon: "☢" },
-    { colors: ["9", "1", "1", "1", "1", "9"], icon: "✥" },
-    { colors: ["6", "4", "4", "4", "4", "6"], icon: "♝" },
-    { colors: ["1", "b", "b", "b", "b", "1"], icon: "♆" },
-    { colors: ["8", "7", "7", "7", "7", "8"], icon: "☁" },
-    { colors: ["d", "5", "5", "5", "5", "d"], icon: "⍟" },
-    { colors: ["f", "e", "e", "e", "e", "f"], icon: "♗" },
-    { colors: ["c", "e", "e", "e", "e", "c"], icon: "♔" },
-    { colors: ["6", "c", "c", "c", "c", "6"], icon: "♞" },
-    { colors: ["a", "c", "c", "c", "c", "a"], icon: "✏" },
-    { colors: ["a", "b", "b", "b", "b", "a"], icon: "❈" },
-    { colors: ["c", "6", "e", "a", "b", "d", "5"], icon: "ಠ_ಠ" },
+    { colors: ["§7","§7","§7","§7","§7"], icon: "✯" }, // 0
+    { colors: ["§f","§f","§f","§f","§f"], icon: "✯" }, // 10
+    { colors: ["§6","§6","§6","§6","§6"], icon: "✯" }, // 20
+    { colors: ["§b","§b","§b","§b","§b"], icon: "✯" }, // 30
+    { colors: ["§c","§c","§c","§c","§c"], icon: "✯" }, // 40
+    { colors: ["§d","§d","§d","§d","§d"], icon: "^_^" }, // 50
+    { colors: ["§5","§5","§5","§5","§5"], icon: "^_^" }, // 60
+    { colors: ["§9","§9","§9","§9","§9"], icon: "^_^" }, // 70
+    { colors: ["§e","§e","§e","§e","§e"], icon: "^_^" }, // 80
+    { colors: ["§a","§a","§a","§a","§a"], icon: "^_^" }, // 90
+    { colors: ["§c","§e","§a","§b","§d"], icon: "@_@" }, // 100
+    { colors: ["§4","§c","§c","§c","§4"], icon: "@_@" }, // 110
+    { colors: ["§1","§1","§1","§1","§1"], icon: "@_@" }, // 120
+    { colors: ["§c","§f","§f","§f","§c"], icon: "@_@" }, // 130
+    { colors: ["§4","§4","§4","§4","§4"], icon: "@_@" }, // 140
+    { colors: ["§6","§e","§e","§e","§6"], icon: "δvδ" }, // 150
+    { colors: ["§2","§2","§2","§2","§2"], icon: "δvδ" }, // 160
+    { colors: ["§1","§9","§9","§9","§1"], icon: "δvδ" }, // 170
+    { colors: ["§3","§3","§3","§3","§3"], icon: "δvδ" }, // 180
+    { colors: ["§4","§e","§e","§e","§4"], icon: "δvδ" }, // 190
+    { colors: ["§6","§a","§b","§d","§c"], icon: "zz_zz" }, // 200
+    { colors: ["§5","§d","§d","§d","§5"], icon: "zz_zz" }, // 210
+    { colors: ["§8","§8","§8","§8","§8"], icon: "zz_zz" }, // 220
+    { colors: ["§d","§b","§b","§b","§d"], icon: "zz_zz" }, // 230
+    { colors: ["§0","§0","§0","§0","§0"], icon: "zz_zz" }, // 240
+    { colors: ["§c","§e","§e","§6","§c"], icon: "■·■" }, // 250
+    { colors: ["§0","§6","§6","§e","§0"], icon: "■·■" }, // 260 
+    { colors: ["§1","§3","§3","§3","§1"], icon: "■·■" }, // 270
+    { colors: ["§a","§a","§e","§a","§2"], icon: "■·■" }, // 280
+    { colors: ["§9","§b","§b","§b","§9"], icon: "■·■" }, // 290
+    { colors: ["§e","§b","§d","§c","§6"], icon: "ಠ_ಠ" }, // 300
+    { colors: ["§8","§7","§7","§7","§8"], icon: "ಠ_ಠ" }, // 310
+    { colors: ["§d","§a","§a","§a","§d"], icon: "ಠ_ಠ" }, // 320
+    { colors: ["§e","§c","§c","§c","§e"], icon: "ಠ_ಠ" }, // 330
+    { colors: ["§b","§b","§d","§a","§a"], icon: "ಠ_ಠ" }, // 340
+    { colors: ["§f","§e","§e","§6","§6"], icon: "o...0" }, // 350
+    { colors: ["§9","§b","§f","§e","§e"], icon: "o...0" }, // 360
+    { colors: ["§e","§f","§f","§8","§8"], icon: "o...0" }, // 370
+    { colors: ["§c","§c","§c","§f","§c"], icon: "o...0" }, // 380
+    { colors: ["§2","§a","§a","§a","§2"], icon: "o...0" }, // 390
+    { colors: ["§a","§d","§c","§6","§e"], icon: ">u<" }, // 400
+    { colors: ["§3","§b","§b","§b","§3"], icon: ">u<" }, // 410
+    { colors: ["§0","§8","§8","§5","§0"], icon: ">u<" }, // 420
+    { colors: ["§6","§f","§f","§b","§3"], icon: ">u<" }, // 430
+    { colors: ["§a","§a","§e","§f","§f"], icon: ">u<" }, // 440
+    { colors: ["§4","§c","§6","§e","§f"], icon: "v-v" }, // 450
+    { colors: ["§9","§3","§d","§5","§4"], icon: "v-v" }, // 460
+    { colors: ["§0","§7","§f","§7","§8"], icon: "v-v" }, // 470
+    { colors: ["§1","§9","§3","§b","§f"], icon: "v-v" }, // 480
+    { colors: ["§9","§f","§f","§c","§4"], icon: "v-v" }, // 490
+    { colors: ["§b","§c","§6","§e","§a"], icon: "༼つ◕_◕༽つ" }, // 500
   ];
 
   level = Math.floor(level);
 
-  let prestige = Math.min(Math.floor(level / 5), 30);
+  let prestige = Math.min(Math.floor(level / 10), skyWarsPrestiges.length - 1);
   let levelWithIcon = "[" + level.toString() + skyWarsPrestiges[prestige]["icon"] + "]";
   let formattedLevel;
 
-  if (level >= 150) {
-    formattedLevel = cycleArrayBeforeChars(skyWarsPrestiges[prestige]["colors"], levelWithIcon, "§", "§l");
-  } else {
-    formattedLevel = cycleArrayBeforeChars(skyWarsPrestiges[prestige]["colors"], levelWithIcon, "§");
-  }
+  formattedLevel = cycleArrayBeforeChars(skyWarsPrestiges[prestige]["colors"], levelWithIcon, "§");
 
   return formattedLevel;
 }
 
 function getSkyWarsLevel(exp) {
   // Calculates a player's SkyWars level based on their experience stat
-  const skyWarsXp = [0, 20, 70, 150, 250, 500, 1000, 2000, 3500, 6000, 10000, 15000];
-  if (exp >= 15000) {
-    return (exp - 15000) / 10000 + 12;
+
+  const skyWarsXp = [0, 10, 35, 85, 160, 260, 510, 1010, 1760, 2760, 4010, 5510, 7260, 9260, 11760, 14760, 18260, 22260, 26760, 31760];
+  if (exp >= 31760) {
+    return (exp - 31760) / 5000 + 20;
   }
   for (a = 0; a < skyWarsXp.length; a++) {
     if (exp < skyWarsXp[a]) {

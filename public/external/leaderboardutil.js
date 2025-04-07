@@ -683,6 +683,31 @@ let leaderboards = [
           ],
         },
         {
+          translation: "games.modes.skywars.mega",
+          leaderboards: [
+            { translation: "statistics.wins", id: "SKYWARS_MEGA_WINS", format: "number" },
+            { translation: "statistics.wlr", id: "SKYWARS_MEGA_WLR", format: "decimal_2" },
+            { translation: "statistics.kills", id: "SKYWARS_MEGA_KILLS", format: "number" },
+            { translation: "statistics.kdr", id: "SKYWARS_MEGA_KDR", format: "decimal_2" },
+          ],
+        },
+        {
+          translation: "games.modes.skywars.mega_doubles",
+          leaderboards: [
+            { translation: "statistics.wins", id: "SKYWARS_MEGA_DOUBLES_WINS", format: "number" },
+            { translation: "statistics.wlr", id: "SKYWARS_MEGA_DOUBLES_WLR", format: "decimal_2" },
+            { translation: "statistics.kills", id: "SKYWARS_MEGA_DOUBLES_KILLS", format: "number" },
+            { translation: "statistics.kdr", id: "SKYWARS_MEGA_DOUBLES_KDR", format: "decimal_2" },
+          ],
+        },
+        {
+          translation: "games.modes.skywars.mini",
+          leaderboards: [
+            { translation: "statistics.wins", id: "SKYWARS_MINI_WINS", format: "number" },
+            { translation: "statistics.kills", id: "SKYWARS_MINI_KILLS", format: "number" },
+          ],
+        },
+        {
           translation: "games.modes.skywars.lab",
           leaderboards: [
             { translation: "statistics.wins", id: "SKYWARS_LAB_WINS", format: "number" },

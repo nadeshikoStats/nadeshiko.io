@@ -603,36 +603,15 @@ function generateSkyWars() {
 
   skyWarsStats = playerData["stats"]["SkyWars"] || {};
   if (skyWarsStats != undefined) {
-    if (skyWarsStats["levelFormatted"] != undefined) {
-      updateScopedElement("skywars-level", generateMinecraftText(skyWarsStats["levelFormatted"], true), true);
+    if (skyWarsStats["levelFormattedWithBrackets"] != undefined && skyWarsStats["last_prestige_unlocked"] != undefined) {
+      updateScopedElement("skywars-level", generateMinecraftText(skyWarsStats["levelFormattedWithBrackets"], true), true);
     } else {
-      // only runs if the player hasn't logged in since 2021(?)
-      let skyWarsLevels = [
-        { req: 0, color: "§7" },
-        { req: 5, color: "§f" },
-        { req: 10, color: "§6" },
-        { req: 15, color: "§b" },
-        { req: 20, color: "§2" },
-        { req: 25, color: "§3" },
-        { req: 30, color: "§4" },
-        { req: 35, color: "§d" },
-        { req: 40, color: "§9" },
-        { req: 45, color: "§5" },
-        { req: 50, color: "rainbow" },
-      ];
-
+      // only runs if the player hasn't logged in since 2025-04-07
       let skywarsEstimatedExperience = und(skyWarsStats["wins"]) * 10 + und(skyWarsStats["kills"]);
-      let skyWarsEstimatedLevel = Math.floor(getSkyWarsLevel(skywarsEstimatedExperience));
 
       updateScopedElement(
         "skywars-level",
-        getGenericWinsPrefix({
-          wins: skyWarsEstimatedLevel,
-          winsObject: skyWarsLevels,
-          useToGo: false,
-          suffix: "⋆",
-          useBrackets: false,
-        })["title"],
+        generateMinecraftText(formatSkyWarsLevel(getSkyWarsLevel(skywarsEstimatedExperience)), true),
         true
       );
     }
@@ -672,6 +651,7 @@ function generateSkyWars() {
           [getTranslation("games.modes.skywars.insane"), "team_insane"],
         ],
       ],
+      ["Mini", "mini", []],
       ["Mega", "mega", []],
       ["Lab", "lab", []],
     ];
@@ -709,10 +689,20 @@ function getBedWarsModeStats(mode) {
 }
 
 function getSkyWarsModeStats(mode) {
-  return [
-    [false, [getTranslation("statistics.wins"), checkAndFormat(skyWarsStats["wins_" + mode])], [getTranslation("statistics.losses"), checkAndFormat(skyWarsStats["losses_" + mode])], [getTranslation("statistics.wlr"), calculateRatio(skyWarsStats["wins_" + mode], skyWarsStats["losses_" + mode])]],
-    [false, [getTranslation("statistics.kills"), checkAndFormat(skyWarsStats["kills_" + mode])], [getTranslation("statistics.deaths"), checkAndFormat(skyWarsStats["deaths_" + mode])], [getTranslation("statistics.kdr"), calculateRatio(skyWarsStats["kills_" + mode], skyWarsStats["deaths_" + mode])]],
+  let skyWarsModeStats = [
+    [false, [getTranslation("statistics.wins"), checkAndFormat(skyWarsStats["wins_" + mode])]],
+    [false, [getTranslation("statistics.kills"), checkAndFormat(skyWarsStats["kills_" + mode])]],
   ];
+
+  if (mode != "mini") {
+    skyWarsModeStats[1].push([getTranslation("statistics.deaths"), checkAndFormat(skyWarsStats["deaths_" + mode])]);
+    skyWarsModeStats[1].push([getTranslation("statistics.kdr"), calculateRatio(skyWarsStats["kills_" + mode], skyWarsStats["deaths_" + mode])]);
+
+    skyWarsModeStats[0].push([getTranslation("statistics.losses"), checkAndFormat(skyWarsStats["losses_" + mode])]);
+    skyWarsModeStats[0].push([getTranslation("statistics.wlr"), calculateRatio(skyWarsStats["wins_" + mode], skyWarsStats["losses_" + mode])]);
+  }
+
+  return skyWarsModeStats;
 }
 
 function getZombiesStats(map) {

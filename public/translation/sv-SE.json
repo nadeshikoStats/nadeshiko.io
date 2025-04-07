@@ -348,6 +348,8 @@
         "solo": "Solo",
         "team": "Doubles",
         "mega": "Mega",
+        "mega_doubles": "Mega Doubles",
+        "mini": "Mini",
         "lab": "Laboratory",
         "normal": "Normal",
         "insane": "Insane",
