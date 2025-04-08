@@ -607,8 +607,14 @@ function generateSkyWars() {
       updateScopedElement("skywars-level", generateMinecraftText(skyWarsStats["levelFormattedWithBrackets"], true), true);
     } else {
       // only runs if the player hasn't logged in since 2025-04-07
-      let skywarsEstimatedExperience = und(skyWarsStats["wins"]) * 10 + und(skyWarsStats["kills"]);
-
+      
+      let skywarsEstimatedExperience;
+      if (skyWarsStats["skywars_experience"] != undefined) {
+        skywarsEstimatedExperience = und(skyWarsStats["skywars_experience"]);
+      } else {
+        skywarsEstimatedExperience = und(skyWarsStats["wins"]) * 10 + und(skyWarsStats["kills"]);
+      }
+      
       updateScopedElement(
         "skywars-level",
         generateMinecraftText(formatSkyWarsLevel(getSkyWarsLevel(skywarsEstimatedExperience)), true),
