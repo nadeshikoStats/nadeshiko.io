@@ -1486,7 +1486,7 @@ a.general-button {
 }
 
 .mm {
-  text-decoration: strikethrough;
+  text-decoration: line-through;
 }
 
 .mn {
@@ -2112,7 +2112,8 @@ a.general-button {
   color: #888;
 }
 
-.locked [data-i="achievement-name"] {
+.locked [data-i="achievement-name"],
+.locked [data-i="quest-name"] {
   text-decoration: line-through;
 }
 

@@ -163,8 +163,10 @@
     "types": {
       "daily": "일간",
       "weekly": "주간",
+      "monthly": "Monthly",
       "daily_literal": "일간 퀘스트: ",
-      "weekly_literal": "주간 퀘스트: "
+      "weekly_literal": "주간 퀘스트: ",
+      "monthly_literal": "Monthly Quest: "
     },
     "rewards": {
       "hypixel_experience": "Hypixel 경험치",
@@ -181,7 +183,8 @@
     "completions": {
       "completed": "%%num%%/%%total%% 완료함",
       "daily_quests_completed": "완료한 일간 퀘스트",
-      "weekly_quests_completed": "완료한 주간 퀘스트"
+      "weekly_quests_completed": "완료한 주간 퀘스트",
+      "monthly_quests_completed": "Monthly Quests Completed"
     }
   },
   "leaderboards": {

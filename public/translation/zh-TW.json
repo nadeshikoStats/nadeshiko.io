@@ -163,8 +163,10 @@
     "types": {
       "daily": "每日任務",
       "weekly": "每週任務",
+      "monthly": "Monthly",
       "daily_literal": "每日任務：",
-      "weekly_literal": "每週任務："
+      "weekly_literal": "每週任務：",
+      "monthly_literal": "Monthly Quest: "
     },
     "rewards": {
       "hypixel_experience": "Hypixel 經驗值",
@@ -181,7 +183,8 @@
     "completions": {
       "completed": "%%num%%/%%total%% 已完成",
       "daily_quests_completed": "已完成的每日任務",
-      "weekly_quests_completed": "已完成的每週任務"
+      "weekly_quests_completed": "已完成的每週任務",
+      "monthly_quests_completed": "Monthly Quests Completed"
     }
   },
   "leaderboards": {

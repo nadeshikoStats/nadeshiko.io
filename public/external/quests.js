@@ -1,6 +1,6 @@
 let lastDailyQuestReset = 0;
 let lastWeeklyQuestReset = 0;
-
+let lastMonthlyQuestReset = 0;
 function modernifyGameName(game) {
   let modernGameNames = {
     battleground: "warlords",
@@ -25,7 +25,7 @@ function modernifyGameName(game) {
 function generateQuestsTable(game, timestamp = Date.now()) {
   lastDailyQuestReset = getLastMidnight(timestamp);
   lastWeeklyQuestReset = getLastFridayMidnight(timestamp);
-
+  lastMonthlyQuestReset = getLastMonthMidnight(timestamp);
   let modernGameName = modernifyGameName(game);
 
   let questGameTemplate = DOMPurify.sanitize(`
@@ -107,11 +107,15 @@ function generateQuestsTable(game, timestamp = Date.now()) {
     let thisQuestId = thisQuest["id"];
     let questType = "daily";
 
-    let thisQuestRequirements = thisQuest["requirements"] || []; // Determining whether the quest is daily or weekly
+    let thisQuestRequirements = thisQuest["requirements"] || []; // Determining whether the quest is daily, weekly, or monthly
     let thisFirstQuestRequirement = thisQuestRequirements[0] || {};
 
     if (thisFirstQuestRequirement["type"] === "WeeklyResetQuestRequirement") {
       questType = "weekly";
+    }
+
+    if (thisFirstQuestRequirement["type"] === "MonthlyResetQuestRequirement") {
+      questType = "monthly";
     }
 
     let thisQuestDetails = getQuestDetails(thisQuestId, questType, thisQuest, game);
@@ -130,6 +134,7 @@ function generateQuestsTable(game, timestamp = Date.now()) {
       gameQuestCompletionStatus["completed"]++;
       questsCompletedByTime[questType]["completed"]++;
     } else {
+      thisQuestRow.classList.add("locked");
       questGameContainer.querySelector("[data-i='quest-game-check']").style.display = "none";
     }
 
@@ -238,7 +243,9 @@ function getQuestDetails(questId, interval = "daily", thisQuestGlobalStats, game
       let thisQuestLastCompletion = thisQuestCompletions[thisQuestCompletions.length - 1] || {};
       let thisQuestLastCompletionTime = thisQuestLastCompletion["time"] || 0;
 
-      if (thisQuestLastCompletionTime > (interval === "daily" ? lastDailyQuestReset : lastWeeklyQuestReset)) {
+      let lastQuestReset = interval === "daily" ? lastDailyQuestReset : interval === "weekly" ? lastWeeklyQuestReset : lastMonthlyQuestReset;
+
+      if (thisQuestLastCompletionTime > lastQuestReset) {
         // If the player completed the quest since the last reset
         thisQuestObjectiveProgress = thisQuestObjectiveNeeded;
       } else {
@@ -307,6 +314,7 @@ function parseReward(game, reward, amount) {
       break;
     case "WoolGamesExpReward":
     case "BedwarsExpReward":
+    case "SkyWarsXpReward":
       formattedReward = {
         icon: "nether_star",
         text: insertPlaceholders(getTranslation(["quests", "rewards", "game_experience"]), {
@@ -316,6 +324,7 @@ function parseReward(game, reward, amount) {
       break;
     case "MultipliedCoinReward":
     case "CoinReward":
+    case "SkyWarsBonusCoinsReward":
       if (game == "bedwars" || game == "tnt" || game == "duels" || game == "murdermystery" || game == "buildbattle") {
         // These games say they use coins, but they actually use tokens.
         formattedReward = {
@@ -395,6 +404,12 @@ function parseReward(game, reward, amount) {
         text: getTranslation(["quests", "rewards", "event_cosmetic"]),
       };
       break;
+    case "SkyWarsOpalReward":
+      formattedReward = {
+        icon: "head_opal",
+        text: getTranslation(["statistics", "opals"]),
+      };
+      break;
     default:
       formattedReward = {
         icon: "barrier",
@@ -454,6 +469,30 @@ function getLastFridayMidnight(datestamp = Date.now()) {
   return Math.floor(lastFridayMidnightTimestamp);
 }
 
+/*
+ * Gets the datestamp of the most recent monthly reset. Monthly quests reset at 00:00 Eastern Time on the first day of the month.
+ * @param {number} datestamp - The datestamp to use. Defaults to the current time
+ * @returns {number} The datestamp of the most recent monthly reset in Eastern Time
+ */
+function getLastMonthMidnight(datestamp = Date.now()) {
+  const lastMidnightTimestamp = getLastMidnight(datestamp);
+  const lastMidnightDate = new Date(lastMidnightTimestamp);
+  
+  // Get the current day of the month
+  const dayOfMonth = lastMidnightDate.getUTCDate();
+  
+  // If we're on the first day of the month, the last reset was today
+  if (dayOfMonth === 1) {
+    return lastMidnightTimestamp;
+  }
+  
+  // Otherwise, create a date for the first day of the current month
+  const firstDayOfCurrentMonth = new Date(lastMidnightDate);
+  firstDayOfCurrentMonth.setUTCDate(1);
+  
+  return Math.floor(firstDayOfCurrentMonth.getTime());
+}
+
 window.addEventListener("resize", function () {
   // Resizes the quest list when the window is resized, preventing elements from being cut off
   console.log("Resizing");
@@ -495,6 +534,8 @@ function generateNetwork() {
   updateElement("daily-quests-total", checkAndFormat(questsCompletedByTime["daily"]["total"]));
   updateElement("weekly-quests-completed", checkAndFormat(questsCompletedByTime["weekly"]["completed"]));
   updateElement("weekly-quests-total", checkAndFormat(questsCompletedByTime["weekly"]["total"]));
+  updateElement("monthly-quests-completed", checkAndFormat(questsCompletedByTime["monthly"]["completed"]));
+  updateElement("monthly-quests-total", checkAndFormat(questsCompletedByTime["monthly"]["total"]));
 
   let dailyQuestProgress = questsCompletedByTime["daily"]["completed"] / questsCompletedByTime["daily"]["total"] || 0;
   document.getElementById("daily-quests-completed-progress-bar").style.width = dailyQuestProgress * 100 + "%";
@@ -503,4 +544,8 @@ function generateNetwork() {
   let weeklyQuestProgress = questsCompletedByTime["weekly"]["completed"] / questsCompletedByTime["weekly"]["total"] || 0;
   document.getElementById("weekly-quests-completed-progress-bar").style.width = weeklyQuestProgress * 100 + "%";
   updateElement("weekly-quests-completed-progress-number", Math.round(weeklyQuestProgress * 100) + "%");
+
+  let monthlyQuestProgress = questsCompletedByTime["monthly"]["completed"] / questsCompletedByTime["monthly"]["total"] || 0;
+  document.getElementById("monthly-quests-completed-progress-bar").style.width = monthlyQuestProgress * 100 + "%";
+  updateElement("monthly-quests-completed-progress-number", Math.round(monthlyQuestProgress * 100) + "%");
 }

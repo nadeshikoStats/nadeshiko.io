@@ -163,8 +163,10 @@
     "types": {
       "daily": "Täglich",
       "weekly": "Wöchentlich",
+      "monthly": "Monthly",
       "daily_literal": "Tägliche Quest: ",
-      "weekly_literal": "Wöchentliche Quest: "
+      "weekly_literal": "Wöchentliche Quest: ",
+      "monthly_literal": "Monthly Quest: "
     },
     "rewards": {
       "hypixel_experience": "Hypixel Erfahrung",
@@ -181,7 +183,8 @@
     "completions": {
       "completed": "%%num%% / %%total%% completed",
       "daily_quests_completed": "Daily Quests Completed",
-      "weekly_quests_completed": "Weekly Quests Completed"
+      "weekly_quests_completed": "Weekly Quests Completed",
+      "monthly_quests_completed": "Monthly Quests Completed"
     }
   },
   "leaderboards": {
