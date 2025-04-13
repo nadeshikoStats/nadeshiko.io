@@ -160,6 +160,27 @@ function getSkyWarsLevel(exp) {
   }
 }
 
+function calculateSkyWarsKitPrestige(exp) {
+  let prestiges = [
+    { req: 75000, style: "rainbow-gradient", title: "VII" },
+    { req: 50000, style: "md", title: "VI" },
+    { req: 25000, style: "m6", title: "V" },
+    { req: 10000, style: "m5", title: "IV" },
+    { req: 5000, style: "m9", title: "III" },
+    { req: 2500, style: "m2", title: "II" },
+    { req: 1000, style: "m7", title: "I" },
+  ]
+
+  for (let a = 0; a < prestiges.length; a++) {
+    if (exp >= prestiges[a]["req"]) {
+      return `<span class="w700 ${prestiges[a]["style"]}">${prestiges[a]["title"]}</span> / `;
+    }
+  }
+
+  return ``;
+}
+
+
 function getWoolGamesLevel(exp) {
   // Calculates a player's Wool Wars level based on their experience stat
   let level = 100 * Math.floor(exp / 490000) + 1;

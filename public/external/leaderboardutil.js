@@ -640,6 +640,7 @@ let leaderboards = [
             { translation: "statistics.tokens", id: "SKYWARS_TOKENS", format: "number" },
             { translation: "quests.rewards.souls", id: "SKYWARS_SOULS", format: "number" },
             { translation: "statistics.opals", id: "SKYWARS_OPALS", format: "number" },
+            { translation: "statistics.prestige_sevens", id: "SKYWARS_KIT_PRESTIGE_SEVENS", format: "number" },
           ],
         },
         {
@@ -1201,6 +1202,186 @@ let leaderboards = [
         break;
       }
     }
+
+    const skyWarsKitLeaderboards = {
+      "normal": [
+        "armorer",
+        "armorsmith",
+        "baseball_player",
+        "cannoneer",
+        "default",
+        "ecologist",
+        "enchanter",
+        "enderchest",
+        "enderman",
+        "farmer",
+        "fallen_angel",
+        "fisherman",
+        "hunter",
+        "knight",
+        "pharaoh",
+        "pyro",
+        "rookie",
+        "snowman",
+        "speleologist",
+        "troll",
+        "batguy",
+        "disco",
+        "energix",
+        "frog",
+        "grenade",
+        "guardian",
+        "healer",
+        "scout",
+        "princess",
+        "engineer",
+        "salmon",
+        "pig_rider",
+        "slime",
+        "jester",
+        "zookeeper",
+        "sloth",
+        "magician",
+        "cactus",
+        "archeologist",
+        "warlock"
+      ],
+      "insane": [
+        "armorer",
+        "armorsmith",
+        "baseball_player",
+        "cannoneer",
+        "default",
+        "ecologist",
+        "enchanter",
+        "enderman",
+        "fallen_angel",
+        "guardian",
+        "healer",
+        "hunter",
+        "knight",
+        "pharaoh",
+        "pro",
+        "scout",
+        "snowman",
+        "speleologist",
+        "batguy",
+        "disco",
+        "energix",
+        "cactus",
+        "archeologist",
+        "warlock",
+        "frog",
+        "grenade",
+        "engineer",
+        "pig_rider",
+        "salmon",
+        "slime",
+        "jester",
+        "zookeeper",
+        "sloth",
+        "magician",
+        "enderchest",
+        "farmer",
+        "fisherman",
+        "princess",
+        "pyro",
+        "troll",
+        "golem"
+      ],
+      "mythical": [
+        "end_lord",
+        "monster_trainer",
+        "nether_lord",
+        "fishmonger",
+        "thundermeister",
+        "chronobreaker",
+        "cryomancer"
+      ],
+      "mega": [
+        "armorer",
+        "armorsmith",
+        "baseball_player",
+        "cannoneer",
+        "default",
+        "healer",
+        "hunter",
+        "knight",
+        "paladin",
+        "scout",
+        "skeletor",
+        "witch",
+        "hellhound",
+        "fisherman",
+        "pyro",
+        "enderman"
+      ],
+      "mini": [
+        "scout",
+        "magician",
+        "armorer",
+        "champion",
+        "bowman",
+        "athlete",
+        "blacksmith",
+        "healer",
+        "pyromancer",
+        "hound",
+        "paladin"
+      ]
+    }
+    
+    const skyWarsKitsLeaderboards = {
+      translation: "games.modes.blitz.kits.category",
+      include_name_in_full_translation: false,
+      leaderboards: [],
+    };
+
+    let skyWarsKitLeaderboardStats = [
+      { id: "XP", translation: "statistics.xp", format: "skywars_kit_xp" },
+      { id: "KILLS", translation: "statistics.kills", format: "number" },
+      { id: "WINS", translation: "statistics.wins", format: "number" },
+    ];
+
+    for (let mode in skyWarsKitLeaderboards) {
+      let skyWarsKitMode = skyWarsKitLeaderboards[mode];
+
+      let skyWarsKitModeLeaderboards = {
+        translation: `games.modes.skywars.${mode}`,
+        leaderboards: [],
+      };
+
+      for (let kitName of skyWarsKitMode) {
+        let skyWarsIndividualKitLeaderboards = {
+          translation: `games.modes.skywars.kits.${kitName}`,
+          leaderboards: [],
+        };
+
+        for (let stat of skyWarsKitLeaderboardStats) {
+          skyWarsIndividualKitLeaderboards["leaderboards"].push({
+            translation: stat["translation"],
+            id: `SKYWARS_${mode.toUpperCase()}_KIT_${kitName.toUpperCase()}_${stat["id"]}`,
+            format: stat["format"],
+          });
+        }
+
+        skyWarsKitModeLeaderboards["leaderboards"].push(skyWarsIndividualKitLeaderboards);
+      }
+
+      skyWarsKitModeLeaderboards["leaderboards"].sort((a, b) => 
+        getTranslation(a["translation"]).localeCompare(getTranslation(b["translation"]))
+      );
+
+      skyWarsKitsLeaderboards["leaderboards"].push(skyWarsKitModeLeaderboards);
+    }
+
+    for (let c in leaderboards) {
+      let game = leaderboards[c];
+      if (game["translation"] == "games.skywars") {
+        game["leaderboards"].push(skyWarsKitsLeaderboards);
+        break;
+      }
+    }
   }
 
 /*
@@ -1311,6 +1492,8 @@ function formatLeaderboardStatistic(format, value) {
       return `${getBuildBattleTitle(value)["title"]} / ${checkAndFormat(Number(value))}`;
     case "skywars_experience":
       return generateMinecraftText(formatSkyWarsLevel(getSkyWarsLevel(value)), true);
+    case "skywars_kit_xp":
+      return `${calculateSkyWarsKitPrestige(value)}${checkAndFormat(Number(value))}`;
     case "woolgames_experience":
       return formatWoolGamesLevel(getWoolGamesLevel(value));
     case "warlords_wins":

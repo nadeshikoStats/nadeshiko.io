@@ -21,7 +21,7 @@ function getLeaderboardGames() {
 }
 
 function generateGameSelectorChildren(leaderboardObject = {}, layer, event) {
-  const MAX_LAYER = 3;
+  const MAX_LAYER = 4;
 
   for (let b = layer; b <= MAX_LAYER; b++) {
     document.getElementById(`selector-layer-${b}`).innerHTML = "";

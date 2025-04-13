@@ -2943,6 +2943,12 @@ html {
   align-items: center;
 }
 
+.rainbow-gradient {
+  background: linear-gradient(150deg, var(--mcc) 0%, var(--mc6) 16%, var(--mce) 33%, var(--mca) 50%, var(--mcb) 66%, var(--mcd) 83%, var(--mc5) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
 
 /* Media styles */
 

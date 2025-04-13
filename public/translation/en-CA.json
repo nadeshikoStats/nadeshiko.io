@@ -406,7 +406,11 @@
 
         "normal": "Normal",
         "insane": "Insane",
-        "lucky_blocks": "Lucky Blocks"
+        "mythical": "Mythical",
+        
+        "lucky_blocks": "Lucky Blocks",
+
+        "kits": {"archeologist":"Archeologist","armorer":"Armorer","armorsmith":"Armorsmith","athlete":"Athlete","baseball_player":"Baseball Player","batguy":"Batguy","blacksmith":"Blacksmith","bowman":"Bowman","cactus":"Cactus","cannoneer":"Cannoneer","champion":"Champion","chronobreaker":"Chronobreaker","cryomancer":"Cryomancer","default":"Default","disco":"Disco","ecologist":"Ecologist","enchanter":"Enchanter","end_lord":"End Lord","enderchest":"Enderchest","enderman":"Enderman","energix":"Energix","engineer":"Engineer","fallen_angel":"Fallen Angel","farmer":"Farmer","fisherman":"Fisherman","fishmonger":"Fishmonger","frog":"Frog","golem":"Golem","grenade":"Grenade","guardian":"Guardian","healer":"Healer","hellhound":"Hellhound","hound":"Hound","hunter":"Hunter","jester":"Jester","knight":"Knight","magician":"Magician","monster_trainer":"Monster Trainer","nether_lord":"Nether Lord","paladin":"Paladin","pharaoh":"Pharaoh","pig_rider":"Pig Rider","princess":"Princess","pro":"Pro","pyro":"Pyro","pyromancer":"Pyromancer","rookie":"Rookie","salmon":"Salmon","scout":"Scout","skeletor":"Skeletor","slime":"Slime","sloth":"Sloth","snowman":"Snowman","speleologist":"Speleologist","thundermeister":"Thundermeister","troll":"Troll","warlock":"Warlock","witch":"Witch","zookeeper":"Zookeeper"}
       },
       "arcade": {
         "blockingdead": "Blocking Dead",
@@ -1284,7 +1288,8 @@
 
     "prestige_twos": "Prestige IIs",
     "prestige_fours": "Prestige IVs",
-    "prestige_fives": "Prestige Vs"
+    "prestige_fives": "Prestige Vs",
+    "prestige_sevens": "Prestige VIIs"
   },
   "times": {
     "time_ago": "(%%time%% ago)",
