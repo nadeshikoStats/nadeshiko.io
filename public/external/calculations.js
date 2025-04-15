@@ -168,7 +168,7 @@ function calculateSkyWarsKitPrestige(exp) {
     { req: 10000, style: "m5", title: "IV" },
     { req: 5000, style: "m9", title: "III" },
     { req: 2500, style: "m2", title: "II" },
-    { req: 1000, style: "m7", title: "I" },
+    { req: 1000, style: "mf", title: "I" },
   ]
 
   for (let a = 0; a < prestiges.length; a++) {
