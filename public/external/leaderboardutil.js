@@ -285,10 +285,10 @@ let leaderboards = [
             { translation: "statistics.wins", id: "BLITZ_WINS", format: "number" },
             { translation: "statistics.kills", id: "BLITZ_KILLS", format: "number" },
             { translation: "statistics.kdr", id: "BLITZ_KDR", format: "decimal_2" },
-            { translation: "statistics.coins", id: "BLITZ_COINS", format: "number" },
             { translation: "statistics.damage_dealt", id: "BLITZ_DAMAGE_DEALT", format: "large_number" },
             { translation: "statistics.chests_opened", id: "BLITZ_CHESTS_OPENED", format: "number" },
             { translation: "statistics.blitz_stars_found", id: "BLITZ_STARS_FOUND", format: "number" },
+            { translation: "statistics.coins", id: "BLITZ_COINS", format: "number" },
             { translation: "statistics.prestige_twos", id: "BLITZ_PRESTIGE_TWOS", format: "number" },
           ],
         },
@@ -727,11 +727,11 @@ let leaderboards = [
 
       leaderboards: [
         { translation: "statistics.smash_level", id: "SMASH_HEROES_SMASH_LEVEL", format: "number" },
-        { translation: "statistics.coins", id: "SMASH_HEROES_COINS", format: "number" },
         { translation: "statistics.wins", id: "SMASH_HEROES_WINS", format: "number" },
         { translation: "statistics.wlr", id: "SMASH_HEROES_WLR", format: "decimal_2" },
         { translation: "statistics.kills", id: "SMASH_HEROES_KILLS", format: "number" },
         { translation: "statistics.kdr", id: "SMASH_HEROES_KDR", format: "decimal_2" },
+        { translation: "statistics.coins", id: "SMASH_HEROES_COINS", format: "number" },
       ],
     },
 
@@ -822,10 +822,10 @@ let leaderboards = [
 
           leaderboards: [
             { translation: "statistics.score", id: "UHC_SCORE", format: "uhc_score" },
-            { translation: "statistics.coins", id: "UHC_COINS", format: "number" },
             { translation: "statistics.wins", id: "UHC_WINS", format: "number" },
             { translation: "statistics.kills", id: "UHC_KILLS", format: "number" },
             { translation: "statistics.kdr", id: "UHC_KDR", format: "decimal_2" },
+            { translation: "statistics.coins", id: "UHC_COINS", format: "number" },
           ],
         },
         {
@@ -1339,8 +1339,8 @@ let leaderboards = [
 
     let skyWarsKitLeaderboardStats = [
       { id: "XP", translation: "statistics.xp", format: "skywars_kit_xp" },
-      { id: "KILLS", translation: "statistics.kills", format: "number" },
       { id: "WINS", translation: "statistics.wins", format: "number" },
+      { id: "KILLS", translation: "statistics.kills", format: "number" },
     ];
 
     for (let mode in skyWarsKitLeaderboards) {
@@ -1418,7 +1418,10 @@ function findPathById(leaderboards, id) {
 /*
  * Gets full translated name of a leaderboard using its ID and findPathById.
   * @param {string} id The ID of the leaderboard
-  * @returns {string} The full translated name of the leaderboard
+  * @returns {Object} The full translated name of the leaderboard
+  * @property {string} game
+  * @property {string} name
+  * @property {string} format
   */
 function getFullTranslationById(id) {
   let path = findPathById(leaderboards, id);

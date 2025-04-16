@@ -664,10 +664,6 @@ footer > a:hover {
   display: none;
 }
 
-.display-none {
-  display: none;
-}
-
 .header-down:hover > img {
   opacity: 1;
 }
@@ -2269,6 +2265,19 @@ a.general-button {
   margin-inline-start: 10px;
 }
 
+.leaderboard-title {
+  display: none;
+  padding: 10px 15px;
+  background-color: #0008;
+  color: white;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+#leaderboard {
+  margin-top: 10px;
+}
+
 #leaderboard [data-i="quantity"] {
   color: #fffa;
 }
@@ -2948,6 +2957,10 @@ html {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+}
+
+.display-none {
+  display: none;
 }
 
 /* Media styles */

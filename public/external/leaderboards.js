@@ -25,6 +25,7 @@ function generateGameSelectorChildren(leaderboardObject = {}, layer, event) {
 
   for (let b = layer; b <= MAX_LAYER; b++) {
     document.getElementById(`selector-layer-${b}`).innerHTML = "";
+    document.getElementById(`selector-layer-${b}`).classList.add("display-none");
   }
 
   if (event) {
@@ -64,6 +65,7 @@ function generateGameSelectorChildren(leaderboardObject = {}, layer, event) {
     }
 
     document.getElementById(`selector-layer-${layer}`).appendChild(gameButton);
+    document.getElementById(`selector-layer-${layer}`).classList.remove("display-none");
   }
 }
 
@@ -111,6 +113,11 @@ async function getLeaderboardData(leaderboard, page = 1) {
   if (leaderboardData["success"] == false) {
     return;
   }
+
+  let leaderboardInfo = getFullTranslationById(leaderboard);
+  document.getElementById("leaderboard-title-game").innerText = leaderboardInfo["game"];
+  document.getElementById("leaderboard-title-name").innerText = leaderboardInfo["name"];
+  document.getElementById("leaderboard-title").style.display = "flex";
 
   let leaderboardTable = document.getElementById("leaderboard");
   leaderboardTable.innerHTML = "";
