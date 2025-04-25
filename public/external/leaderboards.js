@@ -190,7 +190,7 @@ async function getLeaderboardData(leaderboard, page = 1) {
   }
 
   document.getElementById("pagination").style.display = "flex";
-  document.getElementById("page-number").innerText = insertPlaceholders(getTranslation(["leaderboards", "page_number"]), { page: page, total: Math.ceil(leaderboardData["count"] / PLAYERS_PER_PAGE) });
+  document.getElementById("page-number").innerText = insertPlaceholders(getTranslation(["leaderboards", "page_number"]), { page: checkAndFormat(page), total: checkAndFormat(Math.ceil(leaderboardData["count"] / PLAYERS_PER_PAGE)) });
 }
 
 const icons = {

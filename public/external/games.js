@@ -659,7 +659,14 @@ function generateSkyWars() {
       ],
       ["Mini", "mini", []],
       ["Mega", "mega", []],
-      ["Lab", "lab", []],
+      ["Lab", "lab", 
+        [
+          [getTranslation("games.modes.all.overall"), "lab"],
+          [getTranslation("games.modes.skywars.solo"), "lab_solo"],
+          [getTranslation("games.modes.skywars.team"), "lab_team"],
+          [getTranslation("games.modes.skywars.lucky_blocks"), "lab_win_lucky_blocks_lab"],
+        ],
+      ],
     ];
 
     for (a = 0; a < skyWarsStatsToShow.length; a++) {
@@ -695,6 +702,14 @@ function getBedWarsModeStats(mode) {
 }
 
 function getSkyWarsModeStats(mode) {
+
+  if (mode == "lab_win_lucky_blocks_lab") {
+    return [
+      [false, [getTranslation("statistics.wins"), checkAndFormat(skyWarsStats[mode])]],
+      [false, [getTranslation("statistics.wins_solo"), checkAndFormat(skyWarsStats[mode + "_solo"])], [getTranslation("statistics.wins_teams"), checkAndFormat(skyWarsStats[mode + "_team"])]],
+    ];
+  }
+
   let skyWarsModeStats = [
     [false, [getTranslation("statistics.wins"), checkAndFormat(skyWarsStats["wins_" + mode])]],
     [false, [getTranslation("statistics.kills"), checkAndFormat(skyWarsStats["kills_" + mode])]],
