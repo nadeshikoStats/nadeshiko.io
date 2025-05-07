@@ -747,11 +747,37 @@ const leaderboards = [
         {
           translation: "games.modes.skywars.lab",
           leaderboards: [
-            { translation: "statistics.wins", id: "SKYWARS_LAB_WINS", format: "number" },
-            { translation: "statistics.wlr", id: "SKYWARS_LAB_WLR", format: "decimal_2" },
-            { translation: "statistics.kills", id: "SKYWARS_LAB_KILLS", format: "number" },
-            { translation: "statistics.kdr", id: "SKYWARS_LAB_KDR", format: "decimal_2" },
-            { translation: "multi", translations: ["statistics.wins", "games.modes.skywars.lucky_blocks"], id: "SKYWARS_LUCKY_BLOCK_WINS", format: "number" },
+            {
+              translation: "games.overall",
+              include_name_in_full_translation: false,
+              leaderboards: [
+                { translation: "statistics.wins", id: "SKYWARS_LAB_WINS", format: "number" },
+                { translation: "statistics.wlr", id: "SKYWARS_LAB_WLR", format: "decimal_2" },
+                { translation: "statistics.kills", id: "SKYWARS_LAB_KILLS", format: "number" },
+                { translation: "statistics.kdr", id: "SKYWARS_LAB_KDR", format: "decimal_2" },
+                { translation: "multi", translations: ["statistics.wins", "games.modes.skywars.lucky_blocks"], id: "SKYWARS_LUCKY_BLOCK_WINS", format: "number" },
+              ],
+            },
+            {
+              translation: "games.modes.skywars.solo",
+              leaderboards: [
+                { translation: "statistics.wins", id: "SKYWARS_LAB_SOLO_WINS", format: "number" },
+                { translation: "statistics.wlr", id: "SKYWARS_LAB_SOLO_WLR", format: "decimal_2" },
+                { translation: "statistics.kills", id: "SKYWARS_LAB_SOLO_KILLS", format: "number" },
+                { translation: "statistics.kdr", id: "SKYWARS_LAB_SOLO_KDR", format: "decimal_2" },
+                { translation: "multi", translations: ["statistics.wins", "games.modes.skywars.lucky_blocks"], id: "SKYWARS_LUCKY_BLOCK_SOLO_WINS", format: "number" },
+              ],
+            },
+            {
+              translation: "games.modes.skywars.team",
+              leaderboards: [
+                { translation: "statistics.wins", id: "SKYWARS_LAB_TEAM_WINS", format: "number" },
+                { translation: "statistics.wlr", id: "SKYWARS_LAB_TEAM_WLR", format: "decimal_2" },
+                { translation: "statistics.kills", id: "SKYWARS_LAB_TEAM_KILLS", format: "number" },
+                { translation: "statistics.kdr", id: "SKYWARS_LAB_TEAM_KDR", format: "decimal_2" },
+                { translation: "multi", translations: ["statistics.wins", "games.modes.skywars.lucky_blocks"], id: "SKYWARS_LUCKY_BLOCK_TEAM_WINS", format: "number" },
+              ],
+            },
           ],
         },
       ],
