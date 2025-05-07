@@ -5,10 +5,14 @@ const path = require("path");
 const fs = require("fs");
 const cleancss = require("clean-css");
 
+// Import leaderboard utilities and generator
+const { getFullTranslationById, getTranslationByGameObject } = require("./public/external/leaderboardutil.js");
+const { leaderboards, generateLeaderboardsViaLoop, getTranslation } = require("./backend/leaderboard_generator.js");
+
 const app = express();
 const port = 8080;
 
-const version = "1.5.14"; // Updating this will force the cache to clear for all users; doesn't have to be changed for every update
+const version = "1.5.15"; // Updating this will force the cache to clear for all users; doesn't have to be changed for every update
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -61,6 +65,9 @@ app.use(express.static("public"));
 
 minifyFiles()
   .then(() => {
+    generateLeaderboardsViaLoop();
+    console.log("Generated complete leaderboard array");
+
     app.get("/", (req, res) => {
       computationError = {
         message: ``,
@@ -325,6 +332,105 @@ minifyFiles()
 
       if (dateIsInFuture) return `(now!)`;
       else return `(${timeValue} ago)`;
+    }
+
+    /*
+ * Simple recursive function to find the path to an object in the leaderboards object. Only shows the indexes of objects in arrays, so will return something like [5, 1, 0]. Returns null if not found
+ * @param {Object} leaderboards The leaderboards object
+ * @param {string} id The ID of the object to find
+ * @returns {Array} The path to the object in the leaderboards object
+ */
+function findPathById(leaderboards, id) {
+  function recursiveSearch(obj, id, path) {
+    if (Array.isArray(obj)) {
+      for (let a = 0; a < obj.length; a++) {
+        // Skip the favorites object
+        if (obj[a].translation === "home.favorites") {
+          continue;
+        }
+        let result = recursiveSearch(obj[a], id, path.concat(a));
+        if (result) return result;
+      }
+    } else if (typeof obj === "object" && obj !== null) {
+      if (obj["id"] === id) {
+        return path;
+      }
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          let result = recursiveSearch(obj[key], id, path);
+          if (result) return result;
+        }
+      }
+    }
+    return null;
+  }
+
+  let result = recursiveSearch(leaderboards, id, []);
+  return result;
+}
+
+    /*
+    * Gets full translated name of a leaderboard using its ID and findPathById.
+      * @param {string} id The ID of the leaderboard
+      * @returns {Object} The full translated name of the leaderboard
+      * @property {string} game
+      * @property {string} name
+      * @property {string} format
+      */
+    function getFullTranslationById(id) {
+      let path = findPathById(leaderboards, id);
+      let leaderboardInfo = {
+        game: "",
+        name: ""
+      }
+      let filteredLeaderboard = leaderboards;
+      if (path) {
+        for (let a = 0; a < path.length; a++) {
+          filteredLeaderboard = filteredLeaderboard[path[a]];
+
+          if (filteredLeaderboard["id"]) {
+            if (!(filteredLeaderboard["include_name_in_full_translation"] === false)) {
+              leaderboardInfo["name"] += getTranslationByGameObject(filteredLeaderboard);
+            }
+            leaderboardInfo["format"] = filteredLeaderboard["format"];
+            break; // We've reached a leaderboard
+          }
+
+          if (filteredLeaderboard["leaderboards"]) {
+            if (!(filteredLeaderboard["include_name_in_full_translation"] === false)) {
+              if (a == 0) {
+                leaderboardInfo["game"] += getTranslationByGameObject(filteredLeaderboard);
+              } else {
+                leaderboardInfo["name"] += getTranslationByGameObject(filteredLeaderboard) + " • "; // The space needs to be internationalized; other languages might have different spacing rules
+              }
+            }
+
+            filteredLeaderboard = filteredLeaderboard["leaderboards"];
+          } else {
+            console.warn(`No leaderboards found for ${id} (how?)`);
+            break;
+          }
+        }
+      } else {
+        console.warn(`No path found for ${id} (how?)`);
+      }
+
+      return leaderboardInfo;
+    }
+
+    function getTranslationByGameObject(game) {
+      let gameTranslation = "";
+      if (game["translation"] == "multi") {
+        let gameTranslations = [];
+        for (let translation of game["translations"]) {
+          gameTranslations.push(getTranslation(translation));
+        }
+        gameTranslation = gameTranslations.join(" – ");
+      } else {
+        gameTranslation = getTranslation(game["translation"]);
+      }
+
+      return gameTranslation;
     }
 
     function getMetaDescription(game, playerData) {
@@ -1094,7 +1200,7 @@ ${achievementGamesString}`;
             return `View your quest stats on nadeshiko!`;
           }
           case "leaderboards": {
-            return `🥇 Check out the top players in over one hundred categories using nadeshiko's leaderboards!`;
+            return `🥇 Check out the top Hypixel players on nadeshiko's leaderboards page! nadeshiko has leaderboards for over one thousand statistics in 20+ minigames.`;
           }
           case "skyblock": {
             return `View your SkyBlock stats on nadeshiko!`;
@@ -1149,7 +1255,7 @@ ${achievementGamesString}`;
           metaDescription = `🌸 View Hypixel stats and generate real-time stat cards – perfect for forum signatures or to show off to friends!`;
         }
 
-        res.render("player", { name, playerData, game, metaImageURL, metaDescription, version });
+        res.render("player", { name, playerData, game, metaImageURL, metaDescription, version, leaderboards });
       } catch (error) {
         if (error.response && error.response.status == 404) {
           computationError = {
@@ -1410,8 +1516,8 @@ ${achievementGamesString}`;
       }
     });
 
-    app.get("/leaderboard", async (req, res) => {
-      const leaderboardType = req.query.leaderboard || "NETWORK_LEVEL";
+    app.get("/leaderboard/:leaderboardId", async (req, res) => {
+      const leaderboardType = req.params.leaderboardId;
       const page = req.query.page || 1;
 
       try {
@@ -1475,8 +1581,24 @@ ${achievementGamesString}`;
       }
     });
 
-    app.get("/leaderboards", async (req, res) => {
-      res.render("leaderboards", { version });
+    app.get("/leaderboards/:leaderboardId?", async (req, res) => {
+      const leaderboardId = req.params.leaderboardId;
+      let metaDescription = getMetaDescription("leaderboards", "");
+      let metaTitle = `Leaderboards – nadeshiko.io`;
+      
+      if (leaderboardId) {
+        const leaderboardInfo = getFullTranslationById(leaderboardId);
+        if (leaderboardInfo.game && leaderboardInfo.name) {
+          if (leaderboardId == "GUILD_LEVEL") {
+            metaDescription = `Check out the top Hypixel guilds on nadeshiko's Guild Level leaderboard! nadeshiko has leaderboards for over one thousand statistics in 20+ minigames.`;
+          } else {
+            metaDescription = `Check out the top Hypixel players in ${leaderboardInfo.game} ${leaderboardInfo.name} on nadeshiko! nadeshiko has leaderboards for over one thousand statistics in 20+ minigames.`;
+          }
+          metaTitle = `${leaderboardInfo.game} – ${leaderboardInfo.name} Leaderboard | nadeshiko.io`;
+        }
+      }
+      // pass leaderboards
+      res.render("leaderboards", { version, metaDescription, metaTitle, leaderboards });
     });
 
     app.get("/:name/:game?", (req, res) => {

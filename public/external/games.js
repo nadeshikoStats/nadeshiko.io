@@ -4605,6 +4605,7 @@ function generateFishing() {
             </div>
           </div>
         </div>
+        <span class="general-button mright mtop" onclick="showCardWizard('FISHING')" data-t="player.generate_card">Generate Card</span>
       </div>
       <div class="flex-two-item chip-container-duo-parent">
         <div id="fishing-chips-1" class="chip-container-duo">

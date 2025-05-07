@@ -1007,6 +1007,29 @@ footer > a:hover {
   pointer-events: none;
 }
 
+#leaderboard-favorite-toggle {
+  margin-left: 10px;
+  cursor: pointer;
+  background-color: #222;
+  transition-duration: var(--transition);
+
+  height: 20px;
+  width: 20px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#leaderboard-favorite-toggle:hover {
+  background-color: #444;
+}
+
+#leaderboard-favorite-toggle.selected {
+  background-color: var(--nadeshiko-dark);
+}
+
 .badge-large {
   transform: translateY(9%);
 }
@@ -2267,11 +2290,14 @@ a.general-button {
 
 .leaderboard-title {
   display: none;
-  padding: 10px 15px;
+  padding-inline-start: 15px;
   background-color: #0008;
   color: white;
   border-radius: 15px;
   margin-top: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-inline-end: 5px;
 }
 
 #leaderboard {

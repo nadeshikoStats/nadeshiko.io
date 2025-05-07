@@ -8,8 +8,8 @@
 
     <meta name="theme-color" content="#f6adc6" />
     <meta property="og:site_name" content="nadeshiko.io" />
-    <meta name="description" content="🥇 Check out the top players in over one hundred categories using nadeshiko's leaderboards!" />
-    <title>Leaderboards | nadeshiko.io</title>
+    <meta name="description" content="<%- metaDescription %>" />
+    <title><%- metaTitle %></title>
 
     <script>
       let tasksBeforeLoading = ["fetchLanguageFile", "DOMContentLoaded"];
@@ -25,8 +25,8 @@
 
           if (tasksBeforeLoading.length == 0) {
             updateTranslations();
-            generateLeaderboardsViaLoop();
             getLeaderboardGames();
+            insertFavoriteLeaderboards();
           }
         } else {
           console.log(`Task ${task} was already completed or is not a task; remaining tasks: ${tasksBeforeLoading}`);
@@ -63,7 +63,14 @@
               <div class="button-array" id="selector-layer-4"></div>
             </div>
 
-            <div id="leaderboard-title" class="leaderboard-title display-none"><div class="w500" id="leaderboard-title-game"></div><span>&nbsp;–&nbsp;</span><div id="leaderboard-title-name"></div></div>
+            <div id="leaderboard-title" class="leaderboard-title display-none flex-two-item">
+              <div class="flex-two-item-basic">
+                <div class="w500" id="leaderboard-title-game"></div>
+                <span>&nbsp;–&nbsp;</span>
+                <div id="leaderboard-title-name"></div>
+              </div>
+              <span id="leaderboard-favorite-toggle" class="leaderboard-favorite-toggle" title="Toggle Favorite"></span>
+            </div>
 
             <div class="list quest-list" id="leaderboard">
               <div class="flex-two-item row-header no-column-header w500">
@@ -91,6 +98,8 @@
         page: 1,
         total_pages: 1,
       };
+
+      let leaderboards = JSON.parse(decodeURIComponent("<%- encodeURIComponent(JSON.stringify(leaderboards)) %>"));
     </script>
   </body>
 </html>

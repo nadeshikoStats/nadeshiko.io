@@ -1,13 +1,46 @@
-
 const PLAYERS_PER_PAGE = 100;
+let lastClickedGame = null;
+let favoriteLeaderboards = getFavoriteLeaderboards();
+
+document.addEventListener('DOMContentLoaded', function() {
+  const favoriteToggle = document.getElementById("leaderboard-favorite-toggle");
+  favoriteToggle.addEventListener('click', function() {
+    const currentLeaderboard = currentLeaderboardInformation["leaderboard"];
+    const currentFormat = currentLeaderboardInformation["format"];
+    if (!currentLeaderboard) return;
+    
+    const isCurrentlyFavorite = favoriteLeaderboards.some(
+      (favoriteLeaderboard) => favoriteLeaderboard.id === currentLeaderboard
+    );
+
+    if (isCurrentlyFavorite) {
+      removeFavoriteLeaderboard({ id: currentLeaderboard, format: currentFormat });
+      this.innerText = "♡";
+      this.classList.remove("selected");
+    } else {
+      addFavoriteLeaderboard({ id: currentLeaderboard, format: currentFormat });
+      this.innerText = "♥";
+      this.classList.add("selected");
+    }
+  });
+});
 
 function getLeaderboardGames() {
   generateGameSelectorChildren(leaderboards, 0, false);
 
-  // Determine if there's a leaderboard/page num in the URL
+  let pathParts = window.location.pathname.split('/');
+  let leaderboard = pathParts[pathParts.length - 1]; // Get last part of path
+  
   let queryParams = new URLSearchParams(window.location.search);
-  let leaderboard = queryParams.get("leaderboard");
   let page = queryParams.get("page") || 1;
+
+  // legacy url format
+  let legacyLeaderboard = queryParams.get("leaderboard");
+  if (legacyLeaderboard) {
+    queryParams.delete("leaderboard");
+    window.history.replaceState({}, "", `/leaderboards/${legacyLeaderboard}?${queryParams.toString()}`);
+    leaderboard = legacyLeaderboard;
+  }
 
   page = parseInt(page);
 
@@ -15,13 +48,19 @@ function getLeaderboardGames() {
     page = 1;
   }
 
-  if (leaderboard) {
+  if (leaderboard && leaderboard !== 'leaderboards') {
     getLeaderboardFromQuery(leaderboard, page);
   }
 }
 
-function generateGameSelectorChildren(leaderboardObject = {}, layer, event) {
+function generateGameSelectorChildren(leaderboardObject = {}, layer, foundFavorites, event) {
   const MAX_LAYER = 4;
+  let isFavorites = false;
+
+  // checks if leaderboards need to include the game name
+  if (foundFavorites) {
+    isFavorites = true;
+  }
 
   for (let b = layer; b <= MAX_LAYER; b++) {
     document.getElementById(`selector-layer-${b}`).innerHTML = "";
@@ -39,14 +78,28 @@ function generateGameSelectorChildren(leaderboardObject = {}, layer, event) {
     gameButton.classList.add("leaderboard-selector-button");
     gameButton.classList.add("multicolor-badge");
 
-    let gameTranslation = getTranslationByGameObject(game);
+    let gameTranslation;
+    if (isFavorites) {
+      let gameTranslationObject = getFullTranslationById(game["id"]);
+      gameTranslation = `${gameTranslationObject["game"]} – ${gameTranslationObject["name"]}`;
+    } else {
+      gameTranslation = getTranslationByGameObject(game);
+    }
 
     gameButton.innerText = gameTranslation;
-    gameButton.setAttribute("data-i", game["id"]);
 
     if (!game["id"]) {
       gameButton.addEventListener("click", function (event) {
-        generateGameSelectorChildren(game["leaderboards"], layer + 1, event);
+        // only if we're clicking into the favorites section
+        const nextIsFavorites = gameTranslation === getTranslation(["home", "favorites"]);
+        console.log("jumping to", game["leaderboards"]);
+        
+        if (layer == 0) {
+          console.log("Setting last clicked game", game["translation"]);
+          lastClickedGame = game["translation"];
+        }
+
+        generateGameSelectorChildren(game["leaderboards"], layer + 1, nextIsFavorites, event);
       });
     } else {
       gameButton.addEventListener("click", function (event) {
@@ -56,12 +109,16 @@ function generateGameSelectorChildren(leaderboardObject = {}, layer, event) {
 
     if (game["icon"]) {
       let gameImage = document.createElement("img");
-      gameImage.src = `img/${game["icon"]}.png`;
+      gameImage.src = `/img/${game["icon"]}.png`;
       gameImage.classList.add("leaderboard-icon");
       gameImage.classList.add("icon");
       gameImage.alt = "";
 
       gameButton.prepend(gameImage);
+    }
+
+    if (game["document_id"]) {
+      gameButton.id = `${game["document_id"]}`;
     }
 
     document.getElementById(`selector-layer-${layer}`).appendChild(gameButton);
@@ -82,7 +139,7 @@ function selectLeaderboard(leaderboardObject, event) {
   highlightButton(event.target);
   currentLeaderboardInformation["leaderboard"] = leaderboardObject["id"];
   currentLeaderboardInformation["format"] = leaderboardObject["format"];
-  getLeaderboardData(leaderboardObject["id"]);
+  getLeaderboardData(leaderboardObject);
 }
 
 let leaderboardRowTemplate = `
@@ -98,26 +155,43 @@ let leaderboardRowTemplate = `
 `;
 
 async function getLeaderboardData(leaderboard, page = 1) {
-  // connect to leaderboard at /leaderboard?leaderboard=LEADERBOARD_NAME&page=1
+  // connect to leaderboard at /leaderboard/LEADERBOARD_NAME?page=NUM
   // fetch json data
+  let leaderboardId = leaderboard["id"];
+  currentLeaderboardInformation["leaderboard"] = leaderboardId;
 
-  // Update query params with leaderboard name and page number
+  // query gets page number
   let queryParams = new URLSearchParams(window.location.search);
-  queryParams.set("leaderboard", leaderboard);
   queryParams.set("page", page);
-  window.history.replaceState({}, "", `${window.location.pathname}?${queryParams.toString()}`);
+  window.history.replaceState({}, "", `/leaderboards/${leaderboardId}?${queryParams.toString()}`);
 
-  let leaderboardPromise = await fetch(`/leaderboard?leaderboard=${leaderboard}&page=${page}`);
+  document.title = `${getFullTranslationById(leaderboardId).game} – ${getFullTranslationById(leaderboardId).name} Leaderboard | nadeshiko.io`;
+  
+  let leaderboardPromise = await fetch(`/leaderboard/${leaderboardId}?page=${page}`);
   let leaderboardData = await leaderboardPromise.json();
 
   if (leaderboardData["success"] == false) {
     return;
   }
 
-  let leaderboardInfo = getFullTranslationById(leaderboard);
+  let leaderboardInfo = getFullTranslationById(leaderboardId);
   document.getElementById("leaderboard-title-game").innerText = leaderboardInfo["game"];
   document.getElementById("leaderboard-title-name").innerText = leaderboardInfo["name"];
   document.getElementById("leaderboard-title").style.display = "flex";
+
+  const favoriteToggle = document.getElementById("leaderboard-favorite-toggle");
+  const isLeaderboardFavorite = favoriteLeaderboards.some(
+    (favoriteLeaderboard) => favoriteLeaderboard.id === leaderboardId
+  );
+
+  if (isLeaderboardFavorite) {
+    favoriteToggle.innerText = "♥";
+    favoriteToggle.classList.add("selected");
+  } else {
+    favoriteToggle.innerText = "♡";
+    favoriteToggle.classList.remove("selected");
+  }
+  
 
   let leaderboardTable = document.getElementById("leaderboard");
   leaderboardTable.innerHTML = "";
@@ -160,7 +234,7 @@ async function getLeaderboardData(leaderboard, page = 1) {
     checkBadgeInList(playerBadge, row);
 
     // differ based on if it's a player or guild leaderboard
-    if (leaderboard.startsWith("GUILD_")) {
+    if (leaderboardId.startsWith("GUILD_")) {
       row.querySelector(`[data-i="head"]`).style.display = "none";
       row.querySelector("[data-i='rank-name']").href = `/guild/${a["name"]}`;
     } else {
@@ -246,8 +320,64 @@ function showNewPage(jump) {
   }
 }
 
-function getLeaderboardFromQuery(query, page = 1) {
-  // Determine if leaderboard exists, i.e. it has an ID in the leaderboards variable
+function getFavoriteLeaderboards() {
+  let favoriteLeaderboards = localStorage.getItem("favorite-leaderboards");
+  if (favoriteLeaderboards) {
+    return JSON.parse(favoriteLeaderboards);
+  }
+  return [];
+}
+
+function addFavoriteLeaderboard(leaderboardObject) {
+  favoriteLeaderboards.push(leaderboardObject);
+  localStorage.setItem("favorite-leaderboards", JSON.stringify(favoriteLeaderboards));
+  insertFavoriteLeaderboards();
+
+  // simulate click on favorite chip to update the UI
+  if (lastClickedGame == "home.favorites") {
+    const favoriteLeaderboardsObject = leaderboards.find((leaderboard) => leaderboard.translation == "home.favorites");
+    generateGameSelectorChildren(favoriteLeaderboardsObject["leaderboards"], 1, true);
+  }
+}
+
+function removeFavoriteLeaderboard(leaderboardObject) {
+  // find index of leaderboard ID in favoriteLeaderboards
+  const index = favoriteLeaderboards.findIndex((leaderboard) => leaderboard.id === leaderboardObject["id"]);
+  if (index !== -1) {
+    favoriteLeaderboards.splice(index, 1);
+  }
+  localStorage.setItem("favorite-leaderboards", JSON.stringify(favoriteLeaderboards));
+  insertFavoriteLeaderboards();
+
+  // simulate click on favorite chip to update the UI
+  if (lastClickedGame == "home.favorites") {
+    if (favoriteLeaderboards.length != 0) {
+      const favoriteLeaderboardsObject = leaderboards.find((leaderboard) => leaderboard.translation == "home.favorites");
+      generateGameSelectorChildren(favoriteLeaderboardsObject["leaderboards"], 1, true);
+    } else {
+      findAndHighlightButton(currentLeaderboardInformation["leaderboard"]);
+    }
+  }
+}
+
+function insertFavoriteLeaderboards() {
+  let favoriteLeaderboardsObject = leaderboards.find((leaderboard) => leaderboard.translation == "home.favorites");
+
+  favoriteLeaderboardsObject.leaderboards = [];
+
+  for (let a of favoriteLeaderboards) {
+    let leaderboardObject = a;
+    favoriteLeaderboardsObject.leaderboards.push(leaderboardObject);
+  }
+
+  if (favoriteLeaderboardsObject.leaderboards.length > 0) {
+    document.getElementById("leaderboard-favorites").classList.remove("display-none");
+  } else {
+    document.getElementById("leaderboard-favorites").classList.add("display-none");
+  }
+}
+
+function findAndHighlightButton(query) {
   let path = findPathById(leaderboards, query);
   let filteredLeaderboard = leaderboards;
   if (path) {
@@ -261,7 +391,7 @@ function getLeaderboardFromQuery(query, page = 1) {
       filteredLeaderboard = filteredLeaderboard[path[a]];
 
       if (filteredLeaderboard["id"]) {
-        break; // We've reached a leaderboard
+        return filteredLeaderboard;
       }
 
       if (filteredLeaderboard["leaderboards"]) {
@@ -269,13 +399,21 @@ function getLeaderboardFromQuery(query, page = 1) {
         generateGameSelectorChildren(filteredLeaderboard, layer + 1, false);
       } else {
         console.warn("No leaderboards found (how?)");
-        break;
+        return null;
       }
     }
+  }
+}
 
+function getLeaderboardFromQuery(query, page = 1) {
+  query = query.split('?')[0];
+
+  // does leaderboard exist, i.e. has an id in leaderboards
+  let filteredLeaderboard = findAndHighlightButton(query);
+  if (filteredLeaderboard) {
     currentLeaderboardInformation["leaderboard"] = query;
     currentLeaderboardInformation["format"] = filteredLeaderboard["format"];
-    getLeaderboardData(query, page);
+    getLeaderboardData(filteredLeaderboard, page);
   } else {
     console.warn(`Leaderboard ${query} not found!`);
   }
