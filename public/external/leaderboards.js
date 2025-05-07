@@ -296,12 +296,14 @@ const icons = {
 function showNewPage(jump) {
   let currentPage = currentLeaderboardInformation["page"];
   let totalPages = currentLeaderboardInformation["total_pages"];
-  let currentLeaderboard = currentLeaderboardInformation["leaderboard"];
 
   if (jump == "next") {
     if (currentPage < totalPages) {
       currentPage += 1;
-      getLeaderboardData(currentLeaderboard, currentPage);
+      getLeaderboardData({
+        id: currentLeaderboardInformation["leaderboard"],
+        format: currentLeaderboardInformation["format"]
+      }, currentPage);
     } else {
       console.log("Can't go to next page");
     }
@@ -313,7 +315,10 @@ function showNewPage(jump) {
         currentPage = totalPages;
       }
 
-      getLeaderboardData(currentLeaderboard, currentPage);
+      getLeaderboardData({
+        id: currentLeaderboardInformation["leaderboard"],
+        format: currentLeaderboardInformation["format"]
+      }, currentPage);
     } else {
       console.log("Can't go to previous page");
     }
