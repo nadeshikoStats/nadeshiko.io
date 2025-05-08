@@ -12,7 +12,7 @@ const { leaderboards, generateLeaderboardsViaLoop, getTranslation } = require(".
 const app = express();
 const port = 8080;
 
-const version = "1.5.18"; // Updating this will force the cache to clear for all users; doesn't have to be changed for every update
+const version = "1.5.19"; // Updating this will force the cache to clear for all users; doesn't have to be changed for every update
 
 app.set("view engine", "ejs");
 app.set("views", "./views");

@@ -5060,6 +5060,15 @@ function getRankings(start, end, rankings) {
   return rankingsDiv;
 }
 
+function checkIfNoRankings() {
+  const rankings = playerData["rankings"] || [];
+  
+  if (rankings.length == 0) {
+    document.getElementById("rankings-button").classList.add("disabled");
+    document.getElementById("rankings-button").removeAttribute("onclick");
+  }
+}
+
 function showRankings() {
   const TRANSITION_DURATION = window.getComputedStyle(document.documentElement).getPropertyValue("--transition");
 

@@ -26,6 +26,8 @@
 
           updateTranslations();
           insertLoadedData();
+          checkIfNoRankings();
+
           document.getElementById("flex-container-" + currentGamemode).classList.remove("unloaded");
           document.getElementById("header-name").classList.remove("unloaded");
         }
