@@ -356,7 +356,7 @@
         "lab": "Laboratory",
         "normal": "Normal",
         "insane": "Insane",
-        "mythical": "Mythical",
+        "mythical": "Mítico",
         "lucky_blocks": "Lucky Blocks",
         "kits": {
           "archeologist": "Archeologist",
@@ -1213,10 +1213,11 @@
     "weekly_gexp": "GEXP semanal",
     "current_reward_streak": "Racha de recompensas actual",
     "highest_reward_streak": "Racha de recompensas más larga",
+    "cookie_packs_given": "Paquetes de galletas dados",
     "prestige_twos": "Prestigios II",
     "prestige_fours": "Prestigios IV",
     "prestige_fives": "Prestigios V",
-    "prestige_sevens": "Prestige VIIs"
+    "prestige_sevens": "Prestigios VII"
   },
   "times": {
     "time_ago": "(hace %%time%%)",

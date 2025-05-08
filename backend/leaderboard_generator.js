@@ -524,6 +524,13 @@ const leaderboards = [
       ],
     },
     {
+      translation: "games.housing",
+      icon: "icon/minecraft/dark_oak_door",
+      leaderboards: [
+        { translation: "statistics.cookie_packs_given", id: "HOUSING_COOKIE_PACKS_GIVEN", format: "number" },
+      ],
+    },
+    {
       translation: "games.megawalls",
       icon: "icon/minecraft/soul_sand",
       leaderboards: [
