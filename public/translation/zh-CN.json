@@ -16,9 +16,9 @@
       "credits": {
         "title": "鸣谢",
         "0_name": "niqumu",
-        "0_desc": "‐ 后端开发者",
+        "0_desc": "– Original Founder",
         "1_name": "BrookeAFK",
-        "1_desc": "‐ 前端开发者",
+        "1_desc": "– Founder, Developer",
         "2_name": "skinview3d",
         "2_desc": "由 Blessing Skin 提供",
         "4_name": "VZGE",
@@ -196,7 +196,7 @@
     "page_number": "第 %%page%%/%%total%% 页"
   },
   "footer": {
-    "created_by": "此平台为 <a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a> 与 <a href=\"https://niqumu.dev\" target=\"_blank\">niqumu</a> 的匠 ♥︎ 之作"
+    "created_by": "Made with ♥︎ by <a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a>."
   },
   "games": {
     "arcade": "街机游戏",
@@ -884,6 +884,7 @@
           "trout": "鳟鱼",
           "kelp": "海带",
           "dried_kelp": "干海带",
+          "frozen_kelp": "Frozen Kelp",
           "enchanted_fishing_rod": "附魔钓鱼竿",
           "diamond_sword": "钻石剑",
           "compass": "指南针",

@@ -4856,7 +4856,7 @@ function getSpecialFishStats(season) {
 function getFishingCatches(category) {
   let fishingItemCategories = {
     junk: ["leather", "leather_boots", "soggy_paper", "water_bottle", "lily_pad", "tripwire_hook", "ink_sac", "rotten_flesh", "bone", "bowl", "broken_fishing_rod", "stick", "rabbit_hide", "string", "nether_brick", "steak", "lava_bucket", "coal", "charcoal", "fermented_spider_eye", "burned_flesh", "clump_of_leaves", "ice_shard", "snowball", "frozen_flesh"],
-    fish: ["clownfish", "salmon", "cod", "pufferfish", "cooked_cod", "charred_pufferfish", "cooked_salmon", "perch", "pike", "trout", "kelp", "dried_kelp"],
+    fish: ["clownfish", "salmon", "cod", "pufferfish", "cooked_cod", "charred_pufferfish", "cooked_salmon", "perch", "pike", "trout", "kelp", "dried_kelp", "frozen_kelp"],
     treasure: ["enchanted_fishing_rod", "diamond_sword", "compass", "emerald", "gold_pickaxe", "saddle", "enchanted_bow", "diamond", "enchanted_book", "name_tag", "chainmail_chestplate", "blaze_rod", "eye_of_ender", "magma_cream", "blaze_powder", "molten_gold", "gold_sword", "iron_sword"],
   };
 

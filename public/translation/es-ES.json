@@ -16,9 +16,9 @@
       "credits": {
         "title": "Créditos",
         "0_name": "niqumu",
-        "0_desc": "– Desarrolladora de backend",
+        "0_desc": "– Fundadora original",
         "1_name": "BrookeAFK",
-        "1_desc": "– Desarrolladora de frontend",
+        "1_desc": "– Fundadora, Desarrolladora",
         "2_name": "skinview3d",
         "2_desc": "por Blessing Skin",
         "4_name": "VZGE",
@@ -196,7 +196,7 @@
     "page_number": "Página %%page%% de %%total%%"
   },
   "footer": {
-    "created_by": "Hecho con ♥︎ por <a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a> y <a href=\"https://niqumu.dev\" target=\"_blank\">niqumu</a>."
+    "created_by": "Hecho con ♥︎ por <a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a>."
   },
   "games": {
     "arcade": "Arcade",
@@ -884,6 +884,7 @@
           "trout": "Trucha",
           "kelp": "Alga",
           "dried_kelp": "Alga seca",
+          "frozen_kelp": "Alga congelada",
           "enchanted_fishing_rod": "Caña de pescar encantada",
           "diamond_sword": "Espada de diamante",
           "compass": "Brújula",

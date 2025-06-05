@@ -16,9 +16,9 @@
       "credits": {
         "title": "Crew",
         "0_name": "niqumu",
-        "0_desc": "– Backend Captain",
+        "0_desc": "– Original Founder",
         "1_name": "BrookeAFK",
-        "1_desc": "– Frontend Captain",
+        "1_desc": "– Founder, Developer",
         "2_name": "skinview3d",
         "2_desc": "by Blessing Skin",
         "4_name": "VZGE",
@@ -196,7 +196,7 @@
     "page_number": "Page %%page%% o' %%total%%"
   },
   "footer": {
-    "created_by": "'Tis ship be built by <a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a> an' <a href=\"https://niqumu.dev\" target=\"_blank\">niqumu</a>."
+    "created_by": "Made with ♥︎ by <a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a>."
   },
   "games": {
     "arcade": "Arcade",
@@ -884,6 +884,7 @@
           "trout": "Trout",
           "kelp": "Sea Lettuce",
           "dried_kelp": "Dry Sea Lettuce",
+          "frozen_kelp": "Frozen Kelp",
           "enchanted_fishing_rod": "Enchanted Fishin' Rod",
           "diamond_sword": "Bejeweled Cutlass",
           "compass": "Sextant",

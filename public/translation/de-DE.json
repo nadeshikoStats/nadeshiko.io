@@ -16,9 +16,9 @@
       "credits": {
         "title": "Credits",
         "0_name": "niqumu",
-        "0_desc": "– Backend Developer",
+        "0_desc": "– Original Founder",
         "1_name": "BrookeAFK",
-        "1_desc": "– Frontend Developer",
+        "1_desc": "– Founder, Developer",
         "2_name": "skinview3d",
         "2_desc": "by Blessing Skin",
         "4_name": "VZGE",
@@ -196,7 +196,7 @@
     "page_number": "Page %%page%% of %%total%%"
   },
   "footer": {
-    "created_by": "Made with ♥︎ by <a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a> and <a href=\"https://niqumu.dev\" target=\"_blank\">niqumu</a>."
+    "created_by": "Made with ♥︎ by <a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a>."
   },
   "games": {
     "arcade": "Spielehalle",
@@ -884,6 +884,7 @@
           "trout": "Trout",
           "kelp": "Seetang",
           "dried_kelp": "Dried Kelp",
+          "frozen_kelp": "Frozen Kelp",
           "enchanted_fishing_rod": "Enchanted Fishing Rod",
           "diamond_sword": "Diamond Sword",
           "compass": "Compass",

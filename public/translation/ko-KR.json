@@ -16,9 +16,9 @@
       "credits": {
         "title": "크레딧",
         "0_name": "niqumu",
-        "0_desc": "– 백엔드 개발자",
+        "0_desc": "– Original Founder",
         "1_name": "BrookeAFK",
-        "1_desc": "– 프론트엔드 개발자",
+        "1_desc": "– Founder, Developer",
         "2_name": "skinview3d",
         "2_desc": "(Blessing Skin 제작)",
         "4_name": "VZGE",
@@ -196,7 +196,7 @@
     "page_number": "%%total%% 중 %%page%% 페이지"
   },
   "footer": {
-    "created_by": "<a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a>와 <a href=\"https://niqumu.dev\" target=\"_blank\">niqumu</a>가 ♥︎로 만들었습니다!"
+    "created_by": "Made with ♥︎ by <a href=\"https://brookie.dev\" target=\"_blank\">BrookeAFK</a>."
   },
   "games": {
     "arcade": "Arcade",
@@ -884,6 +884,7 @@
           "trout": "송어",
           "kelp": "다시마",
           "dried_kelp": "말린 다시마",
+          "frozen_kelp": "Frozen Kelp",
           "enchanted_fishing_rod": "인챈트된 낚싯대",
           "diamond_sword": "다이아몬드 검",
           "compass": "나침반",
