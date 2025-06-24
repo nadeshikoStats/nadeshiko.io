@@ -89,8 +89,9 @@
 
       "settings": {
         "size": {
-          "full": "Full",
-          "tiny": "Tiny"
+          "forums": "Forums",
+          "tiny": "Tiny",
+          "full": "Full (Legacy)"
         },
         "format": {
           "hypixel_forums": "Hypixel Forums",

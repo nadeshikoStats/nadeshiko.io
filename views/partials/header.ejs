@@ -63,10 +63,11 @@
     <div class="flex-two-item-basic">
       <p class="tooltip"><span class="card-wizard-subtitle" data-t="header.cards.size">Size</span><span class="tooltiptext" data-t="header.cards.size_tooltip">The height of the card.</span></p>
       <div class="dropdown">
-        <p class="dropdown-button chip-dropdown-button card-wizard-button" id="card-wizard-size-button" data-t="header.cards.settings.size.full">Full</p>
+        <p class="dropdown-button chip-dropdown-button card-wizard-button" id="card-wizard-size-button" data-t="header.cards.settings.size.forums">Forums</p>
         <div class="dropdown-content unloaded dropdown-chip dropdown-wizard dropdown-header" id="card-wizard-size" data-game="wizard" data-modify="size">
-          <div class="dropdown-item selected" data-item="FULL" data-t="header.cards.settings.size.full">Full</div>
+          <div class="dropdown-item selected" data-item="FORUMS" data-t="header.cards.settings.size.forums">Forums</div>
           <div class="dropdown-item" data-item="TINY" data-t="header.cards.settings.size.tiny">Tiny</div>
+          <div class="dropdown-item" data-item="LEGACY_FULL" data-t="header.cards.settings.size.full">Full (Legacy)</div>
         </div>
       </div>
     </div>
@@ -107,15 +108,28 @@
 
     <div id="card-wizard-preview">
       <div id="card-wizard-preview-watermark">PREVIEW</div>
-      <svg class="progress-ring" viewBox="0 0 600 200" preserveAspectRatio="xMinYMin meet" id="progress-ring-svg-FULL">
+      <svg class="progress-ring" viewBox="0 0 600 200" preserveAspectRatio="xMinYMin meet" id="progress-ring-svg-LEGACY_FULL">
         <path
           class="progress-ring-circle"
-          id="progress-ring-FULL"
+          id="progress-ring-LEGACY_FULL"
           d="
           M 11, 11
            L 589, 11
            L 589, 189
            L 11, 189
+           L 11, 11"
+          style="stroke-dashoffset: 0px"
+        ></path>
+      </svg>
+      <svg class="progress-ring" viewBox="0 0 600 136" preserveAspectRatio="xMinYMin meet" id="progress-ring-svg-FORUMS">
+        <path
+          class="progress-ring-circle"
+          id="progress-ring-FORUMS"
+          d="
+          M 11, 11
+           L 589, 11
+           L 589, 125
+           L 11, 125
            L 11, 11"
           style="stroke-dashoffset: 0px"
         ></path>
@@ -298,7 +312,7 @@
 
   let cardWizardSettings = {
     game: "NETWORK",
-    size: "FULL",
+    size: "FORUMS",
     format: "bbcode",
   };
   let settings;

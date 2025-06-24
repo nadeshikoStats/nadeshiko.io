@@ -64,8 +64,9 @@
       },
       "settings": {
         "size": {
-          "full": "大",
-          "tiny": "Tiny"
+          "forums": "Forums",
+          "tiny": "Tiny",
+          "full": "Full (Legacy)"
         },
         "format": {
           "hypixel_forums": "Hypixel 論壇",
