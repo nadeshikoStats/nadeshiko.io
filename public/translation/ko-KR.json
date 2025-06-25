@@ -154,6 +154,8 @@
     "tiers": "단계",
     "game": "이 도전 과제를 달성한 %%game%% 플레이어의 비",
     "global": "이 도전 과제를 달성한 플레이어의 비",
+    "none_matching": "No achievements found matching these criteria.",
+    "select_all": "Select All",
     "all": "전체",
     "locked": "잠김",
     "unlocked": "해금됨",

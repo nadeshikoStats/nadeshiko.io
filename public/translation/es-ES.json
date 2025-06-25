@@ -154,6 +154,8 @@
     "tiers": "Niveles",
     "game": "% de jugadores de %%game%% con este logro",
     "global": "% de todos los jugadores con este logro",
+    "none_matching": "No se encontraron logros que coincidan con estos criterios.",
+    "select_all": "Seleccionar todos",
     "all": "Todos",
     "locked": "Bloqueados",
     "unlocked": "Desbloqueados",

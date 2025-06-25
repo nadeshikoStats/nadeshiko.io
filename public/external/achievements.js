@@ -95,6 +95,157 @@ let secretAchievements = {
   skyblock_finally_over: "Murder Special Agent Amog",
 };
 
+function updateFilters() {
+  let filterStorage = localStorage.getItem("achievement-filters") || "";
+  // is filters an array? parse
+  try {
+    filters = JSON.parse(filterStorage);
+  } catch (e) {
+    filters = [];
+  }
+
+  const filterGames = [
+    { id: "general", name: getTranslation(["games", "general"]), minecraftId: "book" },
+
+    { id: "arcade", name: getTranslation(["games", "arcade"]), minecraftId: "slime_ball" },
+    { id: "arena", name: getTranslation(["games", "arena"]), minecraftId: "blaze_powder" },
+    { id: "bedwars", name: getTranslation(["games", "bedwars"]), minecraftId: "red_bed" },
+    { id: "blitz", name: getTranslation(["games", "blitz"]), minecraftId: "diamond_sword" },
+    { id: "buildbattle", name: getTranslation(["games", "buildbattle"]), minecraftId: "crafting_table" },
+    { id: "copsandcrims", name: getTranslation(["games", "copsandcrims"]), minecraftId: "iron_bars" },
+    { id: "duels", name: getTranslation(["games", "duels"]), minecraftId: "fishing_rod" },
+    { id: "housing", name: getTranslation(["games", "housing"]), minecraftId: "dark_oak_door" },
+    { id: "megawalls", name: getTranslation(["games", "megawalls"]), minecraftId: "soul_sand" },
+    { id: "murdermystery", name: getTranslation(["games", "murdermystery"]), minecraftId: "bow" },
+    { id: "paintball", name: getTranslation(["games", "paintball"]), minecraftId: "snowball" },
+    { id: "pit", name: getTranslation(["games", "pit"]), minecraftId: "dirt" },
+    { id: "quakecraft", name: getTranslation(["games", "quakecraft"]), minecraftId: "firework_rocket" },
+    { id: "skyblock", name: getTranslation(["games", "skyblock"]), minecraftId: "head_skyblock" },
+    { id: "skywars", name: getTranslation(["games", "skywars"]), minecraftId: "ender_eye" },
+    { id: "smashheroes", name: getTranslation(["games", "smashheroes"]), minecraftId: "head_smashheroes" },
+    { id: "speeduhc", name: getTranslation(["games", "speeduhc"]), minecraftId: "golden_carrot" },
+    { id: "tkr", name: getTranslation(["games", "tkr"]), minecraftId: "minecart" },
+    { id: "tntgames", name: getTranslation(["games", "tntgames"]), minecraftId: "tnt" },
+    { id: "uhc", name: getTranslation(["games", "uhc"]), minecraftId: "golden_apple" },
+    { id: "vampirez", name: getTranslation(["games", "vampirez"]), minecraftId: "wither_skeleton_skull" },
+    { id: "walls", name: getTranslation(["games", "walls"]), minecraftId: "sand" },
+    { id: "warlords", name: getTranslation(["games", "warlords"]), minecraftId: "stone_axe" },
+    { id: "woolgames", name: getTranslation(["games", "woolgames"]), minecraftId: "white_wool" },
+
+    { id: "easter", name: getTranslation(["games", "easter"]), minecraftId: "head_easter" },
+    { id: "halloween", name: getTranslation(["games", "halloween"]), minecraftId: "head_halloween" },
+    { id: "holiday", name: getTranslation(["games", "holiday"]), minecraftId: "head_seasonal" },
+    { id: "summer", name: getTranslation(["games", "summer"]), minecraftId: "head_summer" },
+  ];
+
+  // sort games by name
+  filterGames.sort((a, b) => a.name.localeCompare(b.name));
+
+  filterGames.unshift({ id: "all", name: getTranslation(["achievements", "select_all"]), minecraftId: null });
+
+  const filterContainers = document.querySelectorAll(".filter-container");
+  filterContainers.forEach(container => {
+    container.innerHTML = "";
+
+    for (let game of filterGames) {
+      const filter = document.createElement("span");
+      filter.className = "filter-game multicolor-badge";
+      if (game.minecraftId) {
+        filter.innerHTML = `<img src="/img/icon/minecraft/${game.minecraftId}.png" class="leaderboard-icon icon" alt="">`;
+      }
+
+      filter.dataset.game = game.id;
+      filter.innerHTML += game.name;
+
+      if (!filters.includes(game.id)) {
+        if (game.id == "all") {
+          if (filters.length == 0) {
+            filter.classList.add("selected");
+          }
+        } else {
+          filter.classList.add("selected");
+        }
+      }
+
+      filter.addEventListener("click", () => onClickFilter(filter, game.id));
+      container.appendChild(filter);
+    }
+
+    let filtersEmpty = filters.length == 0;
+
+    const filterIcons = document.querySelectorAll(".filter");
+    filterIcons.forEach(icon => {
+      if (filtersEmpty) {
+        icon.classList.remove("selected");
+      } else {
+        icon.classList.add("selected");
+      }
+    });
+  });
+
+  function onClickFilter(filter, gameId) {
+    if (gameId == "all") {
+      if (filters.length == 0) {
+        filters = filterGames.map(game => game.id).filter(id => id !== "all");
+      } else {
+        filters = [];
+      }
+    } else {
+      if (filters.includes(gameId)) {
+        filters = filters.filter(filter => filter !== gameId);
+      } else {
+        filters.push(gameId);
+      }
+    }
+
+    localStorage.setItem("achievement-filters", JSON.stringify(filters));
+
+    // update toggles for each instance of filterContainers
+    const filterContainers = document.querySelectorAll(".filter-container");
+    filterContainers.forEach(container => {
+      let children = container.children;
+      for (let child of children) {
+        let childGameId = child.dataset.game;
+
+        if (gameId === "all") {
+          // update every filter
+          if (childGameId !== "all") {
+            child.classList.toggle("selected", !filters.includes(childGameId));
+          }
+        } else {
+          // only update that one filter
+          if (childGameId == gameId) {
+            child.classList.toggle("selected", !filters.includes(gameId));
+          }
+        }
+      }
+
+      // handle the "all" button state
+      const allButton = container.querySelector('[data-game="all"]');
+      if (allButton) {
+        const allGames = filterGames.filter(g => g.id !== "all").map(g => g.id);
+        const allSelected = allGames.every(g => !filters.includes(g));
+        allButton.classList.toggle("selected", allSelected);
+      }
+    });
+
+    updateClosestTiered();
+    updateEasiestOneTime();
+    updateRecentlyCompleted();
+
+    let filtersEmpty = filters.length == 0;
+
+    const filterIcons = document.querySelectorAll(".filter");
+    filterIcons.forEach(icon => {
+      if (filtersEmpty) {
+        icon.classList.remove("selected");
+      } else {
+        icon.classList.add("selected");
+      }
+    });
+  }
+}
+
 function getSecretAchievement(achievement) {
   if (secretAchievements[achievement]) {
     return secretAchievements[achievement];
@@ -275,6 +426,7 @@ function generateNetwork() {
 
 function getOneTimeStats(fullName) {
   let underscoreIndex = fullName.indexOf("_");
+
   let gameName = demodernifyGameName(fullName.substring(0, underscoreIndex));
   let achievementName = fullName.substring(underscoreIndex + 1).toUpperCase();
 
@@ -421,7 +573,7 @@ function gameProgress(game) {
       }
     } else {
       if (game != "legacy" && game != "secret") {
-        playerFormattedOneTimeAchievements.push([
+        lockedFormattedOneTimeAchievements.push([
           `${game}_${achievement}`,
           {
             game: game,
@@ -531,38 +683,59 @@ function updateHeaderGameProgress() {
 }
 
 function updateClosestTiered() {
+  document.getElementById("achievements-closest-tiers").innerHTML = "";
+
   // Removing achievements with progress >= 1
-  playerFormattedTierAchievements = playerFormattedTierAchievements.filter((achievement) => achievement[1].progress < 1);
+  let filteredPlayerFormattedTierAchievements = playerFormattedTierAchievements.filter((achievement) => achievement[1].progress < 1);
+  filteredPlayerFormattedTierAchievements = filteredPlayerFormattedTierAchievements.filter((achievement) => !filters.includes(achievement[1]["game"]));
 
   // Sorting the remaining achievements by progress value, highest to lowest
-  playerFormattedTierAchievements.sort((a, b) => b[1].progress - a[1].progress);
+  filteredPlayerFormattedTierAchievements.sort((a, b) => b[1].progress - a[1].progress);
 
-  let maximumIndex = Math.min(50, playerFormattedTierAchievements.length);
+  let maximumIndex = Math.min(50, filteredPlayerFormattedTierAchievements.length);
   for (let i = 0; i < maximumIndex; i++) {
-    let achievement = playerFormattedTierAchievements[i];
+    let achievement = filteredPlayerFormattedTierAchievements[i];
     let achievementElement = formatTieredAchievement(achievement, "closestTiered");
     document.getElementById("achievements-closest-tiers").appendChild(achievementElement);
+  }
+
+  if (filteredPlayerFormattedTierAchievements.length == 0) {
+    document.getElementById("achievements-closest-tiers").innerHTML = `<p class="no-achievements">${getTranslation("achievements.none_matching")}</p>`;
   }
 }
 
 function updateEasiestOneTime() {
-  playerFormattedOneTimeAchievements.sort((a, b) => b[1]["max_unlocked"] - a[1]["max_unlocked"]);
+  document.getElementById("achievements-easiest-uncompleted").innerHTML = "";
 
-  let maximumIndex = Math.min(50, playerFormattedOneTimeAchievements.length);
+  let filteredLockedFormattedOneTimeAchievements = lockedFormattedOneTimeAchievements.filter((achievement) => !filters.includes(achievement[1]["game"]));
+  filteredLockedFormattedOneTimeAchievements.sort((a, b) => b[1]["max_unlocked"] - a[1]["max_unlocked"]);
+
+  let maximumIndex = Math.min(50, filteredLockedFormattedOneTimeAchievements.length);
   for (let i = 0; i < maximumIndex; i++) {
-    let achievement = playerFormattedOneTimeAchievements[i];
+    let achievement = filteredLockedFormattedOneTimeAchievements[i];
     let achievementElement = formatTieredAchievement(achievement, "easiestUncompleted");
     document.getElementById("achievements-easiest-uncompleted").appendChild(achievementElement);
+  }
+
+  if (filteredLockedFormattedOneTimeAchievements.length == 0) {
+    document.getElementById("achievements-easiest-uncompleted").innerHTML = `<p class="no-achievements">${getTranslation("achievements.none_matching")}</p>`;
   }
 }
 
 function updateRecentlyCompleted() {
-  let recentAchievements = playerOneTimeAchievements.reverse().slice(0, 50);
+  document.getElementById("achievements-recently-completed").innerHTML = "";
+
+  let filteredPlayerOneTimeAchievements = playerOneTimeAchievements.filter((achievement) => !filters.includes(modernifyGameName(achievement.replace(/_.*/g, ""))));
+  let recentAchievements = filteredPlayerOneTimeAchievements.reverse().slice(0, 50);
 
   for (let a = 0; a < recentAchievements.length; a++) {
     let achievement = getOneTimeStats(recentAchievements[a]);
     let achievementElement = formatTieredAchievement(achievement, "recentlyCompleted");
     document.getElementById("achievements-recently-completed").appendChild(achievementElement);
+  }
+
+  if (recentAchievements.length == 0) {
+    document.getElementById("achievements-recently-completed").innerHTML = `<p class="no-achievements">${getTranslation("achievements.none_matching")}</p>`;
   }
 }
 

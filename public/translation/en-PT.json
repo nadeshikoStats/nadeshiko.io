@@ -154,6 +154,8 @@
     "tiers": "Tiers",
     "game": "% o' %%game%% pirates that 'ave accomplished 'tis",
     "global": "% o' all pirates in th' seven seas who 'ave completed 'tis",
+    "none_matching": "No achievements found matching these criteria.",
+    "select_all": "Select All",
     "all": "All",
     "locked": "Nah Plundered",
     "unlocked": "Plundered",

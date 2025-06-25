@@ -154,6 +154,8 @@
     "tiers": "Níveis",
     "game": "% de jogadores de %%game%% com essa conquista",
     "global": "% de todos os jogadores com essa conquista",
+    "none_matching": "No achievements found matching these criteria.",
+    "select_all": "Select All",
     "all": "Todas",
     "locked": "Bloqueada",
     "unlocked": "Desbloqueada",

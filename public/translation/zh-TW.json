@@ -154,6 +154,8 @@
     "tiers": "階級",
     "game": "%%game%%玩家解鎖此成就的百分比",
     "global": "所有玩家解鎖此成就的百分比",
+    "none_matching": "No achievements found matching these criteria.",
+    "select_all": "Select All",
     "all": "全部",
     "locked": "未解鎖",
     "unlocked": "已解鎖",

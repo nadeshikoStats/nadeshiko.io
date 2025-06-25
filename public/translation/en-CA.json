@@ -193,6 +193,9 @@
     "game": "% of %%game%% players with this achievement",
     "global": "% of all players with this achievement",
 
+    "none_matching": "No achievements found matching these criteria.",
+    "select_all": "Select All",
+
     "all": "All",
     "locked": "Locked",
     "unlocked": "Unlocked",

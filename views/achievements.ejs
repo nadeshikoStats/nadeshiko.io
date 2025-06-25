@@ -31,6 +31,7 @@
 
           if (tasksBeforeLoading.length == 0) {
             updateTranslations();
+            updateFilters();
 
             globalAchievements = getValue(achievementsStats, ["global", "achievements"]) || [];
 
@@ -68,6 +69,40 @@
             switchStats(currentGamemode);
             document.getElementById("header-name").classList.remove("unloaded");
             updateHeaderGameProgress();
+
+
+            // Filter toggles (show / hide filter-container)
+
+            // Start with all filter containers collapsed
+            document.querySelectorAll('.achievement-chip .filter-container').forEach(container => {
+              container.classList.add('collapsed');
+            });
+
+            // event listeners targeting sibling filter-container
+            document.querySelectorAll('.achievement-chip .filter').forEach(toggle => {
+              const chip = toggle.closest('.chip-small');
+              if (!chip) return;
+              const container = chip.querySelector('.filter-container');
+              if (!container) return;
+
+              toggle.addEventListener('click', () => {
+                container.classList.toggle('collapsed');
+
+                // annoying height expansion logic
+                if (!container.classList.contains('collapsed')) {
+                  // Force reflow then remove inline height
+                  container.style.maxHeight = container.scrollHeight + 'px';
+                  // Reset to default after transition completes to allow for responsive content
+                  setTimeout(() => {
+                    container.style.maxHeight = '';
+                  }, 300);
+                } else {
+                  container.style.maxHeight = container.scrollHeight + 'px';
+                  container.offsetHeight; // reflow
+                  container.style.maxHeight = '';
+                }
+              });
+            });
           }
         } else {
           console.log(`Task ${task} was already completed or is not a task; remaining tasks: ${tasksBeforeLoading}`);
@@ -166,16 +201,18 @@
                 <div class="chip-small achievement-chip">
                   <div class="chip-small-top">
                     <p class="chip-small-title" data-t="achievements.easiest_uncompleted">Easiest Uncompleted</p>
-                    <span class="flex-two-item"></span>
+                    <img class="filter" src="/img/svg/filter.svg" alt="Filter">
                   </div>
+                  <div class="filter-container collapsed"></div>
                   <div class="list achievements-overall-container" id="achievements-easiest-uncompleted"></div>
                 </div>
 
                 <div class="chip-small achievement-chip">
                   <div class="chip-small-top">
                     <p class="chip-small-title" data-t="achievements.recently_completed">Recently Completed</p>
-                    <span class="flex-two-item"></span>
+                    <img class="filter" src="/img/svg/filter.svg" alt="Filter">
                   </div>
+                  <div class="filter-container collapsed"></div>
                   <div class="list achievements-overall-container" id="achievements-recently-completed"></div>
                 </div>
               </div>
@@ -183,8 +220,9 @@
                 <div class="chip-small achievement-chip">
                   <div class="chip-small-top">
                     <p class="chip-small-title" data-t="achievements.closest_tiers">Closest Tiered</p>
-                    <span class="flex-two-item"></span>
+                    <img class="filter" src="/img/svg/filter.svg" alt="Filter">
                   </div>
+                  <div class="filter-container collapsed"></div>
                   <div class="list achievements-overall-container" id="achievements-closest-tiers"></div>
                 </div>
               </div>
@@ -201,6 +239,7 @@
       let validGames = ["overall", "legacy", "skyclash", "truecombat", "secret", "general", "bedwars", "duels", "skywars", "arcade", "buildbattle", "murdermystery", "tntgames", "pit", "tkr", "arena", "quakecraft", "walls", "vampirez", "paintball", "megawalls", "copsandcrims", "uhc", "speeduhc", "blitz", "woolgames", "warlords", "smashheroes", "skyblock", "housing", "holiday", "easter", "halloween", "summer"];
       let generalGames = ["general", "holiday", "easter", "halloween", "summer"];
       let currentGamemode = "<%= game %>";
+      let filters = []; // games that are "filtered out" (hidden)
 
       if (!validGames.includes(currentGamemode)) {
         console.warn(`Invalid game mode; defaulting to the default game (overall)`);
@@ -224,7 +263,7 @@
 
       let globalAchievements, playerOneTimeAchievements, playerTieredAchievements;
       let playerFormattedTierAchievements = [];
-      let playerFormattedOneTimeAchievements = [];
+      let lockedFormattedOneTimeAchievements = [];
       let achievementsDatabase = {
         legacy: {
           tiered: {},

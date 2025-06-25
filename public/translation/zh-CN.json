@@ -154,6 +154,8 @@
     "tiers": "完成度",
     "game": "在 %%game%% 中拥有该成就的玩家百分比",
     "global": "拥有以下成就的玩家百分比",
+    "none_matching": "No achievements found matching these criteria.",
+    "select_all": "Select All",
     "all": "全部",
     "locked": "未解锁",
     "unlocked": "已解锁",

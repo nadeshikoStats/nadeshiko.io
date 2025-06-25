@@ -2014,6 +2014,69 @@ a.general-button {
   grid-template-columns: 1.5fr 6fr 0.8fr 0fr 0fr;
 }
 
+.achievement-chip .filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px;
+  transition: max-height var(--transition-small) ease, opacity var(--transition-small) ease, padding var(--transition-small) ease, margin var(--transition-small) ease;
+  overflow: hidden;
+  max-height: 500px;
+}
+
+.achievement-chip .filter-container.collapsed {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.achievement-chip .filter {
+  cursor: pointer;
+  user-select: none;
+
+  border-radius: 999px;
+  height: 25px;
+  padding: 3px;
+  transition-duration: var(--transition-small);
+}
+
+.achievement-chip .filter:hover {
+  opacity: 0.8;
+}
+
+.achievement-chip .filter.selected {
+  background-color: #000;
+  filter: invert(1);
+}
+
+.achievement-chip .filter-game {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.achievement-chip .multicolor-badge {
+  background-color: #222;
+  transition-duration: var(--transition-small);
+}
+
+.achievement-chip .multicolor-badge.selected {
+  background-color: #ddd;
+  color: black;
+}
+
+.achievement-chip .multicolor-badge:hover {
+  opacity: 0.8;
+}
+
+.no-achievements {
+  text-align: center;
+  color: #888;
+  padding: 10px;
+}
+
 /* Spoilers for achievements page */
 
 .spoiler {

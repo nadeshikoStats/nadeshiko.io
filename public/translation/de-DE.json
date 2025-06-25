@@ -154,6 +154,8 @@
     "tiers": "Tiers",
     "game": "% of %%game%% players with this achievement",
     "global": "% alle Spieler mit dieser Errungenschaft",
+    "none_matching": "No achievements found matching these criteria.",
+    "select_all": "Select All",
     "all": "Alle",
     "locked": "Gesperrt",
     "unlocked": "Freigeschaltet",
