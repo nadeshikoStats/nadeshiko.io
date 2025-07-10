@@ -531,13 +531,13 @@
     cardSize = cardWizardSettings["size"];
     cardFormat = cardWizardSettings["format"];
 
-    if (cardGame == "SKYBLOCK_GENERAL" && cardSize == "TINY") {
-      document.getElementById("card-not-available").style.display = "initial";
-      document.getElementById("generate-card").classList.add("disabled");
-      return;
-    } else {
+    // if (cardGame == "SKYBLOCK_GENERAL" && cardSize == "TINY") {
+    //   document.getElementById("card-not-available").style.display = "initial";
+    //   document.getElementById("generate-card").classList.add("disabled");
+    //   return;
+    // } else {
       document.getElementById("card-not-available").style.display = "none";
-    }
+    //}
 
 
     let currentDate = Math.floor(Date.now() / 1000); // Adding a random number to the end of the URL prevents Hypixel's cache from erroring out on old cards. It's weird.
