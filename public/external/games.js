@@ -43,6 +43,17 @@ function generateNetwork() {
     }
 
     updateElement("card-name", playerData["name"]);
+
+    if (playerData.hypixel_displayname && playerData.name.toLowerCase() !== playerData.hypixel_displayname.toLowerCase()) {
+      const aliasContainer = document.getElementById('username-alias');
+      const aliasName = document.getElementById('username-alias-name');
+      
+      aliasName.textContent = playerData.hypixel_displayname;
+      aliasName.style.color = `var(--mc` + playerRankCute[0] + `)`; // Changes the player's name to the player's rank colour
+      
+      aliasContainer.style.display = 'inline';
+    }
+
     updateElement("quick-mode-text", insertPlaceholders(getTranslation("player.quick_mode.description"), { player: playerData["name"] }), true);
     if (document.getElementById("quick-mode-username") != null) {
       document.getElementById("quick-mode-username").style.color = `var(--mc` + playerRankCute[0] + `)`;

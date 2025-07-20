@@ -134,6 +134,7 @@
     "coin_multiplier": "Münz-Multiplikator",
     "rankings": "Rankings",
     "show_more": "Show More",
+    "alias": "AKA",
     "errors": {
       "no_stats": "Keine Hypixel Statistiken",
       "no_stats_desc": "Dieser Spieler hat keine Hypixel Statistiken.",

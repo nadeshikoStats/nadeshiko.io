@@ -134,6 +134,7 @@
     "coin_multiplier": "Doubloon Multiplier",
     "rankings": "Rankings",
     "show_more": "Show More",
+    "alias": "AKA",
     "errors": {
       "no_stats": "No Hypixel Stats",
       "no_stats_desc": "'Tis pirate be a lousy landlubber wit' no Hypixel stats!",

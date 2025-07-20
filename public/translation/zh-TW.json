@@ -134,6 +134,7 @@
     "coin_multiplier": "硬幣加成",
     "rankings": "Rankings",
     "show_more": "Show More",
+    "alias": "AKA",
     "errors": {
       "no_stats": "查無 Hypixel 戰績",
       "no_stats_desc": "此玩家尚無與 Hypixel 相關的統計數據。",

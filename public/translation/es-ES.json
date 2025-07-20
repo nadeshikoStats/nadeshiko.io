@@ -134,6 +134,7 @@
     "coin_multiplier": "Multiplicador de monedas",
     "rankings": "Rankings",
     "show_more": "Mostrar más",
+    "alias": "Alias",
     "errors": {
       "no_stats": "Sin estadísticas de Hypixel",
       "no_stats_desc": "Este jugador no tiene estadísticas de Hypixel.",

@@ -1379,6 +1379,17 @@ a.general-button {
   background: linear-gradient(193deg, #f5f 0%, rgb(217, 53, 217) 100%);
 }
 
+#username-alias {
+  font-size: 16px;
+  display: none;
+  margin-inline-start: 6px;
+  margin-top: 3px;
+}
+
+#username-alias-name {
+  font-weight: 500;
+}
+
 #card-name {
   margin-inline-start: 6px;
   margin-inline-end: 6px;

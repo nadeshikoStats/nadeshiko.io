@@ -134,6 +134,7 @@
     "coin_multiplier": "코인 배수",
     "rankings": "Rankings",
     "show_more": "Show More",
+    "alias": "AKA",
     "errors": {
       "no_stats": "Hypixel 전적이 없습니다",
       "no_stats_desc": "이 플레이어는 Hypixel 전적이 없습니다.",
