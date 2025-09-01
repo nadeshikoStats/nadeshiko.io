@@ -333,7 +333,6 @@ function generateNetwork() {
     addRecentPlayer(playerData["name"]);
   }
 }
-
 function linearGradient(colors) {
   // Generates a linear gradient based on an array of hex colour or Minecraft colour code inputs
   var gradient = "linear-gradient(90deg";
@@ -553,7 +552,6 @@ function generateBedWars() {
   minigameFragments["bedwars"] = minigameFragment;
   document.getElementById("games").appendChild(minigameFragment);
 }
-
 function generateSkyWars() {
   let minigameTemplate = `
       <!-- skywars stats -->
@@ -679,7 +677,6 @@ function generateSkyWars() {
         ],
       ],
     ];
-
     for (a = 0; a < skyWarsStatsToShow.length; a++) {
       // Regular stats
       let skyWarsChip = [
@@ -922,22 +919,18 @@ function getDuelsStats(mode, is_bridge = false, cuteName) {
   }
 
   let duelsModeStats = [
-    [
       [true, [getTranslation("statistics.winstreak"), importedDuelsStats[0]], [getTranslation("statistics.best_winstreak"), importedDuelsStats[1]]],
       [false, [getTranslation("statistics.wins"), importedDuelsStats[2]], [getTranslation("statistics.losses"), importedDuelsStats[3]], [getTranslation("statistics.wlr"), importedDuelsStats[4]]],
-    ]
   ];
 
-  if (mode != "parkour_eight" && mode != "bowspleef_duel") { // Some modes don't have kills
-    duelsModeStats[0].push([false, [getTranslation("statistics.kills"), importedDuelsStats[5]], [getTranslation("statistics.deaths"), importedDuelsStats[6]], [getTranslation("statistics.kdr"), importedDuelsStats[7]]]);
+  if (mode != "parkour_eight" && mode != "bowspleef_duel" && mode != "spleef_duel" && mode != "spleef") { // Some modes don't have kills
+    duelsModeStats.push([false, [getTranslation("statistics.kills"), importedDuelsStats[5]], [getTranslation("statistics.deaths"), importedDuelsStats[6]], [getTranslation("statistics.kdr"), importedDuelsStats[7]]]);
   }
-
-  duelsModeStats.push(getDuelsTitle(und(duelsStats[mode + "_wins"]), cuteName))
 
   return duelsModeStats;
 }
 
-function getDuelsOverallModeStats(modeArray, is_bridge = false, cuteName) {
+function getDuelsOverallModeStats(modeArray, is_bridge = false, cuteName, prefixScheme, prefixBold) {
   if (is_bridge) {
     roundRobinDuelsStatNames = ["wins", "losses", "bridge_kills", "bridge_deaths"];
   } else {
@@ -957,7 +950,7 @@ function getDuelsOverallModeStats(modeArray, is_bridge = false, cuteName) {
       [false, [getTranslation("statistics.wins"), checkAndFormat(roundRobinDuelsStats[0])], [getTranslation("statistics.losses"), checkAndFormat(roundRobinDuelsStats[1])], [getTranslation("statistics.wlr"), calculateRatio(roundRobinDuelsStats[0], roundRobinDuelsStats[1])]],
       [false, [getTranslation("statistics.kills"), checkAndFormat(roundRobinDuelsStats[2])], [getTranslation("statistics.deaths"), checkAndFormat(roundRobinDuelsStats[3])], [getTranslation("statistics.kdr"), calculateRatio(roundRobinDuelsStats[2], roundRobinDuelsStats[3])]],
     ],
-    getDuelsTitle(und(roundRobinDuelsStats[0]), cuteName),
+    getDuelsTitle(und(roundRobinDuelsStats[0]), cuteName, prefixScheme, prefixBold),
   ];
 }
 
@@ -1004,7 +997,6 @@ function maxStats(statNames, modeNames, statArray, separator = "_", reverse = fa
   }
   return statMax;
 }
-
 function generateDuels() {
   let minigameTemplate = `
         <!-- duels stats -->
@@ -1074,7 +1066,16 @@ function generateDuels() {
 
   // Generates stats and chips for Duels
   duelsStats = playerData["stats"]["Duels"] || {};
+
   if (duelsStats != undefined) {
+
+    let duelsPrefixScheme = duelsStats["active_prefix_scheme"]
+    let duelsPrefixBold = false;
+    const duelsSettings = duelsStats["settings"];
+    if (duelsSettings != undefined) {
+      duelsPrefixBold = duelsSettings["prefix_bold"] || false;
+    }
+
     duelsChips = [];
 
     let easyStats = ["wins", "losses", "kills", "deaths", "current_winstreak", "best_overall_winstreak", "coins", "melee_swings"];
@@ -1086,7 +1087,7 @@ function generateDuels() {
     updateScopedElement("duels-overall-wlr", calculateRatio(duelsStats["wins"], duelsStats["losses"]));
     updateScopedElement("duels-overall-damage-dealt", checkAndFormat(duelsStats["damage_dealt"] / 2) + ` ♥&#xFE0E;`, true);
 
-    overallDuelsTitle = getDuelsTitle(und(duelsStats["wins"]));
+    overallDuelsTitle = getDuelsTitle(und(duelsStats["wins"]), "", duelsPrefixScheme, duelsPrefixBold);
 
     let winsToGo = overallDuelsTitle[1];
     let formattedWinsToGo;
@@ -1109,133 +1110,290 @@ function generateDuels() {
     updateScopedElement("duels-overall-progress-number", Math.floor(duelsProgress * 100) + "%");
     activeScope.getElementById("duels-overall-progress-bar").style.width = Math.floor(duelsProgress * 100) + "%";
 
-    var duelsModes = [
-      ["UHC 1v1", "uhc_duel", "uhc", false],
-      ["UHC 2v2", "uhc_doubles", "uhc", false],
-      ["UHC 4v4", "uhc_four", "uhc", false],
-      ["UHC Deathmatch", "uhc_meetup", "uhc", false],
-      ["OP 1v1", "op_duel", "op", false],
-      ["OP 2v2", "op_doubles", "op", false],
-      ["SkyWars 1v1", "sw_duel", "sw", false],
-      ["SkyWars 2v2", "sw_doubles", "sw", false],
-      [getTranslation("games.modes.duels.bow.category"), "bow_duel", "bow", false],
-      [getTranslation("games.modes.duels.blitz.category"), "blitz_duel", "blitz", false],
-      ["Mega Walls", "mw_duel", "mw", false],
-      ["Mega Walls Doubles", "mw_doubles", "mw", false],
-      [getTranslation("games.modes.duels.sumo.category"), "sumo_duel", "sumo", false],
-      [getTranslation("games.modes.duels.bowspleef.category"), "bowspleef_duel", "bowspleef", false],
-      [getTranslation("games.modes.duels.parkour.category"), "parkour_eight", "parkour", false],
-      [getTranslation("games.modes.duels.boxing.category"), "boxing_duel", "boxing", false],
-      [getTranslation("games.modes.duels.classic.category"), "classic_duel", "classic", false],
-      [getTranslation("games.modes.duels.potion.category"), "potion_duel", "nodebuff", false],
-      [getTranslation("games.modes.duels.combo.category"), "combo_duel", "combo", false],
-      ["Bridge 1v1", "bridge_duel", "bridge", true],
-      ["Bridge 2v2", "bridge_doubles", "bridge", true],
-      ["Bridge 3v3", "bridge_threes", "bridge", true],
-      ["Bridge 4v4", "bridge_four", "bridge", true],
-      ["Bridge 2v2v2v2", "bridge_2v2v2v2", "bridge", true],
-      ["Bridge 3v3v3v3", "bridge_3v3v3v3", "bridge", true],
-      ["Bridge CTF 3v3", "capture_threes", "bridge", true],
-      [getTranslation("games.modes.duels.arena.category"), "duel_arena", "arena", false],
-    ];
-
-    var duelsWithMultipleModes = [
-      ["bridge", getTranslation("games.modes.duels.bridge.category"), ["bridge_duel", "bridge_doubles", "bridge_threes", "bridge_four", "bridge_2v2v2v2", "bridge_3v3v3v3", "capture_threes"]],
-      ["mw", getTranslation("games.modes.duels.mw.category"), ["mw_duel", "mw_doubles"]],
-      ["sw", getTranslation("games.modes.duels.sw.category"), ["sw_duel", "sw_doubles"]],
-      ["op", getTranslation("games.modes.duels.op.category"), ["op_duel", "op_doubles"]],
-      ["uhc", getTranslation("games.modes.duels.uhc.category"), ["uhc_duel", "uhc_doubles"]],
-    ];
-
-    var duelsStatsToShow = [
-      [
-        "sw",
-        getTranslation("games.modes.duels.sw.category"),
-        [
-          [getTranslation("games.modes.all.overall"), "sw"],
-          [getTranslation("games.modes.duels.sw.sw_duel"), "sw_duel"],
-          [getTranslation("games.modes.duels.sw.sw_doubles"), "sw_doubles"],
+ 
+    const duelsModesConfig = {
+      // refactored
+      bridge: {
+        category: "bridge",
+        displayName: getTranslation("games.modes.duels.bridge.category"),
+        icon: "blue_terracotta",
+        isPopular: true,
+        displayOrder: 1,
+        modes: {
+          bridge_duel: { name: "Bridge 1v1", isHot: true },
+          bridge_doubles: { name: "Bridge 2v2", isHot: true },
+          bridge_threes: { name: "Bridge 3v3", isHot: true },
+          bridge_four: { name: "Bridge 4v4", isHot: true },
+        },
+        submodeStats: [
+          { name: getTranslation("games.modes.all.overall"), key: "bridge" },
+          { name: getTranslation("games.modes.duels.bridge.bridge_duel"), key: "bridge_duel" },
+          { name: getTranslation("games.modes.duels.bridge.bridge_doubles"), key: "bridge_doubles" },
+          { name: getTranslation("games.modes.duels.bridge.bridge_threes"), key: "bridge_threes" },
+          { name: getTranslation("games.modes.duels.bridge.bridge_four"), key: "bridge_four" },
+        ]
+      },
+      
+      classic: {
+        category: "classic",
+        displayName: getTranslation("games.modes.duels.classic.category"),
+        icon: "fishing_rod",
+        isPopular: true,
+        displayOrder: 2,
+        hasOverallStats: true,
+        modes: {
+          classic_duel: { name: getTranslation("games.modes.duels.classic.classic_duel"), isHot: false },
+          classic_doubles: { name: getTranslation("games.modes.duels.classic.classic_doubles"), isHot: false },
+        },
+        submodeStats: [
+          { name: getTranslation("games.modes.all.overall"), key: "classic" },
+          { name: getTranslation("games.modes.duels.classic.classic_duel"), key: "classic_duel" },
+          { name: getTranslation("games.modes.duels.classic.classic_doubles"), key: "classic_doubles" },
         ],
-        "ender_eye",
-      ],
-      [
-        "uhc",
-        getTranslation("games.modes.duels.uhc.category"),
-        [
-          [getTranslation("games.modes.all.overall"), "uhc"],
-          [getTranslation("games.modes.duels.uhc.uhc_duel"), "uhc_duel"],
-          [getTranslation("games.modes.duels.uhc.uhc_doubles"), "uhc_doubles"],
-          [getTranslation("games.modes.duels.uhc.uhc_four"), "uhc_four"],
-          [getTranslation("games.modes.duels.uhc.uhc_meetup"), "uhc_meetup"],
-        ],
-        "head_uhc",
-      ],
-      ["sumo_duel", getTranslation("games.modes.duels.sumo.category"), [], "slime_ball"],
-      ["parkour_eight", getTranslation("games.modes.duels.parkour.category"), [], "feather"],
-      ["blitz_duel", getTranslation("games.modes.duels.blitz.category"), [], "diamond_sword"],
-      ["bow_duel", getTranslation("games.modes.duels.bow.category"), [], "bow"],
-      [
-        "mw",
-        getTranslation("games.modes.duels.mw.category"),
-        [
-          [getTranslation("games.modes.all.overall"), "mw"],
-          [getTranslation("games.modes.duels.mw.mw_duel"), "mw_duel"],
-          [getTranslation("games.modes.duels.mw.mw_doubles"), "mw_doubles"],
-        ],
-        "soul_sand",
-      ],
-      ["bowspleef_duel", getTranslation("games.modes.duels.bowspleef.category"), [], "tnt"],
-      [
-        "op",
-        getTranslation("games.modes.duels.op.category"),
-        [
-          [getTranslation("games.modes.all.overall"), "op"],
-          [getTranslation("games.modes.duels.op.op_duel"), "op_duel"],
-          [getTranslation("games.modes.duels.op.op_doubles"), "op_doubles"],
-        ],
-        "diamond_chestplate",
-      ],
-      ["combo_duel", getTranslation("games.modes.duels.combo.category"), [], "potion_weakness"],
-      ["boxing_duel", getTranslation("games.modes.duels.boxing.category"), [], "head_boxing"],
-      ["potion_duel", getTranslation("games.modes.duels.potion.category"), [], "potion_fire_resistance"],
-    ];
+      },
+      
+      uhc: {
+        category: "uhc",
+        displayName: getTranslation("games.modes.duels.uhc.category"),
+        icon: "head_uhc",
+        hasOverallStats: true,
+        overallModesInclude: ["uhc_duel", "uhc_doubles"], // uhc four doesn't count for overall stats?
+        modes: {
+          uhc_duel: { name: "UHC 1v1", isHot: false },
+          uhc_doubles: { name: "UHC 2v2", isHot: false },
+          uhc_four: { name: "UHC 4v4", isHot: false },
+        },
+        submodeStats: [
+          { name: getTranslation("games.modes.all.overall"), key: "uhc" },
+          { name: getTranslation("games.modes.duels.uhc.uhc_duel"), key: "uhc_duel" },
+          { name: getTranslation("games.modes.duels.uhc.uhc_doubles"), key: "uhc_doubles" },
+          { name: getTranslation("games.modes.duels.uhc.uhc_four"), key: "uhc_four" },
+        ]
+      },
+      
+      op: {
+        category: "op",
+        displayName: getTranslation("games.modes.duels.op.category"),
+        icon: "diamond_chestplate",
+        hasOverallStats: true,
+        modes: {
+          op_duel: { name: "OP 1v1", isHot: false },
+          op_doubles: { name: "OP 2v2", isHot: false }
+        },
+        submodeStats: [
+          { name: getTranslation("games.modes.all.overall"), key: "op" },
+          { name: getTranslation("games.modes.duels.op.op_duel"), key: "op_duel" },
+          { name: getTranslation("games.modes.duels.op.op_doubles"), key: "op_doubles" }
+        ]
+      },
+      
+      sw: {
+        category: "sw",
+        displayName: getTranslation("games.modes.duels.sw.category"),
+        icon: "ender_eye",
+        hasOverallStats: true,
+        modes: {
+          sw_duel: { name: "SkyWars 1v1", isHot: false },
+          sw_doubles: { name: "SkyWars 2v2", isHot: false }
+        },
+        submodeStats: [
+          { name: getTranslation("games.modes.all.overall"), key: "sw" },
+          { name: getTranslation("games.modes.duels.sw.sw_duel"), key: "sw_duel" },
+          { name: getTranslation("games.modes.duels.sw.sw_doubles"), key: "sw_doubles" }
+        ]
+      },
+      
+      mw: {
+        category: "mw",
+        displayName: getTranslation("games.modes.duels.mw.category"),
+        icon: "soul_sand",
+        hasOverallStats: true,
+        modes: {
+          mw_duel: { name: "Mega Walls", isHot: false },
+          mw_doubles: { name: "Mega Walls Doubles", isHot: false }
+        },
+        submodeStats: [
+          { name: getTranslation("games.modes.all.overall"), key: "mw" },
+          { name: getTranslation("games.modes.duels.mw.mw_duel"), key: "mw_duel" },
+          { name: getTranslation("games.modes.duels.mw.mw_doubles"), key: "mw_doubles" }
+        ]
+      },
+      
+      bow_duel: {
+        category: "bow",
+        displayName: getTranslation("games.modes.duels.bow.category"),
+        icon: "bow",
+        modes: {
+          bow_duel: { name: getTranslation("games.modes.duels.bow.category"), isHot: false }
+        },
+        submodeStats: []
+      },
+      
+      blitz_duel: {
+        category: "blitz",
+        displayName: getTranslation("games.modes.duels.blitz.category"),
+        icon: "diamond_sword",
+        modes: {
+          blitz_duel: { name: getTranslation("games.modes.duels.blitz.category"), isHot: false }
+        },
+        submodeStats: []
+      },
+      
+      sumo_duel: {
+        category: "sumo",
+        displayName: getTranslation("games.modes.duels.sumo.category"),
+        icon: "slime_ball",
+        modes: {
+          sumo_duel: { name: getTranslation("games.modes.duels.sumo.category"), isHot: false }
+        },
+        submodeStats: []
+      },
+      
+      bowspleef: {
+        category: "spleef",
+        displayName: getTranslation("games.modes.duels.bowspleef.spleef_duel"),
+        icon: "iron_shovel",
+        modes: {
+          spleef_duel: { name: getTranslation("games.modes.duels.spleef.category"), isHot: false },
+          bowspleef_duel: { name: getTranslation("games.modes.duels.bowspleef.category"), isHot: false },
+        },
+        submodeStats: [
+          { name: getTranslation("games.modes.all.overall"), key: "bowspleef" },
+          { name: getTranslation("games.modes.duels.bowspleef.category"), key: "bowspleef_duel" },
+          { name: getTranslation("games.modes.duels.bowspleef.spleef_duel"), key: "spleef_duel" },
+        ]
+      },
+      
+      parkour_eight: {
+        category: "parkour",
+        displayName: getTranslation("games.modes.duels.parkour.category"),
+        icon: "feather",
+        modes: {
+          parkour_eight: { name: getTranslation("games.modes.duels.parkour.category"), isHot: false }
+        },
+        submodeStats: []
+      },
+      
+      boxing_duel: {
+        category: "boxing",
+        displayName: getTranslation("games.modes.duels.boxing.category"),
+        icon: "head_boxing",
+        modes: {
+          boxing_duel: { name: getTranslation("games.modes.duels.boxing.category"), isHot: false }
+        },
+        submodeStats: []
+      },
+      
+      potion_duel: {
+        category: "nodebuff",
+        displayName: getTranslation("games.modes.duels.potion.category"),
+        icon: "potion_fire_resistance",
+        modes: {
+          potion_duel: { name: getTranslation("games.modes.duels.potion.category"), isHot: false }
+        },
+        submodeStats: []
+      },
+      
+      combo_duel: {
+        category: "combo",
+        displayName: getTranslation("games.modes.duels.combo.category"),
+        icon: "potion_weakness",
+        modes: {
+          combo_duel: { name: getTranslation("games.modes.duels.combo.category"), isHot: false }
+        },
+        submodeStats: []
+      },
+      
+      duel_arena: {
+        category: "arena",
+        displayName: getTranslation("games.modes.duels.arena.category"),
+        icon: "beacon",
+        modes: {
+          duel_arena: { name: getTranslation("games.modes.duels.arena.category"), isHot: false }
+        },
+        submodeStats: []
+      },
+      
+      bedwars: {
+        category: "bedwars",
+        displayName: getTranslation("games.bedwars"),
+        icon: "red_bed",
+        hasOverallStats: true,
+        modes: {
+          bedwars_two_one_duels: { name: getTranslation("games.bedwars"), isHot: false },
+          bedwars_two_one_duels_rush: { name: getTranslation("games.modes.duels.bedwars_two_one_duels_rush"), isHot: false }
+        },
+        submodeStats: [
+          { name: getTranslation("games.modes.all.overall"), key: "bedwars" },
+          { name: getTranslation("games.bedwars"), key: "bedwars_two_one_duels" },
+          { name: getTranslation("games.modes.duels.bedwars.bedwars_two_one_duels_rush"), key: "bedwars_two_one_duels_rush" }
+        ]
+      },
 
+      quake_duel: {
+        category: "quake",
+        displayName: getTranslation("games.quakecraft"),
+        icon: "firework_rocket",
+        modes: {
+          quake_duel: { name: getTranslation("games.quakecraft"), isHot: false }
+        },
+        submodeStats: []
+      }
+    };
 
-    duelsStatsToShow.sort((a, b) => sortStrings(a[1], b[1]));
+    const duelsStatsToShow = Object.entries(duelsModesConfig)
+      .map(([key, config]) => ({
+        key: key,
+        displayName: config.displayName,
+        submodeStats: config.submodeStats,
+        icon: config.icon,
+        config: config
+      }));
 
-    duelsStatsToShow.unshift(["classic_duel", getTranslation("games.modes.duels.classic.category"), [], "fishing_rod"]); // Classic is the second-most popular mode
+    duelsStatsToShow.sort((a, b) => {
+      const aIsHot = a.config.isPopular;
+      const bIsHot = b.config.isPopular;
 
-    duelsStatsToShow.unshift([
-      "bridge",
-      getTranslation("games.modes.duels.bridge.category"),
-      [
-        [getTranslation("games.modes.all.overall"), "bridge"],
-        [getTranslation("games.modes.duels.bridge.bridge_duel"), "bridge_duel"],
-        [getTranslation("games.modes.duels.bridge.bridge_doubles"), "bridge_doubles"],
-        [getTranslation("games.modes.duels.bridge.bridge_threes"), "bridge_threes"],
-        [getTranslation("games.modes.duels.bridge.bridge_four"), "bridge_four"],
-        [getTranslation("games.modes.duels.bridge.bridge_2v2v2v2"), "bridge_2v2v2v2"],
-        [getTranslation("games.modes.duels.bridge.bridge_3v3v3v3"), "bridge_3v3v3v3"],
-        [getTranslation("games.modes.duels.bridge.capture_threes"), "capture_threes"],
-      ],
-      "blue_terracotta",
-    ]); // Bridge, the most popular mode, goes first
+      if (aIsHot && bIsHot) {
+        return a.config.displayOrder - b.config.displayOrder;
+      }
+      if (aIsHot) {
+        return -1;
+      }
+      if (bIsHot) {
+        return 1;
+      }
+      if (a.key === 'duel_arena') { // always last regardless
+        return 1;
+      }
+      if (b.key === 'duel_arena') {
+        return -1;
+      }
 
-    duelsStatsToShow.push(["duel_arena", getTranslation("games.modes.duels.arena.category"), [], "beacon"]); // this isn't even a real mode
+      return sortStrings(a.displayName, b.displayName);
+    });
 
-    for (a = 0; a < duelsModes.length; a++) {
-      allDuelsStats[duelsModes[a][1]] = getDuelsStats(duelsModes[a][1], duelsModes[a][3], duelsModes[a][0]);
+    console.log(duelsStatsToShow);
+ 
+    for (const [categoryKey, config] of Object.entries(duelsModesConfig)) {
+      for (const [modeKey, modeData] of Object.entries(config.modes)) {
+        const modeStats = getDuelsStats(modeKey, modeData.isHot, modeData.name);
+        const modeWins = und(duelsStats[modeKey + "_wins"]);
+        allDuelsStats[modeKey] = [modeStats, getDuelsTitle(modeWins, modeData.name, duelsPrefixScheme, duelsPrefixBold)];
+      }
+      
+      if (config.hasOverallStats || Object.keys(config.modes).length > 1) {
+        const modeKeys = config.overallModesInclude || Object.keys(config.modes);
+        allDuelsStats[categoryKey] = getDuelsOverallModeStats(modeKeys, categoryKey === "bridge", config.displayName, duelsPrefixScheme, duelsPrefixBold);
+      }
     }
-    for (a = 0; a < duelsWithMultipleModes.length; a++) {
-      allDuelsStats[duelsWithMultipleModes[a][0]] = getDuelsOverallModeStats(duelsWithMultipleModes[a][2], duelsWithMultipleModes[a][0] === "bridge", duelsWithMultipleModes[a][1]);
-    }
 
-    for (a = 0; a < duelsStatsToShow.length; a++) {
-      // Regular stats
-      currentDuel = duelsStatsToShow[a];
-      currentDuelPrefix = allDuelsStats[currentDuel[0]][1];
-
-      winsToGo = currentDuelPrefix[1];
+    // chip gen
+    for (const modeInfo of duelsStatsToShow) {
+      console.log(modeInfo);
+      console.log("This key: " + modeInfo.key);
+      const currentDuelPrefix = allDuelsStats[modeInfo.key][1];
+      const winsToGo = currentDuelPrefix[1];
       let formattedWinsToGo;
 
       if (winsToGo == -1) {
@@ -1250,17 +1408,30 @@ function generateDuels() {
         }
       }
 
-      duelsChip = [
-        "duels-stats-" + currentDuel[0], // ID
-        currentDuel[1], // Title
-        (currentDuel[0] != "duel_arena" ? `${currentDuelPrefix[0]} ${formattedWinsToGo}` : ""), // Arena Duel is the only duel without a title
-        `/img/games/duels/${currentDuel[0]}.${imageFileType}`, // Background image
-        allDuelsStats[currentDuel[0]][0], // Displayed stats
-        currentDuel[2], // Other stats (shown in drop-down menu)
-        `/img/icon/minecraft/${currentDuel[3]}.${imageFileType}`, // Chip image
-        "duels", // gamemode
-      ];
-      duelsChips.push(duelsChip);
+      
+      const duelsChip = {
+        id: "duels-stats-" + modeInfo.key,
+        title: modeInfo.displayName,
+        subtitle: (modeInfo.key != "duel_arena" ? `${currentDuelPrefix[0]} ${formattedWinsToGo}` : ""),
+        backgroundImage: `/img/games/duels/${modeInfo.key}.${imageFileType}`,
+        displayedStats: allDuelsStats[modeInfo.key][0],
+        submodeStats: modeInfo.submodeStats,
+        chipImage: `/img/icon/minecraft/${modeInfo.icon}.${imageFileType}`,
+        gamemode: "duels"
+      };
+      
+      const submodeStatsArray = duelsChip.submodeStats.map(stat => [stat.name, stat.key]);
+      
+      duelsChips.push([
+        duelsChip.id,
+        duelsChip.title,
+        duelsChip.subtitle,
+        duelsChip.backgroundImage,
+        duelsChip.displayedStats,
+        submodeStatsArray,
+        duelsChip.chipImage,
+        duelsChip.gamemode
+      ]);
     }
 
     const duelsHotModes = duelsChips.slice(0, 2);
@@ -1408,7 +1579,6 @@ function generateBuildBattle() {
   minigameFragments["buildbattle"] = minigameFragment;
   document.getElementById("games").appendChild(minigameFragment);
 }
-
 function generateMurderMystery() {
   let minigameTemplate = ` <div class="chip-container">
       <div class="chip-small but-big">
@@ -1518,7 +1688,6 @@ function generateMurderMystery() {
       ];
       murderMysteryChips.push(murderMysteryChip);
     }
-
     generateChips(murderMysteryChips, "murdermystery-chips");
   }
 
@@ -1749,7 +1918,6 @@ function generateTNTGames() {
   minigameFragments["tntgames"] = minigameFragment;
   document.getElementById("games").appendChild(minigameFragment);
 }
-
 function generateArcade() {
   let minigameTemplate = `
       <!-- arcade stats -->
@@ -1863,7 +2031,6 @@ function generateArcade() {
     `/img/icon/minecraft/hopper.${imageFileType}`, // Chip image
     "arcade", // gamemode
   ];
-
   let enderSpleefCard = [
     "arcade-stats-enderspleef", // ID
     getTranslation("games.modes.arcade.enderspleef"), // Title
@@ -2164,7 +2331,6 @@ const newKvl = kvl.map(x => x < 0 ? x + 256 : x);
 
 const compressedByteArray = new Uint8Array(newKvl);
 const decompressedData = pako.inflate(compressedByteArray);
-
 decodeNBT(decompressedData.buffer)
 .then(decodedData => console.warn(decodedData))
 .catch(error => console.error('Error decoding NBT data:', error));
@@ -2497,7 +2663,6 @@ function generateClassic() {
   minigameFragments["classic"] = minigameFragment;
   document.getElementById("games").appendChild(minigameFragment);
 }
-
 function generateCopsAndCrims() {
   let minigameTemplate = `<div class="chip-container" id="copsandcrims-chips">
     <div class="chip-small but-big">
@@ -2847,7 +3012,6 @@ function generateCopsAndCrims() {
   } else {
     copsAndCrimsEmblemColorName = copsAndCrimsEmblemScheme.replace("scheme_", "").toUpperCase();
   }
-
   let copsAndCrimsEmblemColorCode;
 
   if (copsAndCrimsEmblemColorName != "CHROMA") {
@@ -2983,7 +3147,6 @@ function generateCopsAndCrims() {
     ``,
     "copsandcrims_guns",
   ];
-
   let copsAndCrimsChips = [defusalChip, deathmatchChip, gunGameChip, gunsChip];
   generateChips(copsAndCrimsChips, "copsandcrims-chips");
 
@@ -3182,7 +3345,6 @@ function getBlitzKitsStats(kit) {
 
   return blitzKitStats;
 }
-
 function generateMegaWalls() {
   let minigameTemplate = `<div class="chip-container">
     <div class="chip-small but-big">
@@ -3405,7 +3567,6 @@ function getMegaWallsClassStats(className = "", modeName = "") {
 
   return megaWallsClassChipStats;
 }
-
 function generateWarlords() {
   let minigameTemplate = `<div class="chip-container">
       <div class="chip-small but-big">
@@ -3510,7 +3671,6 @@ function generateWarlords() {
     updateScopedElement("warlords-overall-progress-number", Math.floor(warlordsWinProgress * 100) + "%");
     activeScope.getElementById("warlords-overall-progress-bar").style.width = Math.floor(warlordsWinProgress * 100) + "%";
   }
-
   updateScopedElement("warlords-overall-title", warlordsTitleObject["title"], true);
 
   function getWarlordsWeaponName(weaponObject) {
@@ -3836,7 +3996,6 @@ function generateWarlords() {
   updateScopedElement("warlords-overall-kdr", calculateRatio(warlordsStats["kills"], warlordsStats["deaths"]));
   updateScopedElement("warlords-overall-damage", veryLargeNumber(warlordsStats["damage"]) + " HP");
   updateScopedElement("warlords-overall-heal", veryLargeNumber(warlordsStats["heal"]) + " HP");
-
   let warlordsClassesChip = [
     "warlords-classes",
     getTranslation("games.modes.warlords.classes.category"),
@@ -4151,7 +4310,6 @@ function getSpeedUHCModeStats(mode) {
 
   return speedUHCModeStatsArray;
 }
-
 function generateSmash() {
   let minigameTemplate = `<div class="chip-container">
     <div class="chip-small but-big">
@@ -4500,7 +4658,6 @@ function generateWoolGames() {
     suffix: woolGamesPrestigeIcon,
     useDifferentBracketColors: true,
   })["title"];
-
   updateScopedElement("woolgames-level", formattedWoolWarsLevel, true);
 
   let woolWarsChip = [
@@ -4586,7 +4743,6 @@ function getWoolWarsStats(mode) {
 
   return woolWarsModeStatsObject;
 }
-
 function generateFishing() {
   let minigameTemplate = ` <div class="chip-container">
       <div class="chip-small but-big">
@@ -4818,7 +4974,6 @@ function formatFishingParticipatedSeasonDropdown(seasonsObject) {
 
   return seasonsArray;
 }
-
 function getSpecialFishStats(season) {
   let specialFish = {
     permanent: ["puffer_emoji", "nemo", "knockback_slimeball", "hot_potato", "fish_monger_suit_helmet", "fish_monger_suit_chestplate", "fish_monger_suit_leggings", "fish_monger_suit_boots", "barnacle", "leviathan", "star_eater_scales", "rubber_duck"],
@@ -4906,23 +5061,65 @@ function getFishingCatches(category) {
   return fishingItemsStats;
 }
 
-function getDuelsTitle(wins, name = "") {
+function getDuelsTitle(wins, name = "", scheme = "boilerplate_gold", bold = false) {
+
+
+  let duelsSchemes = {
+    prefix_scheme_withering_black: ["§0"],
+    prefix_scheme_persistent_dark_blue: ["§1"],
+    prefix_scheme_heavy_dark_green: ["§2"],
+    prefix_scheme_pearl_dark_aqua: ["§3"],
+    prefix_scheme_explosive_dark_red: ["§4"],
+    prefix_scheme_platformer_dark_purple: ["§5"],
+    prefix_scheme_boilerplate_gold: ["§6"],
+    prefix_scheme_good_ol_gray: ["§7"],
+    prefix_scheme_drawstring_dark_gray: ["§8"],
+    prefix_scheme_blitz_blue: ["§9"],
+    prefix_scheme_ender_green: ["§a"],
+    prefix_scheme_armored_aqua: ["§b"],
+    prefix_scheme_punchable_red: ["§c"],
+    prefix_scheme_carpeted_light_purple: ["§d"],
+    prefix_scheme_absorption_yellow: ["§e"],
+    prefix_scheme_vanilla_white: ["§f"],
+
+    prefix_scheme_a_splash_of_star: ["§1", "§9", "§3", "§3", "§b"],
+    prefix_scheme_bedding_hues: ["§c", "§c", "§c", "§f", "§f"],
+    prefix_scheme_blossoms: ["§5", "§d", "§f", "§d", "§f"],
+    prefix_scheme_color_of_a_flash: ["§8", "§f", "§f", "§f", "§8"],
+    prefix_scheme_combo_coating: ["§4", "§c", "§6", "§e", "§f"],
+    prefix_scheme_elusive_jeremiah_huestring: ["§3", "§6", "§6", "§e", "§b"],
+    prefix_scheme_festive_finish: ["§2", "§c", "§c", "§c", "§2"],
+    prefix_scheme_four_team_tie_dye: ["§e", "§a", "§f", "§c", "§9"],
+    prefix_scheme_flint_gradient: ["§f", "§f", "§7", "§8", "§0"],
+    prefix_scheme_healthy_stain: ["§8", "§7", "§7", "§f", "§c"],
+    prefix_scheme_in_case_of_chroma: ["§5", "§d", "§f", "§9", "§1"],
+    prefix_scheme_mythic_pigment: ["§c", "§e", "§a", "§b", "§d"],
+    prefix_scheme_overpowered_gloss: ["§d", "§d", "§b", "§b", "§f"],
+    prefix_scheme_picturesque_firework: ["§1", "§9", "§f", "§c", "§4"],
+    prefix_scheme_punching_paint: ["§4", "§5", "§5", "§d", "§b"],
+    prefix_scheme_sunny_shades: ["§3", "§b", "§b", "§f", "§e"],
+    prefix_scheme_the_impossible_varnish: ["§d", "§a", "§a", "§a", "§f"],
+    prefix_scheme_ultra_hardcore_undertone: ["§2", "§a", "§e", "§e", "§6"],
+    prefix_scheme_variety_values: ["§b", "§f", "§f", "§f", "§b"],
+    prefix_scheme_with_a_side_of_skies: ["§3", "§a", "§a", "§a", "§2"],
+  }
+
   // Generates a Duels title based on the number of wins a player has in a certain gamemode
   multiplier = name == "" ? 2 : 1; // Multiply required wins by 2 for general Duels titles
 
   const duelsTitles = [
-    { minimumWins: 0, increment: 50, title: getTranslation("games.modes.duels.titles.title_0"), color: "8" },
-    { minimumWins: 50, increment: 10, title: getTranslation("games.modes.duels.titles.title_50"), color: "8" },
-    { minimumWins: 100, increment: 30, title: getTranslation("games.modes.duels.titles.title_100"), color: "f" },
-    { minimumWins: 250, increment: 50, title: getTranslation("games.modes.duels.titles.title_250"), color: "6" },
-    { minimumWins: 500, increment: 100, title: getTranslation("games.modes.duels.titles.title_500"), color: "3" },
-    { minimumWins: 1000, increment: 200, title: getTranslation("games.modes.duels.titles.title_1000"), color: "2" },
-    { minimumWins: 2000, increment: 600, title: getTranslation("games.modes.duels.titles.title_2000"), color: "4", bold: true },
-    { minimumWins: 5000, increment: 1000, title: getTranslation("games.modes.duels.titles.title_5000"), color: "e", bold: true },
-    { minimumWins: 10000, increment: 3000, title: getTranslation("games.modes.duels.titles.title_10000"), color: "5", bold: true },
-    { minimumWins: 25000, increment: 5000, title: getTranslation("games.modes.duels.titles.title_25000"), color: "b", bold: true },
-    { minimumWins: 50000, increment: 10000, title: getTranslation("games.modes.duels.titles.title_50000"), color: "d", bold: true },
-    { minimumWins: 100000, increment: 10000, max: 50, title: getTranslation("games.modes.duels.titles.title_100000"), color: "c", bold: true },
+    { minimumWins: 0, increment: 50, title: getTranslation("games.modes.duels.titles.title_0") /*, color: "8" */ },
+    { minimumWins: 50, increment: 10, title: getTranslation("games.modes.duels.titles.title_50") /*, color: "8" */ },
+    { minimumWins: 100, increment: 30, title: getTranslation("games.modes.duels.titles.title_100") /*, color: "f" */ },
+    { minimumWins: 250, increment: 50, title: getTranslation("games.modes.duels.titles.title_250") /*, color: "6" */ },
+    { minimumWins: 500, increment: 100, title: getTranslation("games.modes.duels.titles.title_500") /*, color: "3" */ },
+    { minimumWins: 1000, increment: 200, title: getTranslation("games.modes.duels.titles.title_1000") /*, color: "2" */ },
+    { minimumWins: 2000, increment: 600, title: getTranslation("games.modes.duels.titles.title_2000") /*, color: "4", bold: true */ },
+    { minimumWins: 5000, increment: 1000, title: getTranslation("games.modes.duels.titles.title_5000") /*, color: "e", bold: true */ },
+    { minimumWins: 10000, increment: 3000, title: getTranslation("games.modes.duels.titles.title_10000") /*, color: "5", bold: true */ },
+    { minimumWins: 25000, increment: 5000, title: getTranslation("games.modes.duels.titles.title_25000") /*, color: "b", bold: true */ },
+    { minimumWins: 50000, increment: 10000, title: getTranslation("games.modes.duels.titles.title_50000") /*, color: "d", bold: true */ },
+    { minimumWins: 100000, increment: 10000, max: 50, title: getTranslation("games.modes.duels.titles.title_100000") /*, color: "c", bold: true */ },
   ];
 
   let chosenTitle = duelsTitles[0];
@@ -4966,7 +5163,60 @@ function getDuelsTitle(wins, name = "") {
 
   let rawDuelsTitle = name + chosenTitle["title"] + romanSuffix;
 
-  return [`<span class="m${chosenTitle["color"]}">` + (chosenTitle["bold"] ? `<strong>${rawDuelsTitle}</strong>` : rawDuelsTitle) + `</span>`, winsToGo, chosenTitle["increment"] * multiplier];
+  let selectedScheme = duelsSchemes[scheme];
+  if (!selectedScheme) {
+    selectedScheme = duelsSchemes["boilerplate_gold"];
+  }
+
+  let coloredTitle = "";
+  const title = rawDuelsTitle;
+  const colors = selectedScheme;
+  const m = title.length;
+
+  if (m > 0) {
+    if (colors.length === 1) { // if there's only one color, use it for the whole title
+        const colorChar = colors[0].substring(1);
+
+        if (colorChar != "0" && colorChar != "1") {
+          coloredTitle = `<span class="m${colorChar}">${title}</span>`;
+        } else {
+          coloredTitle = `<span class="m${colorChar} shadowf">${title}</span>`;
+        }
+    } else if (m <= colors.length) {
+        let tempTitle = "";
+        for (let i = 0; i < m; i++) {
+            const colorChar = colors[i].substring(1);
+            tempTitle += `<span class="m${colorChar}">${title[i]}</span>`;
+        }
+        coloredTitle = tempTitle;
+    } else { // m > 5 typically
+        let tempTitle = "";
+        const groupSize = Math.floor(m / colors.length);
+        let currentIndex = 0;
+        for (let i = 0; i < colors.length; i++) {
+            const colorChar = colors[i].substring(1);
+            let chunk;
+            if (i === colors.length - 1) {
+                chunk = title.substring(currentIndex);
+            } else {
+                chunk = title.substring(currentIndex, currentIndex + groupSize);
+                currentIndex += groupSize;
+            }
+            if (chunk && (colorChar != "0" && colorChar != "1")) {
+              tempTitle += `<span class="m${colorChar}">${chunk}</span>`;
+            } else {
+              tempTitle += `<span class="m${colorChar} shadowf">${chunk}</span>`;
+            }
+        }
+        coloredTitle = tempTitle;
+    }
+  }
+
+  if (chosenTitle["bold"]) {
+    coloredTitle = `<b>${coloredTitle}</b>`;
+  }
+
+  return [coloredTitle, winsToGo, chosenTitle["increment"] * multiplier];
 }
 
 function generateChips(chipArray, prefix) {

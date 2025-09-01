@@ -725,7 +725,12 @@ function updateEasiestOneTime() {
 function updateRecentlyCompleted() {
   document.getElementById("achievements-recently-completed").innerHTML = "";
 
-  let filteredPlayerOneTimeAchievements = playerOneTimeAchievements.filter((achievement) => !filters.includes(modernifyGameName(achievement.replace(/_.*/g, ""))));
+  let filteredPlayerOneTimeAchievements = playerOneTimeAchievements.filter((achievement) => {
+    if (typeof achievement !== 'string') {
+      return false;
+    }
+    return !filters.includes(modernifyGameName(achievement.replace(/_.*/g, "")));
+  });
   let recentAchievements = filteredPlayerOneTimeAchievements.reverse().slice(0, 50);
 
   for (let a = 0; a < recentAchievements.length; a++) {

@@ -380,7 +380,9 @@
           "mw_doubles": "2v2"
         },
         "bowspleef": {
-          "category": "Bow Spleef"
+          "category": "Bow Spleef",
+
+          "spleef_duel": "Spleef"
         },
         "op": {
           "category": "OP",
@@ -399,6 +401,9 @@
         },
         "arena": {
           "category": "Arena"
+        },
+        "bedwars": {
+          "bedwars_two_one_duels_rush": "Rush"
         }
       },
       "skywars": {

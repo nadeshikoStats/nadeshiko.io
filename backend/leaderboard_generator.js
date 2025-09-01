@@ -459,6 +459,10 @@ const leaderboards = [
           ],
         },
         {
+          translation: "games.bedwars",
+          leaderboards: [{ translation: "statistics.wins", id: "DUELS_BEDWARS_WINS", format: "number" }],
+        },
+        {
           translation: "games.modes.duels.blitz.category",
           leaderboards: [{ translation: "statistics.wins", id: "DUELS_BLITZ_WINS", format: "number" }],
         },
@@ -467,7 +471,7 @@ const leaderboards = [
           leaderboards: [{ translation: "statistics.wins", id: "DUELS_BOW_WINS", format: "number" }],
         },
         {
-          translation: "games.modes.duels.bowspleef.category",
+          translation: "games.modes.duels.bowspleef.spleef_duel",
           leaderboards: [{ translation: "statistics.wins", id: "DUELS_BOWSPLEEF_WINS", format: "number" }],
         },
         {
@@ -504,6 +508,10 @@ const leaderboards = [
         {
           translation: "games.modes.duels.parkour.category",
           leaderboards: [{ translation: "statistics.wins", id: "DUELS_PARKOUR_WINS", format: "number" }],
+        },
+        {
+          translation: "games.quakecraft",
+          leaderboards: [{ translation: "statistics.wins", id: "DUELS_QUAKE_WINS", format: "number" }],
         },
         {
           translation: "games.modes.duels.sw.category",
