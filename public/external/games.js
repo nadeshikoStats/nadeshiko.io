@@ -452,6 +452,7 @@ function generateBedWars() {
       [getTranslation("games.modes.bedwars.four_four_underworld"), "four_four_underworld"],
       [getTranslation("games.modes.bedwars.eight_two_voidless"), "eight_two_voidless"],
       [getTranslation("games.modes.bedwars.four_four_voidless"), "four_four_voidless"],
+      [getTranslation("games.modes.bedwars.eight_one_oneblock"), "eight_one_oneblock"],
     ];
     var easyStats = ["wins", "losses", "kills", "deaths", "final_kills", "final_deaths", "beds_broken", "beds_lost"];
 
