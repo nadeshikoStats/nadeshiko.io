@@ -161,7 +161,7 @@ function getSkyWarsLevel(exp) {
 }
 
 function calculateSkyWarsKitPrestige(exp, megaKit = false) {
-  let prestiges = [
+  let regularPrestiges = [
     { req: 30000, style: "rainbow-gradient", title: "VII" },
     { req: 20000, style: "md", title: "VI" },
     { req: 15000, style: "m6", title: "V" },
@@ -180,6 +180,8 @@ function calculateSkyWarsKitPrestige(exp, megaKit = false) {
     { req: 2000, style: "m2", title: "II" },
     { req: 1000, style: "mf", title: "I" },
   ]
+
+  let prestiges = megaKit ? megaPrestiges : regularPrestiges;
 
   for (let a = 0; a < prestiges.length; a++) {
     if (exp >= prestiges[a]["req"]) {
