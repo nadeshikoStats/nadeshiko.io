@@ -160,14 +160,24 @@ function getSkyWarsLevel(exp) {
   }
 }
 
-function calculateSkyWarsKitPrestige(exp) {
+function calculateSkyWarsKitPrestige(exp, megaKit = false) {
   let prestiges = [
-    { req: 75000, style: "rainbow-gradient", title: "VII" },
-    { req: 50000, style: "md", title: "VI" },
-    { req: 25000, style: "m6", title: "V" },
+    { req: 30000, style: "rainbow-gradient", title: "VII" },
+    { req: 20000, style: "md", title: "VI" },
+    { req: 15000, style: "m6", title: "V" },
     { req: 10000, style: "m5", title: "IV" },
     { req: 5000, style: "m9", title: "III" },
     { req: 2500, style: "m2", title: "II" },
+    { req: 1000, style: "mf", title: "I" },
+  ]
+
+  let megaPrestiges = [
+    { req: 10000, style: "rainbow-gradient", title: "VII" },
+    { req: 8000, style: "md", title: "VI" },
+    { req: 6000, style: "m6", title: "V" },
+    { req: 4000, style: "m5", title: "IV" },
+    { req: 3000, style: "m9", title: "III" },
+    { req: 2000, style: "m2", title: "II" },
     { req: 1000, style: "mf", title: "I" },
   ]
 

@@ -115,6 +115,8 @@ function formatLeaderboardStatistic(format, value) {
       return generateMinecraftText(formatSkyWarsLevel(getSkyWarsLevel(value)), true);
     case "skywars_kit_xp":
       return `${calculateSkyWarsKitPrestige(value)}${checkAndFormat(Number(value))}`;
+    case "skywars_mega_kit_xp":
+      return `${calculateSkyWarsKitPrestige(value, true)}${checkAndFormat(Number(value))}`;
     case "woolgames_experience":
       return formatWoolGamesLevel(getWoolGamesLevel(value));
     case "warlords_wins":

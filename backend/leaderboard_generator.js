@@ -1435,10 +1435,14 @@ const leaderboards = [
         };
 
         for (let stat of skyWarsKitLeaderboardStats) {
+          let format = stat["format"];
+          if (mode == "mega" && stat["id"] == "XP") {
+            format = "skywars_mega_kit_xp";
+          }
           skyWarsIndividualKitLeaderboards["leaderboards"].push({
             translation: stat["translation"],
             id: `SKYWARS_${mode.toUpperCase()}_KIT_${kitName.toUpperCase()}_${stat["id"]}`,
-            format: stat["format"],
+            format: format,
           });
         }
 
