@@ -353,7 +353,9 @@
           "sw_doubles": "2v2"
         },
         "classic": {
-          "category": "Classic"
+          "category": "Classic",
+          "classic_duel": "1v1",
+          "classic_doubles": "2v2"
         },
         "uhc": {
           "category": "UHC",
@@ -401,7 +403,7 @@
           "category": "Nodebuff"
         },
         "arena": {
-          "category": "Arena"
+          "category": "Duel Arena"
         },
         "bedwars": {
           "bedwars_two_one_duels_rush": "Rush"

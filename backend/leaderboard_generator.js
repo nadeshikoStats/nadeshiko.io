@@ -471,10 +471,6 @@ const leaderboards = [
           leaderboards: [{ translation: "statistics.wins", id: "DUELS_BOW_WINS", format: "number" }],
         },
         {
-          translation: "games.modes.duels.bowspleef.spleef_duel",
-          leaderboards: [{ translation: "statistics.wins", id: "DUELS_BOWSPLEEF_WINS", format: "number" }],
-        },
-        {
           translation: "games.modes.duels.boxing.category",
           leaderboards: [{ translation: "statistics.wins", id: "DUELS_BOXING_WINS", format: "number" }],
         },
@@ -516,6 +512,10 @@ const leaderboards = [
         {
           translation: "games.modes.duels.sw.category",
           leaderboards: [{ translation: "statistics.wins", id: "DUELS_SW_WINS", format: "number" }],
+        },
+        {
+          translation: "games.modes.duels.bowspleef.spleef_duel",
+          leaderboards: [{ translation: "statistics.wins", id: "DUELS_BOWSPLEEF_WINS", format: "number" }],
         },
         {
           translation: "games.modes.duels.sumo.category",

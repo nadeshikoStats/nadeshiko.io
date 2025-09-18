@@ -909,10 +909,10 @@ function getArcadeSeasonalStats(game) {
   }
 }
 
-function getDuelsStats(mode, is_bridge = false, cuteName) {
+function getDuelsStats(mode, isBridge = false, cuteName) {
   importedDuelsStats = [checkAndFormat(duelsStats["current_winstreak_mode_" + mode]), checkAndFormat(duelsStats["best_winstreak_mode_" + mode]), checkAndFormat(duelsStats[mode + "_wins"]), checkAndFormat(duelsStats[mode + "_losses"]), calculateRatio(duelsStats[mode + "_wins"], duelsStats[mode + "_losses"])];
 
-  if (is_bridge) {
+  if (isBridge) {
     // Bridge uses a different wins counter
     importedDuelsStats.push(checkAndFormat(duelsStats[mode + "_bridge_kills"]), checkAndFormat(duelsStats[mode + "_bridge_deaths"]), calculateRatio(duelsStats[mode + "_bridge_kills"], duelsStats[mode + "_bridge_deaths"]));
   } else {
@@ -931,8 +931,8 @@ function getDuelsStats(mode, is_bridge = false, cuteName) {
   return duelsModeStats;
 }
 
-function getDuelsOverallModeStats(modeArray, is_bridge = false, cuteName, prefixScheme, prefixBold) {
-  if (is_bridge) {
+function getDuelsOverallModeStats(modeArray, isBridge = false, cuteName, prefixScheme, reducedWins) {
+  if (isBridge) {
     roundRobinDuelsStatNames = ["wins", "losses", "bridge_kills", "bridge_deaths"];
   } else {
     roundRobinDuelsStatNames = ["wins", "losses", "kills", "deaths"];
@@ -945,14 +945,16 @@ function getDuelsOverallModeStats(modeArray, is_bridge = false, cuteName, prefix
 
   importedDuelsStats = [];
 
-  return [
+  let duelsOverallModeStats = [
     [
       [true, [getTranslation("statistics.winstreak"), checkAndFormat(roundRobinDuelsStats2[0])], [getTranslation("statistics.best_winstreak"), checkAndFormat(roundRobinDuelsStats2[1])]],
       [false, [getTranslation("statistics.wins"), checkAndFormat(roundRobinDuelsStats[0])], [getTranslation("statistics.losses"), checkAndFormat(roundRobinDuelsStats[1])], [getTranslation("statistics.wlr"), calculateRatio(roundRobinDuelsStats[0], roundRobinDuelsStats[1])]],
       [false, [getTranslation("statistics.kills"), checkAndFormat(roundRobinDuelsStats[2])], [getTranslation("statistics.deaths"), checkAndFormat(roundRobinDuelsStats[3])], [getTranslation("statistics.kdr"), calculateRatio(roundRobinDuelsStats[2], roundRobinDuelsStats[3])]],
     ],
-    getDuelsTitle(und(roundRobinDuelsStats[0]), cuteName, prefixScheme, prefixBold),
+    getDuelsTitle(und(roundRobinDuelsStats[0]), cuteName, prefixScheme, reducedWins),
   ];
+
+  return duelsOverallModeStats;
 }
 
 function sumStats(statNames, modeNames, statArray, separator = "_", statNamesFirst = false) {
@@ -1071,11 +1073,7 @@ function generateDuels() {
   if (duelsStats != undefined) {
 
     let duelsPrefixScheme = duelsStats["active_prefix_scheme"]
-    let duelsPrefixBold = false;
-    const duelsSettings = duelsStats["settings"];
-    if (duelsSettings != undefined) {
-      duelsPrefixBold = duelsSettings["prefix_bold"] || false;
-    }
+
 
     duelsChips = [];
 
@@ -1088,7 +1086,7 @@ function generateDuels() {
     updateScopedElement("duels-overall-wlr", calculateRatio(duelsStats["wins"], duelsStats["losses"]));
     updateScopedElement("duels-overall-damage-dealt", checkAndFormat(duelsStats["damage_dealt"] / 2) + ` ♥&#xFE0E;`, true);
 
-    overallDuelsTitle = getDuelsTitle(und(duelsStats["wins"]), "", duelsPrefixScheme, duelsPrefixBold);
+    overallDuelsTitle = getDuelsTitle(und(duelsStats["wins"]), "", duelsPrefixScheme);
 
     let winsToGo = overallDuelsTitle[1];
     let formattedWinsToGo;
@@ -1116,6 +1114,7 @@ function generateDuels() {
       // refactored
       bridge: {
         category: "bridge",
+        reducedWins: true,
         displayName: getTranslation("games.modes.duels.bridge.category"),
         icon: "blue_terracotta",
         isPopular: true,
@@ -1156,7 +1155,7 @@ function generateDuels() {
       uhc: {
         category: "uhc",
         displayName: getTranslation("games.modes.duels.uhc.category"),
-        icon: "head_uhc",
+        icon: "golden_apple",
         hasOverallStats: true,
         overallModesInclude: ["uhc_duel", "uhc_doubles"], // uhc four doesn't count for overall stats?
         modes: {
@@ -1206,6 +1205,7 @@ function generateDuels() {
       
       mw: {
         category: "mw",
+        reducedWins: true,
         displayName: getTranslation("games.modes.duels.mw.category"),
         icon: "soul_sand",
         hasOverallStats: true,
@@ -1267,8 +1267,10 @@ function generateDuels() {
       
       parkour_eight: {
         category: "parkour",
+        reducedWins: true,
         displayName: getTranslation("games.modes.duels.parkour.category"),
         icon: "feather",
+        reducedWins: true,
         modes: {
           parkour_eight: { name: getTranslation("games.modes.duels.parkour.category"), isHot: false }
         },
@@ -1277,8 +1279,9 @@ function generateDuels() {
       
       boxing_duel: {
         category: "boxing",
+        reducedWins: true,
         displayName: getTranslation("games.modes.duels.boxing.category"),
-        icon: "head_boxing",
+        icon: "cod",
         modes: {
           boxing_duel: { name: getTranslation("games.modes.duels.boxing.category"), isHot: false }
         },
@@ -1287,8 +1290,9 @@ function generateDuels() {
       
       potion_duel: {
         category: "nodebuff",
+        reducedWins: true,
         displayName: getTranslation("games.modes.duels.potion.category"),
-        icon: "potion_fire_resistance",
+        icon: "brewing_stand",
         modes: {
           potion_duel: { name: getTranslation("games.modes.duels.potion.category"), isHot: false }
         },
@@ -1298,7 +1302,7 @@ function generateDuels() {
       combo_duel: {
         category: "combo",
         displayName: getTranslation("games.modes.duels.combo.category"),
-        icon: "potion_weakness",
+        icon: "sugar",
         modes: {
           combo_duel: { name: getTranslation("games.modes.duels.combo.category"), isHot: false }
         },
@@ -1310,7 +1314,7 @@ function generateDuels() {
         displayName: getTranslation("games.modes.duels.arena.category"),
         icon: "beacon",
         modes: {
-          duel_arena: { name: getTranslation("games.modes.duels.arena.category"), isHot: false }
+          duel_arena: { name: getTranslation("games.modes.duels.arena.category"), isHot: false, useKills: true }
         },
         submodeStats: []
       },
@@ -1364,12 +1368,6 @@ function generateDuels() {
       if (bIsHot) {
         return 1;
       }
-      if (a.key === 'duel_arena') { // always last regardless
-        return 1;
-      }
-      if (b.key === 'duel_arena') {
-        return -1;
-      }
 
       return sortStrings(a.displayName, b.displayName);
     });
@@ -1379,13 +1377,20 @@ function generateDuels() {
     for (const [categoryKey, config] of Object.entries(duelsModesConfig)) {
       for (const [modeKey, modeData] of Object.entries(config.modes)) {
         const modeStats = getDuelsStats(modeKey, modeData.isHot, modeData.name);
-        const modeWins = und(duelsStats[modeKey + "_wins"]);
-        allDuelsStats[modeKey] = [modeStats, getDuelsTitle(modeWins, modeData.name, duelsPrefixScheme, duelsPrefixBold)];
+
+        let modeWins;
+        if (modeData.useKills) {
+          modeWins = und(duelsStats[modeKey + "_kills"]);
+        } else {
+          modeWins = und(duelsStats[modeKey + "_wins"]);
+        }
+
+        allDuelsStats[modeKey] = [modeStats, getDuelsTitle(modeWins, modeData.name, duelsPrefixScheme, config.reducedWins)];
       }
       
       if (config.hasOverallStats || Object.keys(config.modes).length > 1) {
         const modeKeys = config.overallModesInclude || Object.keys(config.modes);
-        allDuelsStats[categoryKey] = getDuelsOverallModeStats(modeKeys, categoryKey === "bridge", config.displayName, duelsPrefixScheme, duelsPrefixBold);
+        allDuelsStats[categoryKey] = getDuelsOverallModeStats(modeKeys, categoryKey === "bridge", config.displayName, duelsPrefixScheme, config.reducedWins);
       }
     }
 
@@ -1413,7 +1418,7 @@ function generateDuels() {
       const duelsChip = {
         id: "duels-stats-" + modeInfo.key,
         title: modeInfo.displayName,
-        subtitle: (modeInfo.key != "duel_arena" ? `${currentDuelPrefix[0]} ${formattedWinsToGo}` : ""),
+        subtitle: (`${currentDuelPrefix[0]} ${formattedWinsToGo}`),
         backgroundImage: `/img/games/duels/${modeInfo.key}.${imageFileType}`,
         displayedStats: allDuelsStats[modeInfo.key][0],
         submodeStats: modeInfo.submodeStats,
@@ -5062,7 +5067,7 @@ function getFishingCatches(category) {
   return fishingItemsStats;
 }
 
-function getDuelsTitle(wins, name = "", scheme = "boilerplate_gold", bold = false) {
+function getDuelsTitle(wins, name = "", scheme = "prefix_scheme_default", reducedWins = false) {
 
 
   let duelsSchemes = {
@@ -5095,6 +5100,7 @@ function getDuelsTitle(wins, name = "", scheme = "boilerplate_gold", bold = fals
     prefix_scheme_healthy_stain: ["§8", "§7", "§7", "§f", "§c"],
     prefix_scheme_in_case_of_chroma: ["§5", "§d", "§f", "§9", "§1"],
     prefix_scheme_mythic_pigment: ["§c", "§e", "§a", "§b", "§d"],
+    prefix_scheme_og_fade: ["§6", "§e", "§f", "§7", "§8"],
     prefix_scheme_overpowered_gloss: ["§d", "§d", "§b", "§b", "§f"],
     prefix_scheme_picturesque_firework: ["§1", "§9", "§f", "§c", "§4"],
     prefix_scheme_punching_paint: ["§4", "§5", "§5", "§d", "§b"],
@@ -5109,21 +5115,25 @@ function getDuelsTitle(wins, name = "", scheme = "boilerplate_gold", bold = fals
   multiplier = name == "" ? 2 : 1; // Multiply required wins by 2 for general Duels titles
 
   const duelsTitles = [
-    { minimumWins: 0, increment: 50, title: getTranslation("games.modes.duels.titles.title_0") /*, color: "8" */ },
-    { minimumWins: 50, increment: 10, title: getTranslation("games.modes.duels.titles.title_50") /*, color: "8" */ },
-    { minimumWins: 100, increment: 30, title: getTranslation("games.modes.duels.titles.title_100") /*, color: "f" */ },
-    { minimumWins: 250, increment: 50, title: getTranslation("games.modes.duels.titles.title_250") /*, color: "6" */ },
-    { minimumWins: 500, increment: 100, title: getTranslation("games.modes.duels.titles.title_500") /*, color: "3" */ },
-    { minimumWins: 1000, increment: 200, title: getTranslation("games.modes.duels.titles.title_1000") /*, color: "2" */ },
-    { minimumWins: 2000, increment: 600, title: getTranslation("games.modes.duels.titles.title_2000") /*, color: "4", bold: true */ },
-    { minimumWins: 5000, increment: 1000, title: getTranslation("games.modes.duels.titles.title_5000") /*, color: "e", bold: true */ },
-    { minimumWins: 10000, increment: 3000, title: getTranslation("games.modes.duels.titles.title_10000") /*, color: "5", bold: true */ },
-    { minimumWins: 25000, increment: 5000, title: getTranslation("games.modes.duels.titles.title_25000") /*, color: "b", bold: true */ },
-    { minimumWins: 50000, increment: 10000, title: getTranslation("games.modes.duels.titles.title_50000") /*, color: "d", bold: true */ },
-    { minimumWins: 100000, increment: 10000, max: 50, title: getTranslation("games.modes.duels.titles.title_100000") /*, color: "c", bold: true */ },
+    { minimumWins: 0, increment: 50, title: getTranslation("games.modes.duels.titles.title_0"), color: ["§7"] },
+    { minimumWins: 50, increment: 10, title: getTranslation("games.modes.duels.titles.title_50"), color: ["§7"] },
+    { minimumWins: 100, increment: 30, title: getTranslation("games.modes.duels.titles.title_100"), color: ["§f"] },
+    { minimumWins: 250, increment: 50, title: getTranslation("games.modes.duels.titles.title_250"), color: ["§6"] },
+    { minimumWins: 500, increment: 100, title: getTranslation("games.modes.duels.titles.title_500"), color: ["§3"] },
+    { minimumWins: 1000, increment: 200, title: getTranslation("games.modes.duels.titles.title_1000"), color: ["§2"] },
+    { minimumWins: 2000, increment: 600, title: getTranslation("games.modes.duels.titles.title_2000"), color: ["§4"], bold: true },
+    { minimumWins: 5000, increment: 1000, title: getTranslation("games.modes.duels.titles.title_5000"), color: ["§e"], bold: true },
+    { minimumWins: 10000, increment: 3000, title: getTranslation("games.modes.duels.titles.title_10000"), color: ["§5"], bold: true },
+    { minimumWins: 25000, increment: 5000, title: getTranslation("games.modes.duels.titles.title_25000"), color: ["§b"], bold: true },
+    { minimumWins: 50000, increment: 10000, title: getTranslation("games.modes.duels.titles.title_50000"), color: ["§d"], bold: true },
+    { minimumWins: 100000, increment: 10000, max: 50, title: getTranslation("games.modes.duels.titles.title_100000"), color: ["§c"], bold: true },
   ];
 
   let chosenTitle = duelsTitles[0];
+
+  if (reducedWins) {
+    wins *= 2;
+  }
 
   for (let i = 0; i < duelsTitles.length; i++) {
     if (wins >= duelsTitles[i]["minimumWins"] * multiplier) {
@@ -5165,13 +5175,21 @@ function getDuelsTitle(wins, name = "", scheme = "boilerplate_gold", bold = fals
   let rawDuelsTitle = name + chosenTitle["title"] + romanSuffix;
 
   let selectedScheme = duelsSchemes[scheme];
+
   if (!selectedScheme) {
-    selectedScheme = duelsSchemes["boilerplate_gold"];
+    scheme = "prefix_scheme_default";
   }
 
   let coloredTitle = "";
   const title = rawDuelsTitle;
-  const colors = selectedScheme;
+
+  console.log(chosenTitle);
+  if (scheme == "prefix_scheme_default") {
+    colors = chosenTitle["color"];
+  } else {
+    colors = selectedScheme;
+  }
+
   const m = title.length;
 
   if (m > 0) {
@@ -5215,6 +5233,10 @@ function getDuelsTitle(wins, name = "", scheme = "boilerplate_gold", bold = fals
 
   if (chosenTitle["bold"]) {
     coloredTitle = `<b>${coloredTitle}</b>`;
+  }
+
+  if (reducedWins) {
+    winsToGo /= 2;
   }
 
   return [coloredTitle, winsToGo, chosenTitle["increment"] * multiplier];
