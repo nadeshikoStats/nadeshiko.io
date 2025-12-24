@@ -47,6 +47,10 @@ let secretAchievements = {
   arcade_hypixel_says_movement: "Jump off the Platform instead of standing still",
   arcade_snake: "Earn 50 points in the lobby Snake minigame",
   arcade_ender_spleef_no_powerhouse: "Win a game of Ender Spleef without using any powerups",
+  arcade_disasters_titanfall: "Kill a Giant during the Zombie Apocalypse",
+  arcade_disasters_dragon_tamer: "Hit a dragon with a snowball power up to force it to change directions",
+
+
   arcade_dw_void: "Get out of the map and into the void in a game of Dragon Wars",
   murdermystery_secret_chamber: "Find and enter the combination to open the secret chamber on Gold Rush",
   walls3_configuration: "Finish a game having final killed exactly 3 players from one team, 2 from another, and 1 from the third",
