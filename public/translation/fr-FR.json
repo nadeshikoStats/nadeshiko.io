@@ -434,6 +434,7 @@
         "bountyhunters": "Bounty Hunters",
         "capturethewool": "Capture the Wool",
         "creeperattack": "Creeper Attack",
+        "disasters": "Disasters",
         "dragonwars": "Dragon Wars",
         "dropper": "Dropper",
         "enderspleef": "Ender Spleef",
@@ -854,6 +855,8 @@
           "fish": "Poisson",
           "junk": "Déchet",
           "treasure": "Trésor",
+          "plant": "Plants",
+          "creature": "Creatures",
           "big_fish": "Big Catches",
           "biggest_fish": "Biggest",
           "leather": "Cuir",
@@ -911,7 +914,32 @@
           "blaze_powder": "Poudre de Blaze",
           "molten_gold": "Or fondu",
           "gold_sword": "Épée en or",
-          "iron_sword": "Épée en fer"
+          "iron_sword": "Épée en fer",
+          "wheat": "Wheat",
+          "potato": "Potato",
+          "melon": "Melon",
+          "bamboo": "Bamboo",
+          "glow_berries": "Glow Berries",
+          "sweet_berries": "Sweet Berries",
+          "baked_potato": "Baked Potato",
+          "charred_berries": "Charred Berries",
+          "nether_wart": "Nether Wart",
+          "warped_roots": "Warped Roots",
+          "glistering_melon": "Glistering Melon",
+          "zombie": "Zombie",
+          "cow": "Cow",
+          "sheep": "Sheep",
+          "slime": "Slime",
+          "skeleton": "Skeleton",
+          "spider": "Spider",
+          "pig": "Pig",
+          "creeper": "Creeper",
+          "chicken": "Chicken",
+          "squid": "Squid",
+          "pig_zombie": "Pig Zombie",
+          "cave_spider": "Cave Spider",
+          "blaze": "Blaze",
+          "magma_cube": "Magma Cube"
         },
         "mythicalfish": {
           "category": "Poissons mythiques",
@@ -922,6 +950,7 @@
           "zeus": "Etincelle de Zeus",
           "hades": "Wrath of Hades",
           "archimedes": "Automaton of Daedalus",
+          "demeter": "Spirit of Demeter",
           "weight_formatted": "%%caught%% <span class=\"w400\">(%%weight%% kg)</span>"
         },
         "specialfish": {
@@ -969,7 +998,10 @@
           "frozen_meal": "Repas Congelé",
           "festive_lights": "Lumières festives",
           "festival_pufferfish_hat": "Festive Pufferfish Hat",
-          "mahi_mahi": "Coryphène"
+          "mahi_mahi": "Coryphène",
+          "burnt_plant": "Burnt Plant",
+          "poisonous_potato": "Poisonous Potato",
+          "golden_apple": "Golden Apple"
         },
         "seasons": {
           "category": "Saisons",
@@ -978,6 +1010,7 @@
           "christmas": "Fêtes",
           "easter": "Pâques",
           "non_seasonal": "Non-Seasonal",
+          "plant": "Plants",
           "no_seasons": "No Seasons"
         }
       }
@@ -1215,6 +1248,8 @@
     "treasure_caught": "Trésors attrapés",
     "mythical_fish_caught": "Poissons mythiques attrapés",
     "special_fish_caught": "Poissons spéciaux attrapés",
+    "plants_caught": "Plants Caught",
+    "creatures_caught": "Creatures Caught",
     "created": "Créé",
     "player": "Joueur",
     "rank": "Rang",
@@ -1227,7 +1262,8 @@
     "prestige_twos": "Prestige IIs",
     "prestige_fours": "Prestige IVs",
     "prestige_fives": "Prestige Vs",
-    "prestige_sevens": "Prestige VIIs"
+    "prestige_sevens": "Prestige VIIs",
+    "disasters_survived": "Disasters Survived"
   },
   "times": {
     "time_ago": "(il y a %%time%%)",

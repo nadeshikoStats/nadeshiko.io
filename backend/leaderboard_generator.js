@@ -90,6 +90,15 @@ const leaderboards = [
           leaderboards: [{ translation: "statistics.max_wave", id: "ARCADE_CREEPER_ATTACK_MAX_WAVE", format: "number" }],
         },
         {
+          translation: "games.modes.arcade.disasters",
+          leaderboards: [
+            { translation: "statistics.wins", id: "ARCADE_DISASTERS_WINS", format: "number" },
+            { translation: "statistics.wlr", id: "ARCADE_DISASTERS_WLR", format: "decimal_2" },
+            { translation: "statistics.disasters_survived", id: "ARCADE_DISASTERS_DISASTERS_SURVIVED", format: "number" },
+            { translation: "statistics.total_time_survived", id: "ARCADE_DISASTERS_TIME_SURVIVED", format: "duration_seconds" },
+          ],
+        },
+        {
           translation: "games.modes.arcade.dragonwars",
           leaderboards: [
             { translation: "statistics.wins", id: "ARCADE_DRAGON_WARS_WINS", format: "number" },
@@ -1078,6 +1087,8 @@ const leaderboards = [
             { translation: "statistics.fish_caught", id: "FISHING_FISH_CAUGHT", format: "number" },
             { translation: "statistics.junk_caught", id: "FISHING_JUNK_CAUGHT", format: "number" },
             { translation: "statistics.treasure_caught", id: "FISHING_TREASURE_CAUGHT", format: "number" },
+            { translation: "statistics.plants_caught", id: "FISHING_PLANT_CAUGHT", format: "number" },
+            { translation: "statistics.creatures_caught", id: "FISHING_CREATURE_CAUGHT", format: "number" },
             { translation: "statistics.mythical_fish_caught", id: "FISHING_MYTHICAL_FISH_CAUGHT", format: "number" },
           ],
         },
@@ -1088,6 +1099,8 @@ const leaderboards = [
             { translation: "statistics.fish_caught", id: "FISHING_WATER_FISH_CAUGHT", format: "number" },
             { translation: "statistics.junk_caught", id: "FISHING_WATER_JUNK_CAUGHT", format: "number" },
             { translation: "statistics.treasure_caught", id: "FISHING_WATER_TREASURE_CAUGHT", format: "number" },
+            { translation: "statistics.plants_caught", id: "FISHING_WATER_PLANT_CAUGHT", format: "number" },
+            { translation: "statistics.creatures_caught", id: "FISHING_WATER_CREATURE_CAUGHT", format: "number" },
           ],
         },
         {
@@ -1097,6 +1110,8 @@ const leaderboards = [
             { translation: "statistics.fish_caught", id: "FISHING_LAVA_FISH_CAUGHT", format: "number" },
             { translation: "statistics.junk_caught", id: "FISHING_LAVA_JUNK_CAUGHT", format: "number" },
             { translation: "statistics.treasure_caught", id: "FISHING_LAVA_TREASURE_CAUGHT", format: "number" },
+            { translation: "statistics.plants_caught", id: "FISHING_LAVA_PLANT_CAUGHT", format: "number" },
+            { translation: "statistics.creatures_caught", id: "FISHING_LAVA_CREATURE_CAUGHT", format: "number" },
           ],
         },
         {
@@ -1106,6 +1121,8 @@ const leaderboards = [
             { translation: "statistics.fish_caught", id: "FISHING_ICE_FISH_CAUGHT", format: "number" },
             { translation: "statistics.junk_caught", id: "FISHING_ICE_JUNK_CAUGHT", format: "number" },
             { translation: "statistics.treasure_caught", id: "FISHING_ICE_TREASURE_CAUGHT", format: "number" },
+            { translation: "statistics.plants_caught", id: "FISHING_ICE_PLANT_CAUGHT", format: "number" },
+            { translation: "statistics.creatures_caught", id: "FISHING_ICE_CREATURE_CAUGHT", format: "number" },
           ],
         },
         {

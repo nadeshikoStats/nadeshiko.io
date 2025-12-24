@@ -434,6 +434,7 @@
         "bountyhunters": "Bounty Hunters",
         "capturethewool": "Capture the Wool",
         "creeperattack": "Creeper Attack",
+        "disasters": "Disasters",
         "dragonwars": "Dragon Wars",
         "dropper": "Dropper",
         "enderspleef": "Ender Spleef",
@@ -854,6 +855,8 @@
           "fish": "Pește",
           "junk": "Gunoi",
           "treasure": "Comoară",
+          "plant": "Plants",
+          "creature": "Creatures",
           "big_fish": "Big Catches",
           "biggest_fish": "Biggest",
           "leather": "Leather",
@@ -911,7 +914,32 @@
           "blaze_powder": "Blaze Powder",
           "molten_gold": "Molten Gold",
           "gold_sword": "Gold Sword",
-          "iron_sword": "Iron Sword"
+          "iron_sword": "Iron Sword",
+          "wheat": "Wheat",
+          "potato": "Potato",
+          "melon": "Melon",
+          "bamboo": "Bamboo",
+          "glow_berries": "Glow Berries",
+          "sweet_berries": "Sweet Berries",
+          "baked_potato": "Baked Potato",
+          "charred_berries": "Charred Berries",
+          "nether_wart": "Nether Wart",
+          "warped_roots": "Warped Roots",
+          "glistering_melon": "Glistering Melon",
+          "zombie": "Zombie",
+          "cow": "Cow",
+          "sheep": "Sheep",
+          "slime": "Slime",
+          "skeleton": "Skeleton",
+          "spider": "Spider",
+          "pig": "Pig",
+          "creeper": "Creeper",
+          "chicken": "Chicken",
+          "squid": "Squid",
+          "pig_zombie": "Pig Zombie",
+          "cave_spider": "Cave Spider",
+          "blaze": "Blaze",
+          "magma_cube": "Magma Cube"
         },
         "mythicalfish": {
           "category": "Mythical Fish",
@@ -922,6 +950,7 @@
           "zeus": "Scânteia lui Zeus",
           "hades": "Wrath of Hades",
           "archimedes": "Automaton of Daedalus",
+          "demeter": "Spirit of Demeter",
           "weight_formatted": "%%caught%% <span class=\"w400\">(%%weight%% kg)</span>"
         },
         "specialfish": {
@@ -969,7 +998,10 @@
           "frozen_meal": "Mâncare Înghețată",
           "festive_lights": "Luminițe Festive",
           "festival_pufferfish_hat": "Pălărie Festivă Pește-Balon",
-          "mahi_mahi": "Mahi Mahi"
+          "mahi_mahi": "Mahi Mahi",
+          "burnt_plant": "Burnt Plant",
+          "poisonous_potato": "Poisonous Potato",
+          "golden_apple": "Golden Apple"
         },
         "seasons": {
           "category": "Seasons",
@@ -978,6 +1010,7 @@
           "christmas": "Sarbatori",
           "easter": "Paște",
           "non_seasonal": "Non-Seasonal",
+          "plant": "Plants",
           "no_seasons": "No Seasons"
         }
       }
@@ -1215,6 +1248,8 @@
     "treasure_caught": "Treasure Caught",
     "mythical_fish_caught": "Mythical Fish Caught",
     "special_fish_caught": "Special Fish Caught",
+    "plants_caught": "Plants Caught",
+    "creatures_caught": "Creatures Caught",
     "created": "Created",
     "player": "Player",
     "rank": "Rank",
@@ -1227,7 +1262,8 @@
     "prestige_twos": "Prestige IIs",
     "prestige_fours": "Prestige IVs",
     "prestige_fives": "Prestige Vs",
-    "prestige_sevens": "Prestige VIIs"
+    "prestige_sevens": "Prestige VIIs",
+    "disasters_survived": "Disasters Survived"
   },
   "times": {
     "time_ago": "(%%time%% ago)",

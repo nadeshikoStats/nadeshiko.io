@@ -434,6 +434,7 @@
         "bountyhunters": "Bounty Hunters",
         "capturethewool": "Capture the Wool",
         "creeperattack": "Creeper Attack",
+        "disasters": "Disasters",
         "dragonwars": "Dragon Wars",
         "dropper": "Dropper",
         "enderspleef": "Ender Spleef",
@@ -854,6 +855,8 @@
           "fish": "물고기",
           "junk": "쓰레기",
           "treasure": "트레져",
+          "plant": "Plants",
+          "creature": "Creatures",
           "big_fish": "Big Catches",
           "biggest_fish": "Biggest",
           "leather": "가죽",
@@ -911,7 +914,32 @@
           "blaze_powder": "블레이즈 가루",
           "molten_gold": "녹은 금",
           "gold_sword": "금 검",
-          "iron_sword": "철 검"
+          "iron_sword": "철 검",
+          "wheat": "Wheat",
+          "potato": "Potato",
+          "melon": "Melon",
+          "bamboo": "Bamboo",
+          "glow_berries": "Glow Berries",
+          "sweet_berries": "Sweet Berries",
+          "baked_potato": "Baked Potato",
+          "charred_berries": "Charred Berries",
+          "nether_wart": "Nether Wart",
+          "warped_roots": "Warped Roots",
+          "glistering_melon": "Glistering Melon",
+          "zombie": "Zombie",
+          "cow": "Cow",
+          "sheep": "Sheep",
+          "slime": "Slime",
+          "skeleton": "Skeleton",
+          "spider": "Spider",
+          "pig": "Pig",
+          "creeper": "Creeper",
+          "chicken": "Chicken",
+          "squid": "Squid",
+          "pig_zombie": "Pig Zombie",
+          "cave_spider": "Cave Spider",
+          "blaze": "Blaze",
+          "magma_cube": "Magma Cube"
         },
         "mythicalfish": {
           "category": "신화 물고기",
@@ -922,6 +950,7 @@
           "zeus": "제우스의 전격",
           "hades": "Wrath of Hades",
           "archimedes": "Automaton of Daedalus",
+          "demeter": "Spirit of Demeter",
           "weight_formatted": "%%caught%% <span class=\"w400\">(%%weight%% kg)</span>"
         },
         "specialfish": {
@@ -969,7 +998,10 @@
           "frozen_meal": "냉동 식품",
           "festive_lights": "장식용 조명",
           "festival_pufferfish_hat": "축제용 복어 모자",
-          "mahi_mahi": "만새기"
+          "mahi_mahi": "만새기",
+          "burnt_plant": "Burnt Plant",
+          "poisonous_potato": "Poisonous Potato",
+          "golden_apple": "Golden Apple"
         },
         "seasons": {
           "category": "시즌",
@@ -978,6 +1010,7 @@
           "christmas": "연말",
           "easter": "부활절",
           "non_seasonal": "Non-Seasonal",
+          "plant": "Plants",
           "no_seasons": "시즌 없음"
         }
       }
@@ -1215,6 +1248,8 @@
     "treasure_caught": "낚은 보물",
     "mythical_fish_caught": "낚은 신화 물고기",
     "special_fish_caught": "낚은 특별한 물고기",
+    "plants_caught": "Plants Caught",
+    "creatures_caught": "Creatures Caught",
     "created": "생성된 날짜",
     "player": "플레이어",
     "rank": "계급",
@@ -1227,7 +1262,8 @@
     "prestige_twos": "Prestige IIs",
     "prestige_fours": "Prestige IVs",
     "prestige_fives": "Prestige Vs",
-    "prestige_sevens": "Prestige VIIs"
+    "prestige_sevens": "Prestige VIIs",
+    "disasters_survived": "Disasters Survived"
   },
   "times": {
     "time_ago": "(%%time%% 전)",

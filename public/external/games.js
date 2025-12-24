@@ -1961,10 +1961,11 @@ function generateArcade() {
   arcadeStats = playerData["stats"]["Arcade"] || {};
   let dropperStats = arcadeStats["dropper"] || {};
   let pixelPartyStats = arcadeStats["pixel_party"] || {};
+  let disastersStats = arcadeStats?.["disasters"]?.["stats"] || {};
 
   let easyWins = sumStatsBasic(["wins_dayone", "wins_oneinthequiver", "wins_dragonwars2", "wins_ender", "wins_farm_hunt", "wins_soccer", "sw_game_wins", "hider_wins_hide_and_seek", "seeker_wins_hide_and_seek", "wins_hole_in_the_wall", "wins_mini_walls", "wins_party", "wins_simon_says", "wins_draw_their_thing", "wins_throw_out", "wins_zombies", "wins_easter_simulator", "wins_halloween_simulator", "wins_santa_simulator", "wins_scuba_simulator", "wins_grinch_simulator_v2"], arcadeStats);
 
-  updateScopedElement("arcade-overall-wins", checkAndFormat(easyWins + und(dropperStats["wins"]) + und(pixelPartyStats["wins"])), arcadeStats);
+  updateScopedElement("arcade-overall-wins", checkAndFormat(easyWins + und(dropperStats["wins"]) + und(pixelPartyStats["wins"]) + und(disastersStats["wins"])), arcadeStats);
   updateScopedElement("arcade-overall-coins", checkAndFormat(arcadeStats["coins"]));
 
   // Blocking Dead
@@ -2007,6 +2008,21 @@ function generateArcade() {
     [[false, [getTranslation("statistics.max_wave"), checkAndFormat(arcadeStats["max_wave"])]]], // Displayed stats
     [], // Other stats (shown in drop-down menu)
     `/img/icon/minecraft/creeper_head.${imageFileType}`, // Chip image
+  ];
+
+  // Disasters
+  let disastersCard = [
+    "arcade-stats-disasters", // ID
+    getTranslation("games.modes.arcade.disasters"), // Title
+    "", // Subtitle
+    `/img/games/arcade/disasters.${imageFileType}`, // Background image
+    [
+      [false, [getTranslation("statistics.wins"), checkAndFormat(disastersStats["wins"])], [getTranslation("statistics.losses"), checkAndFormat(disastersStats["losses"])], [getTranslation("statistics.wlr"), calculateRatio(disastersStats["wins"], disastersStats["losses"])]],
+      [false, [getTranslation("statistics.disasters_survived"), checkAndFormat(Object.values(disastersStats["survived"]).reduce((sum, v) => Number.isFinite(v = parseFloat(v)) ? sum + v : sum, 0))], [getTranslation("statistics.total_time_survived"), smallDuration(disastersStats["time_survived"], true)]],
+    ], // Displayed stats
+    [], // Other stats (shown in drop-down menu)
+    `/img/icon/minecraft/lava_bucket.${imageFileType}`, // Chip image
+    "arcade", // gamemode
   ];
 
   let dragonWarsCard = [
@@ -2245,7 +2261,7 @@ function generateArcade() {
     "arcade_seasonal", // gamemode
   ];
 
-  arcadeChips = [blockingDeadCard, bountyHuntersCard, creeperAttackCard, dragonWarsCard, dropperCard, enderSpleefCard, farmHuntCard, footballCard, galaxyWarsCard, hideAndSeekCard, holeInTheWallCard, hypixelSaysCard, miniWallsCard, partyGamesCard, pixelPaintersCard, pixelPartyCard, throwOutCard, zombiesCard, seasonalCard];
+  arcadeChips = [blockingDeadCard, bountyHuntersCard, creeperAttackCard, disastersCard, dragonWarsCard, dropperCard, enderSpleefCard, farmHuntCard, footballCard, galaxyWarsCard, hideAndSeekCard, holeInTheWallCard, hypixelSaysCard, miniWallsCard, partyGamesCard, pixelPaintersCard, pixelPartyCard, throwOutCard, zombiesCard, seasonalCard];
 
   generateChips(arcadeChips, "arcade-chips");
 
@@ -4764,9 +4780,11 @@ function generateFishing() {
               <div class="chip-small-statistic-row">
                 <p><span data-t="statistics.fish_caught">Fish Caught</span> <span class="statistic" id="fishing-fish_caught"><span class="mc">Unknown</span></span></p>
                 <p><span data-t="statistics.junk_caught">Junk Caught</span> <span class="statistic" id="fishing-junk_caught"><span class="mc">Unknown</span></span></p>
+                <p><span data-t="statistics.treasure_caught">Treasure Caught</span> <span class="statistic" id="fishing-treasure_caught"><span class="mc">Unknown</span></span></p>
               </div>
               <div class="chip-small-statistic-row">
-                <p><span data-t="statistics.treasure_caught">Treasure Caught</span> <span class="statistic" id="fishing-treasure_caught"><span class="mc">Unknown</span></span></p>
+                <p><span data-t="statistics.plants_caught">Plants Caught</span> <span class="statistic" id="fishing-plants_caught"><span class="mc">Unknown</span></span></p>
+                <p><span data-t="statistics.creatures_caught">Creatures Caught</span> <span class="statistic" id="fishing-creatures_caught"><span class="mc">Unknown</span></span></p>
                 <p><span data-t="statistics.mythical_fish_caught">Mythical Fish Caught</span> <span class="statistic" id="fishing-mythical_fish_caught"><span class="mc">Unknown</span></span></p>
               </div>
             </div>
@@ -4802,8 +4820,10 @@ function generateFishing() {
   const overallFishCaught = getTotalCaught(fishingStats, "fish");
   const overallJunkCaught = getTotalCaught(fishingStats, "junk");
   const overallTreasureCaught = getTotalCaught(fishingStats, "treasure");
+  const overallPlantsCaught = getTotalCaught(fishingStats, "plant");
+  const overallCreaturesCaught = getTotalCaught(fishingStats, "creature");
 
-  const orbs = ["helios", "selene", "nyx", "aphrodite", "zeus", "archimedes", "hades"];
+  const orbs = ["helios", "selene", "nyx", "aphrodite", "zeus", "demeter", "archimedes", "hades"];
 
   function getMythicalFishCount(orb) {
     const path = ["orbs", orb];
@@ -4825,12 +4845,14 @@ function generateFishing() {
     }
   }
 
-  let maxSpecialFish = 44;
+  let maxSpecialFish = 47;
 
-  updateScopedElement("fishing-items_caught", checkAndFormat(und(overallFishCaught) + und(overallJunkCaught) + und(overallTreasureCaught) + und(overallMythicalFishCaught) + specialFishCount));
+  updateScopedElement("fishing-items_caught", checkAndFormat(und(overallFishCaught) + und(overallJunkCaught) + und(overallTreasureCaught) + und(overallMythicalFishCaught) + specialFishCount + und(overallPlantsCaught) + und(overallCreaturesCaught)));
   updateScopedElement("fishing-fish_caught", checkAndFormat(overallFishCaught));
   updateScopedElement("fishing-junk_caught", checkAndFormat(overallJunkCaught));
   updateScopedElement("fishing-treasure_caught", checkAndFormat(overallTreasureCaught));
+  updateScopedElement("fishing-plants_caught", checkAndFormat(overallPlantsCaught));
+  updateScopedElement("fishing-creatures_caught", checkAndFormat(overallCreaturesCaught));
   updateScopedElement("fishing-mythical_fish_caught", checkAndFormat(overallMythicalFishCaught));
   updateScopedElement("fishing-special_fish_caught", checkAndFormat(specialFishCount) + " / " + checkAndFormat(maxSpecialFish));
 
@@ -4863,6 +4885,8 @@ function generateFishing() {
       [getTranslation("games.modes.fishing.catches.fish"), "fish"],
       [getTranslation("games.modes.fishing.catches.junk"), "junk"],
       [getTranslation("games.modes.fishing.catches.treasure"), "treasure"],
+      [getTranslation("games.modes.fishing.catches.plant"), "plant"],
+      [getTranslation("games.modes.fishing.catches.creature"), "creature"],
     ],
     ``,
     "fishing",
@@ -4872,7 +4896,7 @@ function generateFishing() {
     let mythicalFishStats = fishingStats["orbs"] || {};
     let mythicalFishWeight = mythicalFishStats["weight"] || {};
 
-    let mythicalFishArray = ["helios", "selene", "nyx", "aphrodite", "zeus", "archimedes", "hades"];
+    let mythicalFishArray = ["helios", "selene", "nyx", "aphrodite", "zeus", "demeter", "archimedes", "hades"];
 
     let mythicalFishStatsArray = [];
 
@@ -4899,6 +4923,7 @@ function generateFishing() {
       [getTranslation("games.modes.fishing.seasons.summer"), "summer"],
       [getTranslation("games.modes.fishing.seasons.halloween"), "halloween"],
       [getTranslation("games.modes.fishing.seasons.christmas"), "christmas"],
+      [getTranslation("games.modes.fishing.seasons.plant"), "plant"],
     ],
     ``,
     "fishing",
@@ -4926,11 +4951,18 @@ function getFishingZoneStats(zone) {
   let fishingNumericalStats = fishingStats["stats"] || {};
   let zoneStats = getValue(fishingNumericalStats, ["permanent", zone]) || {};
 
-  return [
-    [true, [getTranslation("statistics.items_caught"), checkAndFormat(und(zoneStats["fish"]) + und(zoneStats["junk"]) + und(zoneStats["treasure"]))]],
+  let fishingZoneStats = [
+    [true, [getTranslation("statistics.items_caught"), checkAndFormat(und(zoneStats["fish"]) + und(zoneStats["junk"]) + und(zoneStats["treasure"]) + und(zoneStats["plant"]) + und(zoneStats["creature"]))]],
     [false, [getTranslation("statistics.fish_caught"), checkAndFormat(zoneStats["fish"])], [getTranslation("statistics.junk_caught"), checkAndFormat(zoneStats["junk"])]],
-    [false, [getTranslation("statistics.treasure_caught"), checkAndFormat(zoneStats["treasure"])]],
+    [false, [getTranslation("statistics.treasure_caught"), checkAndFormat(zoneStats["treasure"])]]
   ];
+
+  if (zone != "ice") { // Ice doesn't have plants or creatures?
+    fishingZoneStats[2].push([getTranslation("statistics.plants_caught"), checkAndFormat(zoneStats["plant"])]);
+    fishingZoneStats.push([false, [getTranslation("statistics.creatures_caught"), checkAndFormat(zoneStats["creature"])]]);
+  }
+
+  return fishingZoneStats;
 }
 
 function getFishingParticipatedSeasons() {
@@ -4953,6 +4985,8 @@ function getFishingParticipatedSeasons() {
         fish: und(getValue(zoneStats, ["water", "fish"])) + und(getValue(zoneStats, ["lava", "fish"])) + und(getValue(zoneStats, ["ice", "fish"])),
         junk: und(getValue(zoneStats, ["water", "junk"])) + und(getValue(zoneStats, ["lava", "junk"])) + und(getValue(zoneStats, ["ice", "junk"])),
         treasure: und(getValue(zoneStats, ["water", "treasure"])) + und(getValue(zoneStats, ["lava", "treasure"])) + und(getValue(zoneStats, ["ice", "treasure"])),
+        plant: und(getValue(zoneStats, ["water", "plant"])) + und(getValue(zoneStats, ["lava", "plant"])) + und(getValue(zoneStats, ["ice", "plant"])),
+        creature: und(getValue(zoneStats, ["water", "creature"])) + und(getValue(zoneStats, ["lava", "creature"])) + und(getValue(zoneStats, ["ice", "creature"])),
         orb: und(getValue(zoneStats, ["water", "orb"])) + und(getValue(zoneStats, ["lava", "orb"])) + und(getValue(zoneStats, ["ice", "orb"])),
         name: year + " – " + getTranslation(`games.modes.fishing.seasons.${season}`),
         id: year + "_" + season,
@@ -4965,9 +4999,10 @@ function getFishingParticipatedSeasons() {
 
 function formatFishingParticipatedSeason(season) {
   return [
-    [true, [getTranslation("statistics.items_caught"), checkAndFormat(season["fish"] + season["junk"] + season["treasure"] + season["orb"])]],
+    [true, [getTranslation("statistics.items_caught"), checkAndFormat(season["fish"] + season["junk"] + season["treasure"] + season["orb"] + season["plant"] + season["creature"])]],
     [false, [getTranslation("statistics.fish_caught"), checkAndFormat(season["fish"])], [getTranslation("statistics.junk_caught"), checkAndFormat(season["junk"])]],
-    [false, [getTranslation("statistics.treasure_caught"), checkAndFormat(season["treasure"])], [getTranslation("statistics.mythical_fish_caught"), checkAndFormat(season["orb"])]],
+    [false, [getTranslation("statistics.treasure_caught"), checkAndFormat(season["treasure"])], [getTranslation("statistics.plants_caught"), checkAndFormat(season["plant"])]],
+    [false, [getTranslation("statistics.creatures_caught"), checkAndFormat(season["creature"])], [getTranslation("statistics.mythical_fish_caught"), checkAndFormat(season["orb"])]],
   ];
 }
 
@@ -4991,6 +5026,8 @@ function getSpecialFishStats(season) {
     halloween: ["spook_the_fish", "chocolate_bar", "pumpkin_spice_latte", "angler", "pumpkin_pie", "eyeball", "wayfinders_compass", "molten_iron", "regular_fish", "lava_shark"],
 
     christmas: ["chill_the_fish_3", "frozen_fish", "festival_pufferfish_hat", "eggnog", "dawning_snowball", "frozen_meal", "festive_lights"],
+
+    plant: ["burnt_plant", "poisonous_potato", "golden_apple"]
   };
 
   let specialFishArray = specialFish[season] || [];
@@ -5028,8 +5065,10 @@ function getSpecialFishStats(season) {
 function getFishingCatches(category) {
   let fishingItemCategories = {
     junk: ["leather", "leather_boots", "soggy_paper", "water_bottle", "lily_pad", "tripwire_hook", "ink_sac", "rotten_flesh", "bone", "bowl", "broken_fishing_rod", "stick", "rabbit_hide", "string", "nether_brick", "steak", "lava_bucket", "coal", "charcoal", "fermented_spider_eye", "burned_flesh", "clump_of_leaves", "ice_shard", "snowball", "frozen_flesh"],
-    fish: ["clownfish", "salmon", "cod", "pufferfish", "cooked_cod", "charred_pufferfish", "cooked_salmon", "perch", "pike", "trout", "kelp", "dried_kelp", "frozen_kelp"],
-    treasure: ["enchanted_fishing_rod", "diamond_sword", "compass", "emerald", "gold_pickaxe", "saddle", "enchanted_bow", "diamond", "enchanted_book", "name_tag", "chainmail_chestplate", "blaze_rod", "eye_of_ender", "magma_cream", "blaze_powder", "molten_gold", "gold_sword", "iron_sword"],
+    fish: ["clownfish", "salmon", "cod", "pufferfish", "cooked_cod", "charred_pufferfish", "cooked_salmon", "perch", "pike", "trout"],
+    treasure: ["enchanted_fishing_rod", "diamond_sword", "compass", "emerald", "gold_pickaxe", "saddle", "enchanted_bow", "diamond", "enchanted_book", "name_tag", "chainmail_chestplate", "blaze_rod", "eye_of_ender", "magma_cream", "blaze_powder", "molten_gold", "gold_sword", "iron_sword", "nautilus_shell"],
+    plant: ["kelp", "dried_kelp", "frozen_kelp", "wheat", "potato", "melon", "bamboo", "glow_berries", "sweet_berries", "baked_potato", "charred_berries", "nether_wart", "warped_roots", "glistering_melon"],
+    creature: ["zombie", "cow", "sheep", "slime", "skeleton", "spider", "pig", "creeper", "chicken", "squid", "pig_zombie", "cave_spider", "blaze", "magma_cube"],
   };
 
   let fishingItemsArray = fishingItemCategories[category] || [];

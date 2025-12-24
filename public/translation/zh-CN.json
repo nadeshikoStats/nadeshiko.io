@@ -434,6 +434,7 @@
         "bountyhunters": "赏金猎人",
         "capturethewool": "捕捉羊毛大作战",
         "creeperattack": "进击的苦力怕",
+        "disasters": "Disasters",
         "dragonwars": "龙之战",
         "dropper": "心跳水立方",
         "enderspleef": "末影掘战",
@@ -854,6 +855,8 @@
           "fish": "鱼",
           "junk": "垃圾",
           "treasure": "宝藏",
+          "plant": "Plants",
+          "creature": "Creatures",
           "big_fish": "Big Catches",
           "biggest_fish": "Biggest",
           "leather": "皮革",
@@ -911,7 +914,32 @@
           "blaze_powder": "烈焰粉",
           "molten_gold": "熔融黄金",
           "gold_sword": "金剑",
-          "iron_sword": "铁剑"
+          "iron_sword": "铁剑",
+          "wheat": "Wheat",
+          "potato": "Potato",
+          "melon": "Melon",
+          "bamboo": "Bamboo",
+          "glow_berries": "Glow Berries",
+          "sweet_berries": "Sweet Berries",
+          "baked_potato": "Baked Potato",
+          "charred_berries": "Charred Berries",
+          "nether_wart": "Nether Wart",
+          "warped_roots": "Warped Roots",
+          "glistering_melon": "Glistering Melon",
+          "zombie": "Zombie",
+          "cow": "Cow",
+          "sheep": "Sheep",
+          "slime": "Slime",
+          "skeleton": "Skeleton",
+          "spider": "Spider",
+          "pig": "Pig",
+          "creeper": "Creeper",
+          "chicken": "Chicken",
+          "squid": "Squid",
+          "pig_zombie": "Pig Zombie",
+          "cave_spider": "Cave Spider",
+          "blaze": "Blaze",
+          "magma_cube": "Magma Cube"
         },
         "mythicalfish": {
           "category": "神话鱼",
@@ -922,6 +950,7 @@
           "zeus": "宙斯火花",
           "hades": "Wrath of Hades",
           "archimedes": "Automaton of Daedalus",
+          "demeter": "Spirit of Demeter",
           "weight_formatted": "%%caught%%<span class=\"w400\">（%%weight%% 千克）</span>"
         },
         "specialfish": {
@@ -969,7 +998,10 @@
           "frozen_meal": "冷冻鲜肉",
           "festive_lights": "节日灯",
           "festival_pufferfish_hat": "节日河豚帽",
-          "mahi_mahi": "鲯鳅"
+          "mahi_mahi": "鲯鳅",
+          "burnt_plant": "Burnt Plant",
+          "poisonous_potato": "Poisonous Potato",
+          "golden_apple": "Golden Apple"
         },
         "seasons": {
           "category": "季节",
@@ -978,6 +1010,7 @@
           "christmas": "假日",
           "easter": "复活节",
           "non_seasonal": "Non-Seasonal",
+          "plant": "Plants",
           "no_seasons": "无"
         }
       }
@@ -1215,6 +1248,8 @@
     "treasure_caught": "钓到宝藏数",
     "mythical_fish_caught": "钓到神话鱼数",
     "special_fish_caught": "钓到特殊鱼数",
+    "plants_caught": "Plants Caught",
+    "creatures_caught": "Creatures Caught",
     "created": "创造日期",
     "player": "玩家",
     "rank": "等级",
@@ -1227,7 +1262,8 @@
     "prestige_twos": "Prestige IIs",
     "prestige_fours": "Prestige IVs",
     "prestige_fives": "Prestige Vs",
-    "prestige_sevens": "Prestige VIIs"
+    "prestige_sevens": "Prestige VIIs",
+    "disasters_survived": "Disasters Survived"
   },
   "times": {
     "time_ago": "（%%time%%前）",
