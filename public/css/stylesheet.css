@@ -1,6 +1,6 @@
 :root {
   --nadeshiko: #f6adc6;
-  --nadeshiko-dark: #872d4d;
+  --nadeshiko-dark: #185475;
   --pale-grey: #ffffff80;
   --gold: #e99a3f;
   --gold-transparent: #e99a3f90;
@@ -1764,7 +1764,7 @@ a.general-button {
   width: 25px;
   height: 25px;
   position: absolute;
-  background: url(/img/petal.png);
+  background: url(/img/snowflake.png);
   background-size: 100% 100%;
 }
 
