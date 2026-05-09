@@ -13,6 +13,17 @@ const app = express();
 const port = 8080;
 
 const version = "1.5.32"; // Updating this will force the cache to clear for all users; doesn't have to be changed for every update
+const backendOrigin = "http://localhost:2000";
+
+function backendUrl(pathname, params = {}) {
+  const url = new URL(pathname, backendOrigin);
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null) {
+      url.searchParams.set(key, value);
+    }
+  }
+  return url.toString();
+}
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -1233,7 +1244,7 @@ ${achievementGamesString}`;
           }
         }
 
-        const response = await axios.get(`http://localhost:2000/stats?name=${name}`);
+        const response = await axios.get(backendUrl("/stats", { name }));
         let playerData = response.data;
 
         let metaImageURL, metaDescription;
@@ -1318,7 +1329,7 @@ ${achievementGamesString}`;
     });
 
     async function fetchGuildData(endpoint, name) {
-      const response = await axios.get(`http://localhost:2000/guild?${endpoint}=${name}`);
+      const response = await axios.get(backendUrl("/guild", { [endpoint]: name }));
       let guildData = response.data;
 
       let metaDescription;
@@ -1379,7 +1390,7 @@ ${achievementGamesString}`;
       }
 
       try {
-        const response = await axios.get(`http://localhost:2000/guild?name=${name}`);
+        const response = await axios.get(backendUrl("/guild", { name }));
         let guildData = response.data;
 
         let metaDescription;
@@ -1394,7 +1405,7 @@ ${achievementGamesString}`;
         res.render("guild", { name, guildData, metaDescription, version });
       } catch (error) {
         try {
-          const response = await axios.get(`http://localhost:2000/guild?player=${name}`);
+          const response = await axios.get(backendUrl("/guild", { player: name }));
           let guildData = response.data;
 
           let metaDescription;
@@ -1445,7 +1456,7 @@ ${achievementGamesString}`;
           }
         }
 
-        const response = await axios.get(`http://localhost:2000/achievements?name=${name}`);
+        const response = await axios.get(backendUrl("/achievements", { name }));
         let achievementsData = response.data;
 
         if (achievementsData["player"]["profile"] == null) {
@@ -1486,7 +1497,7 @@ ${achievementGamesString}`;
       };
 
       try {
-        const response = await axios.get(`http://localhost:2000/quests?name=${name}`);
+        const response = await axios.get(backendUrl("/quests", { name }));
         let questsData = response.data;
 
         if (questsData["player"]["profile"] == null) {
@@ -1521,8 +1532,7 @@ ${achievementGamesString}`;
       const page = req.query.page || 1;
 
       try {
-        const backendUrl = `http://localhost:2000/leaderboard?leaderboard=${leaderboardType}&page=${page}`;
-        const response = await axios.get(backendUrl);
+        const response = await axios.get(backendUrl("/leaderboard", { leaderboard: leaderboardType, page }));
 
         res.json(response.data);
       } catch (error) {
@@ -1547,7 +1557,7 @@ ${achievementGamesString}`;
       try {
         const uuid = req.query.uuid;
 
-        const response = await axios.get(`http://localhost:2000/skyblock/profiles?uuid=${uuid}`);
+        const response = await axios.get(backendUrl("/skyblock/profiles", { uuid }));
         res.json(response.data);
       } catch (error) {
         console.error("Error fetching data from backend:", error);
@@ -1559,8 +1569,7 @@ ${achievementGamesString}`;
       const uuid = req.query.uuid;
 
       try {
-        const backendUrl = `http://localhost:2000/rankings?uuid=${uuid}`;
-        const response = await axios.get(backendUrl);
+        const response = await axios.get(backendUrl("/rankings", { uuid }));
 
         res.json(response.data);
       } catch (error) {
