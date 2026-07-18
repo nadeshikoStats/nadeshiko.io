@@ -241,7 +241,7 @@ async function getLeaderboardData(leaderboard, page = 1) {
       head = row.querySelector(`[data-i="head"]`);
 
       head.style.display = "block";
-      head.src = `https://h.matdoes.dev/2d/${a["uuid"].replaceAll("-", "")}`;
+      head.src = `https://nmsr.nickac.dev/face/${a["uuid"].replaceAll("-", "")}`;
       head.alt = "";
 
       row.querySelector("[data-i='rank-name']").href = `/player/${a["uuid"]}`;
